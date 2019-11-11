@@ -53,30 +53,26 @@ function AddressItem(
 
   const renderRightIcon = () => (
     <div class={bem('icons-wrapper')}>
-      {slots.edit ? (
-        slots.edit()
-      ) : (
-        <Icon
-          name="edit"
-          class={bem('edit')}
-          onClick={(event: Event) => {
-            event.stopPropagation();
-            emit(ctx, 'edit');
-          }}
-        />
-      )}
-      {slots.delete ? (
-        slots.delete()
-      ) : (
-        <Icon
-          name="delete"
-          class={bem('delete')}
-          onClick={(event: Event) => {
-            event.stopPropagation();
-            emit(ctx, 'delete');
-          }}
-        />
-      )}
+      <span
+        style="display: flex"
+        class={bem('edit')}
+        onClick={(event: Event) => {
+          event.stopPropagation();
+          emit(ctx, 'edit');
+        }}
+      >
+        {slots.edit ? slots.edit() : <Icon name="edit" />}
+      </span>
+      <span
+        style="display: flex"
+        class={bem('delete')}
+        onClick={(event: Event) => {
+          event.stopPropagation();
+          emit(ctx, 'delete');
+        }}
+      >
+        {slots.delete ? slots.delete() : <Icon name="delete" />}
+      </span>
     </div>
   );
 
