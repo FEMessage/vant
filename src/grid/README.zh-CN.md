@@ -104,12 +104,15 @@ Vue.use(Grid).use(GridItem);
 
 ### 提示信息
 
-设置`dot`属性后，会在图标右上角展示一个小红点。设置`info`属性后，会在图标右上角展示相应的徽标
+设置`dot`属性后，会在图标右上角展示一个小红点。设置`info`属性后，会在图标右上角展示相应的徽标。注意使用icon插槽时，需要自行调整info位置
 
 ```html
 <van-grid :column-num="2">
   <van-grid-item icon="home-o" text="文字" dot />
   <van-grid-item icon="search" text="文字" info="99+" />
+  <van-grid-item text="文字" info="99+">
+    <span slot="icon">slot=icon</span>
+  </van-grid-item>
 </van-grid>
 ```
 
