@@ -68,20 +68,15 @@ export default createComponent({
       if (slot) {
         return slot;
       }
-      const slotIcon = this.slots('icon');
 
       return [
-        slotIcon && slotIcon,
-        slotIcon && <Info dot={this.dot} info={this.info} />,
-        !slotIcon && this.icon && (
-          <Icon
-            name={this.icon}
-            dot={this.dot}
-            info={this.info}
-            size={this.parent.iconSize}
-            class={bem('icon')}
-          />
-        ),
+        <div style="display: flex; position: relative">
+          {this.slots('icon') ||
+            (this.icon && (
+              <Icon name={this.icon} size={this.parent.iconSize} class={bem('icon')} />
+            ))}
+          <Info dot={this.dot} info={this.info} />
+        </div>,
         this.slots('text') || (this.text && <span class={bem('text')}>{this.text}</span>)
       ];
     }
