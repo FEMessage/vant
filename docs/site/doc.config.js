@@ -9,7 +9,7 @@ export const searchConfig = {
 
 export const versions = [version, '1.x'];
 
-export const github = 'https://github.com/youzan/vant';
+export const github = 'https://github.com/FEMessage/vant';
 
 export default {
   'zh-CN': {
@@ -180,6 +180,10 @@ export default {
               {
                 path: '/uploader',
                 title: 'Uploader 文件上传'
+              },
+              {
+                path: '/select',
+                title: 'Select 选择器'
               }
             ]
           },
@@ -523,6 +527,10 @@ export default {
               {
                 path: '/uploader',
                 title: 'Uploader'
+              },
+              {
+                path: '/select',
+                title: 'Select'
               }
             ]
           },

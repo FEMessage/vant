@@ -4,9 +4,9 @@
 
 ``` javascript
 import Vue from 'vue';
-import { Search } from 'vant';
+import { Select } from 'vant';
 
-Vue.use(Search);
+Vue.use(Select);
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ Vue.use(Search);
 ### Basic Usage
 
 ```html
-<van-search placeholder="Placeholder" v-model="value" />
+<van-Select placeholder="Placeholder" v-model="value" />
 ```
 
 ```javascript
@@ -30,19 +30,18 @@ export default {
 `search` event will be triggered when click the search button on the keyboard, `cancel` event will be triggered when click the cancel button.
 
 ```html
-<form action="javascript:;">
+<form action="/">
   <van-search
     v-model="value"
     placeholder="Placeholder"
     show-action
     @search="onSearch"
     @cancel="onCancel"
-    :remove-form="true"
   />
 </form>
 ```
 
-> Tips: Set props remove-from into true if you want to nest van-search with other input in same form tag
+> Tips: There will be a search button on the keyboard when Search is inside a form in iOS.
 
 ### Custom Action Button
 
@@ -79,7 +78,6 @@ Search support all native properties of input tag，such as `maxlength`、`place
 | input-align | Text align of field, can be set to `center` `right` | *string* | `left` | - |
 | left-icon | Left icon name | *string* | `search` | - |
 | right-icon | Right icon name | *string* | - | - |
-| removeForm | render component without form element | *boolean* | `false` | - |
 
 ### Events
 

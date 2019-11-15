@@ -6,7 +6,7 @@ import Radio from '../radio';
 
 // Types
 import { CreateElement, RenderContext } from 'vue/types';
-import { DefaultSlots } from '../utils/types';
+import { ScopedSlot, DefaultSlots } from '../utils/types';
 
 export type AddressItemData = {
   id: string | number;
@@ -18,13 +18,19 @@ export type AddressItemData = {
 export type AddressItemProps = {
   data: AddressItemData;
   disabled?: boolean;
-  switchable?: boolean;
+};
+
+export type AddressItemSlots = DefaultSlots & {
+  radioIcon?: ScopedSlot;
+  edit?: ScopedSlot;
+  delete?: ScopedSlot;
 };
 
 export type AddressItemEvents = {
   onEdit(): void;
   onClick(): void;
-  onSelect(): void;
+  onDelete(): void;
+  onDefault(): void;
 };
 
 const [createComponent, bem] = createNamespace('address-item');
@@ -32,57 +38,74 @@ const [createComponent, bem] = createNamespace('address-item');
 function AddressItem(
   h: CreateElement,
   props: AddressItemProps,
-  slots: DefaultSlots,
+  slots: AddressItemSlots,
   ctx: RenderContext<AddressItemProps>
 ) {
-  const { disabled, switchable } = props;
+  const { disabled } = props;
 
   function onClick() {
-    if (switchable) {
-      emit(ctx, 'select');
-    }
-
     emit(ctx, 'click');
   }
 
+  function onSetDefault() {
+    emit(ctx, 'default');
+  }
+
   const renderRightIcon = () => (
-    <Icon
-      name="edit"
-      class={bem('edit')}
-      onClick={(event: Event) => {
-        event.stopPropagation();
-        emit(ctx, 'edit');
-        emit(ctx, 'click');
-      }}
-    />
+    <div class={bem('icons-wrapper')}>
+      <span
+        style="display: flex"
+        class={bem('edit')}
+        onClick={(event: Event) => {
+          event.stopPropagation();
+          emit(ctx, 'edit');
+        }}
+      >
+        {slots.edit ? slots.edit() : <Icon name="edit" />}
+      </span>
+      <span
+        style="display: flex"
+        class={bem('delete')}
+        onClick={(event: Event) => {
+          event.stopPropagation();
+          emit(ctx, 'delete');
+        }}
+      >
+        {slots.delete ? slots.delete() : <Icon name="delete" />}
+      </span>
+    </div>
   );
 
   const renderContent = () => {
     const { data } = props;
     const Info = [
-      <div class={bem('name')}>{`${data.name}，${data.tel}`}</div>,
-      <div class={bem('address')}>{data.address}</div>
+      <div class={bem('content')} onClick={onClick}>
+        <div class={bem('name')}>{`${data.name}，${data.tel}`}</div>
+        <div class={bem('address')}>{data.address}</div>
+      </div>,
+      <div class={bem('bar')}>
+        <Radio
+          name={data.id}
+          onClick={onSetDefault}
+          class={bem('set-default')}
+          scopedSlots={{ icon: slots.radioIcon }}
+        >
+          设为默认
+        </Radio>
+        {renderRightIcon()}
+      </div>
     ];
 
-    return switchable && !disabled ? (
-      <Radio name={data.id} iconSize={16}>
-        {Info}
-      </Radio>
-    ) : (
-      Info
-    );
+    return Info;
   };
 
   return (
     <Cell
       class={bem({ disabled })}
-      valueClass={bem('value')}
-      clickable={switchable && !disabled}
+      clickable={!disabled}
       scopedSlots={{
-        default: renderContent,
-        'right-icon': renderRightIcon
+        default: renderContent
       }}
-      onClick={onClick}
       {...inherit(ctx)}
     />
   );
@@ -90,8 +113,7 @@ function AddressItem(
 
 AddressItem.props = {
   data: Object,
-  disabled: Boolean,
-  switchable: Boolean
+  disabled: Boolean
 };
 
 export default createComponent<AddressItemProps, AddressItemEvents>(AddressItem);

@@ -1,7 +1,7 @@
 language: node_js
 sudo: required
-addons:
-  chrome: stable
+#addons:
+#  chrome: stable
 node_js:
   - 10
 os: linux
@@ -10,13 +10,24 @@ cache:
 branches:
   only:
     - master
-    - dev
 install:
   - |
     yarn install
+  #- |
+  #  npm run lint && npm run test
 script:
-  - |
-    npm run lint && npm run test
-after_success:
-  - |
-    cat ./test/coverage/lcov.info | ./node_modules/.bin/codecov
+  - ./build/release.sh
+  - ./build/release-site.sh
+#after_success:
+#  - cat ./test/coverage/lcov.info | ./node_modules/.bin/codecov
+after_script:
+  - ./notify.sh
+deploy:
+  - provider: pages
+    local-dir: docs/dist
+    github-token: $GITHUB_TOKEN
+    skip-cleanup: true
+  - provider: npm
+    email: levy9527@qq.com
+    api_key: $NPM_TOKEN
+    skip-cleanup: true
