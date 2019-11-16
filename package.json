@@ -57,6 +57,7 @@
   "author": "youzanfe",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "7.x",
     "@vant/icons": "1.1.14",
     "vue-lazyload": "1.2.3"
   },
@@ -72,7 +73,6 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-typescript": "^7.6.0",
-    "@babel/runtime": "7.x",
     "@types/jest": "^24.0.16",
     "@vant/cli": "^1.0.6",
     "@vant/doc": "^2.5.7",
