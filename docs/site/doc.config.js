@@ -253,10 +253,10 @@ export default {
                 path: '/image-preview',
                 title: 'ImagePreview 图片预览'
               },
-              {
-                path: '/lazyload',
-                title: 'Lazyload 图片懒加载'
-              },
+              // {
+              //   path: '/lazyload',
+              //   title: 'Lazyload 图片懒加载'
+              // },
               {
                 path: '/list',
                 title: 'List 列表'
@@ -600,10 +600,10 @@ export default {
                 path: '/image-preview',
                 title: 'ImagePreview'
               },
-              {
-                path: '/lazyload',
-                title: 'Lazyload'
-              },
+              // {
+              //   path: '/lazyload',
+              //   title: 'Lazyload'
+              // },
               {
                 path: '/list',
                 title: 'List'
