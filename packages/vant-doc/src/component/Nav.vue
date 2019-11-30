@@ -48,7 +48,8 @@ export default {
   data() {
     return {
       top: 60,
-      bottom: 0
+      bottom: 0,
+      femessageNavs: []
     };
   },
 
@@ -66,10 +67,35 @@ export default {
     this.onScroll();
   },
 
+  mounted() {
+    console.log('mounted');
+    this.getFemessageNavs();
+  },
+
   methods: {
     onScroll() {
       const { pageYOffset: offset } = window;
       this.top = Math.max(0, 60 - offset);
+    },
+    getFemessageNavs() {
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const { data: navs } = JSON.parse(xhr.responseText);
+          this.femessageNavs = navs
+            .map(nav => {
+              nav.url = `https://serverless.deepexi.top/serverless-console/index.html#/material/${nav.repoName}`;
+              return nav;
+            })
+            .filter(nav => nav.lib && nav.lib.indexOf('element') > -1);
+          console.log(this.femessageNavs);
+        }
+      };
+      xhr.open(
+        'GET',
+        '//mockapi.eolinker.com/jttjNwp60fc1c9e944fdf1cc494b28a7ca4cfe66bbafee1/open'
+      );
+      xhr.send();
     }
   }
 };
