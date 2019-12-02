@@ -107,9 +107,13 @@ export default {
                 path: '/icon',
                 title: 'Icon 图标'
               },
+              // {
+              //   path: '/image',
+              //   title: 'Image 图片'
+              // },
               {
-                path: '/image',
-                title: 'Image 图片'
+                link: "https://serverless.deepexi.top/serverless-console/index.html#/material/v-img",
+                title: 'v-img 图片'
               },
               {
                 path: '/col',
@@ -177,9 +181,13 @@ export default {
                 path: '/switch-cell',
                 title: 'SwitchCell 开关单元格'
               },
+              // {
+              //   path: '/uploader',
+              //   title: 'Uploader 文件上传'
+              // },
               {
-                path: '/uploader',
-                title: 'Uploader 文件上传'
+                link: 'https://serverless.deepexi.top/serverless-console/index.html#/material/upload-to-ali',
+                title: 'upload-to-ali 文件上传'
               },
               {
                 path: '/select',
@@ -241,25 +249,37 @@ export default {
                 path: '/collapse',
                 title: 'Collapse 折叠面板'
               },
+              // {
+              //   path: '/count-down',
+              //   title: 'CountDown 倒计时'
+              // },
               {
-                path: '/count-down',
+                link: 'https://serverless.deepexi.top/serverless-console/index.html#/material/count-down',
                 title: 'CountDown 倒计时'
               },
               {
                 path: '/divider',
                 title: 'Divider 分割线'
               },
+              // {
+              //   path: '/image-preview',
+              //   title: 'ImagePreview 图片预览'
+              // },
               {
-                path: '/image-preview',
-                title: 'ImagePreview 图片预览'
+                link: "https://serverless.deepexi.top/serverless-console/index.html#/material/img-preview",
+                title: 'img-preview 图片预览'
               },
               // {
               //   path: '/lazyload',
               //   title: 'Lazyload 图片懒加载'
               // },
+              // {
+              //   path: '/list',
+              //   title: 'List 列表'
+              // },
               {
-                path: '/list',
-                title: 'List 列表'
+                link: "https://serverless.deepexi.top/serverless-console/index.html#/material/data-list",
+                title: 'data-list 列表'
               },
               {
                 path: '/notice-bar',
@@ -454,8 +474,12 @@ export default {
                 path: '/icon',
                 title: 'Icon'
               },
+              // {
+              //   path: '/image',
+              //   title: 'Image'
+              // },
               {
-                path: '/image',
+                link: "https://serverless.deepexi.top/serverless-console/index.html#/material/v-img",
                 title: 'Image'
               },
               {
@@ -524,8 +548,12 @@ export default {
                 path: '/switch-cell',
                 title: 'SwitchCell'
               },
+              // {
+              //   path: '/uploader',
+              //   title: 'Uploader'
+              // },
               {
-                path: '/uploader',
+                link: 'https://serverless.deepexi.top/serverless-console/index.html#/material/upload-to-ali',
                 title: 'Uploader'
               },
               {
@@ -588,24 +616,36 @@ export default {
                 path: '/collapse',
                 title: 'Collapse'
               },
+              // {
+              //   path: '/count-down',
+              //   title: 'CountDown'
+              // },
               {
-                path: '/count-down',
+                link: 'https://serverless.deepexi.top/serverless-console/index.html#/material/count-down',
                 title: 'CountDown'
               },
               {
                 path: '/divider',
                 title: 'Divider'
               },
+              // {
+              //   path: '/image-preview',
+              //   title: 'ImagePreview'
+              // },
               {
-                path: '/image-preview',
-                title: 'ImagePreview'
+                link: "https://serverless.deepexi.top/serverless-console/index.html#/material/img-preview",
+                title: 'img-preview 图片预览'
               },
               // {
               //   path: '/lazyload',
               //   title: 'Lazyload'
               // },
+              // {
+              //   path: '/list',
+              //   title: 'List'
+              // },
               {
-                path: '/list',
+                link: "https://serverless.deepexi.top/serverless-console/index.html#/material/data-list",
                 title: 'List'
               },
               {

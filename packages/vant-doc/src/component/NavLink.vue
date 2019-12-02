@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="item.path" active-class="active" :to="base + item.path" v-html="itemName" />
-  <a v-else-if="item.link" :href="item.link" v-html="itemName" />
+  <a v-else-if="item.link" :href="item.link" v-html="itemName" target="_blank" rel="noopener" />
   <a v-else v-html="itemName " />
 </template>
 
