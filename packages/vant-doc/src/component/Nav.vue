@@ -66,11 +66,6 @@ export default {
     this.onScroll();
   },
 
-  mounted() {
-    console.log('mounted');
-    this.getFemessageNavs();
-  },
-
   methods: {
     onScroll() {
       const { pageYOffset: offset } = window;
