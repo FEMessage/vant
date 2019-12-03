@@ -109,7 +109,8 @@ export default {
               },
               {
                 path: '/image',
-                title: 'Image 图片'
+                title: 'Image 图片',
+                disabled: true
               },
               {
                 path: '/col',
@@ -179,7 +180,8 @@ export default {
               },
               {
                 path: '/uploader',
-                title: 'Uploader 文件上传'
+                title: 'Uploader 文件上传',
+                disabled: true
               },
               {
                 path: '/select',
@@ -243,7 +245,8 @@ export default {
               },
               {
                 path: '/count-down',
-                title: 'CountDown 倒计时'
+                title: 'CountDown 倒计时',
+                disabled: true
               },
               {
                 path: '/divider',
@@ -251,15 +254,18 @@ export default {
               },
               {
                 path: '/image-preview',
-                title: 'ImagePreview 图片预览'
+                title: 'ImagePreview 图片预览',
+                disabled: true
               },
               {
                 path: '/lazyload',
-                title: 'Lazyload 图片懒加载'
+                title: 'Lazyload 图片懒加载',
+                disabled: true
               },
               {
                 path: '/list',
-                title: 'List 列表'
+                title: 'List 列表',
+                disabled: true
               },
               {
                 path: '/notice-bar',
@@ -456,7 +462,8 @@ export default {
               },
               {
                 path: '/image',
-                title: 'Image'
+                title: 'Image',
+                disabled: true
               },
               {
                 path: '/col',
@@ -526,7 +533,8 @@ export default {
               },
               {
                 path: '/uploader',
-                title: 'Uploader'
+                title: 'Uploader',
+                disabled: true
               },
               {
                 path: '/select',
@@ -590,7 +598,8 @@ export default {
               },
               {
                 path: '/count-down',
-                title: 'CountDown'
+                title: 'CountDown',
+                disabled: true
               },
               {
                 path: '/divider',
@@ -598,15 +607,18 @@ export default {
               },
               {
                 path: '/image-preview',
-                title: 'ImagePreview'
+                title: 'ImagePreview',
+                disabled: true
               },
               {
                 path: '/lazyload',
-                title: 'Lazyload'
+                title: 'Lazyload',
+                disabled: true
               },
               {
                 path: '/list',
-                title: 'List'
+                title: 'List',
+                disabled: true
               },
               {
                 path: '/notice-bar',
