@@ -22,6 +22,7 @@ export type SearchProps = {
   background: string;
   actionText?: string;
   showAction?: boolean;
+  removeForm?: boolean;
   clearTrigger?: string;
 };
 
@@ -95,32 +96,44 @@ function Search(
   const inheritData = inherit(ctx);
   inheritData.attrs = undefined;
 
-  return (
-    <div
-      class={bem({ 'show-action': props.showAction })}
-      style={{ background: props.background }}
-      {...inheritData}
-    >
-      {slots.left?.()}
-      <div class={bem('content', props.shape)}>
-        {Label()}
-        <Field
-          type="search"
-          border={false}
-          value={props.value}
-          leftIcon={props.leftIcon}
-          rightIcon={props.rightIcon}
-          clearable={props.clearable}
-          clearTrigger={props.clearTrigger}
-          scopedSlots={{
-            'left-icon': slots['left-icon'],
-            'right-icon': slots['right-icon'],
-          }}
-          {...fieldData}
-        />
+  function SearchInput() {
+    return (
+      <div
+        class={bem({ 'show-action': props.showAction })}
+        style={{ background: props.background }}
+        {...inheritData}
+      >
+        {slots.left?.()}
+        <div class={bem('content', props.shape)}>
+          {Label()}
+          <Field
+            type="search"
+            border={false}
+            value={props.value}
+            leftIcon={props.leftIcon}
+            rightIcon={props.rightIcon}
+            clearable={props.clearable}
+            clearTrigger={props.clearTrigger}
+            scopedSlots={{
+              'left-icon': slots['left-icon'],
+              'right-icon': slots['right-icon'],
+            }}
+            {...fieldData}
+          />
+        </div>
+        {Action()}
       </div>
-      {Action()}
-    </div>
+    );
+  }
+
+  if (props.removeForm) {
+    return SearchInput();
+  }
+
+  return (
+    // 在 input 外层增加 form 标签，且 action 不为空，同时 input 的 type 为 search，即可在 iOS 输入法中显示搜索按钮。
+    // eslint-disable-next-line
+    <form action="javascript:;">{SearchInput()}</form>
   );
 }
 
@@ -143,6 +156,10 @@ Search.props = {
   leftIcon: {
     type: String,
     default: 'search',
+  },
+  removeForm: {
+    type: Boolean,
+    default: false,
   },
 };
 
