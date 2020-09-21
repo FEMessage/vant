@@ -15,12 +15,7 @@ const selectProps = {
   },
 };
 
-const fieldSlots = [
-  'label',
-  'left-icon',
-  'right-icon',
-  'button',
-];
+const fieldSlots = ['label', 'left-icon', 'right-icon', 'button'];
 
 const [createComponent, bem] = createNamespace('select');
 
@@ -38,7 +33,9 @@ export default createComponent({
   computed: {
     showValue() {
       const { value } = this.$attrs;
-      const targetOption = this.options.find(item => item.value === value || item.name === value);
+      const targetOption = this.options.find(
+        (item) => item.value === value || item.name === value
+      );
       return targetOption && targetOption.name;
     },
   },
@@ -55,15 +52,17 @@ export default createComponent({
     },
 
     triggle(value) {
+      console.log(value);
       this.showSheet = value;
     },
 
     inheritSlots() {
-      return fieldSlots.map(slotName => (
-        this.slots(slotName) && <template slot={slotName}>
-          {this.slots(slotName)}
-        </template>
-      ));
+      return fieldSlots.map(
+        (slotName) =>
+          this.slots(slotName) && (
+            <template slot={slotName}>{this.slots(slotName)}</template>
+          )
+      );
     },
   },
 
