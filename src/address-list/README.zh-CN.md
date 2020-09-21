@@ -22,6 +22,7 @@ Vue.use(AddressList);
   default-tag-text="默认"
   @add="onAdd"
   @edit="onEdit"
+  @delete="onDelete"
 />
 ```
 
@@ -64,6 +65,9 @@ export default {
     onEdit(item, index) {
       Toast('编辑地址:' + index);
     },
+    onDelete(item, index) {
+      Toast('删除地址:' + index);
+    },
   },
 };
 ```
@@ -88,6 +92,7 @@ export default {
 | --------------- | ------------------------ | --------------------------- |
 | add             | 点击新增按钮时触发       | -                           |
 | edit            | 点击编辑按钮时触发       | item: 地址对象，index: 索引 |
+| delete          | 点击删除按钮时触发       | item: 地址对象，index: 索引 |
 | select          | 切换选中的地址时触发     | item: 地址对象，index: 索引 |
 | edit-disabled   | 编辑不可配送的地址时触发 | item: 地址对象，index: 索引 |
 | select-disabled | 选中不可配送的地址时触发 | item: 地址对象，index: 索引 |

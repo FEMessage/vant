@@ -35,6 +35,7 @@ export type AddressItemEvents = {
   onEdit(): void;
   onClick(): void;
   onSelect(): void;
+  onDelete(): void;
 };
 
 const [createComponent, bem] = createNamespace('address-item');
@@ -56,15 +57,28 @@ function AddressItem(
   }
 
   const genRightIcon = () => (
-    <Icon
-      name="edit"
-      class={bem('edit')}
-      onClick={(event: Event) => {
-        event.stopPropagation();
-        emit(ctx, 'edit');
-        emit(ctx, 'click');
-      }}
-    />
+    <div class={bem('icons')}>
+      <span class={bem('icons-group')}>
+        <Icon
+          name="edit"
+          class={bem('edit')}
+          onClick={(event: Event) => {
+            event.stopPropagation();
+            emit(ctx, 'edit');
+            emit(ctx, 'click');
+          }}
+        />
+        <Icon
+          name="delete"
+          class={bem('delete')}
+          onClick={(event: Event) => {
+            event.stopPropagation();
+            emit(ctx, 'delete');
+            emit(ctx, 'click');
+          }}
+        />
+      </span>
+    </div>
   );
 
   function genTag() {

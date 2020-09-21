@@ -9,6 +9,7 @@
         :default-tag-text="t('defaultTagText')"
         @add="onAdd"
         @edit="onEdit"
+        @delete="onDelete"
       />
     </demo-block>
   </demo-section>
@@ -90,6 +91,10 @@ export default {
 
     onEdit(item, index) {
       this.$toast(`${this.t('edit')}:${index}`);
+    },
+
+    onDelete(item, index) {
+      this.$toast(`${this.t('delete')}:${index}`);
     },
   },
 };

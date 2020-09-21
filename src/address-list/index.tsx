@@ -62,6 +62,9 @@ function AddressList(
         onClick={() => {
           emit(ctx, 'click-item', item, index);
         }}
+        onDelete={() => {
+          emit(ctx, disabled ? 'edit-disabled' : 'delete', item, index);
+        }}
       />
     ));
   }
