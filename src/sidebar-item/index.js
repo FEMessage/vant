@@ -12,14 +12,15 @@ export default createComponent({
     ...routeProps,
     dot: Boolean,
     info: [Number, String],
+    badge: [Number, String],
     title: String,
-    disabled: Boolean
+    disabled: Boolean,
   },
 
   computed: {
     select() {
       return this.index === +this.parent.activeKey;
-    }
+    },
   },
 
   methods: {
@@ -30,9 +31,9 @@ export default createComponent({
 
       this.$emit('click', this.index);
       this.parent.$emit('input', this.index);
-      this.parent.$emit('change', this.index);
+      this.parent.setIndex(this.index);
       route(this.$router, this);
-    }
+    },
   },
 
   render() {
@@ -43,9 +44,13 @@ export default createComponent({
       >
         <div class={bem('text')}>
           {this.title}
-          <Info dot={this.dot} info={this.info} class={bem('info')} />
+          <Info
+            dot={this.dot}
+            info={this.badge ?? this.info}
+            class={bem('info')}
+          />
         </div>
       </a>
     );
-  }
+  },
 });

@@ -2,7 +2,7 @@ import { cellProps, SharedCellProps } from '../cell/shared';
 
 export type SharedFieldProps = SharedCellProps & {
   error?: boolean;
-  readonly?: boolean,
+  readonly?: boolean;
   autosize?: boolean | object;
   leftIcon?: string;
   rightIcon?: string;
@@ -14,7 +14,7 @@ export type SharedFieldProps = SharedCellProps & {
   errorMessage?: string;
   errorMessageAlign?: string;
   type: string;
-}
+};
 
 export const fieldProps = {
   ...cellProps,
@@ -32,6 +32,6 @@ export const fieldProps = {
   errorMessageAlign: String,
   type: {
     type: String,
-    default: 'text'
-  }
+    default: 'text',
+  },
 };

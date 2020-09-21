@@ -1,12 +1,22 @@
-import { mount } from '../../../test/utils';
+import { mount } from '../../../test';
 import Button from '..';
 
-test('loading size', () => {
+test('loading-size prop', () => {
   const wrapper = mount(Button, {
     propsData: {
       loading: true,
-      loadingSize: '10px'
-    }
+      loadingSize: '10px',
+    },
+  });
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('icon-position prop', () => {
+  const wrapper = mount(Button, {
+    propsData: {
+      icon: 'plus',
+      iconPosition: 'right',
+    },
   });
   expect(wrapper).toMatchSnapshot();
 });
@@ -16,9 +26,9 @@ test('click event', () => {
   const wrapper = mount(Button, {
     context: {
       on: {
-        click: onClick
-      }
-    }
+        click: onClick,
+      },
+    },
   });
 
   wrapper.trigger('click');
@@ -29,13 +39,13 @@ test('not trigger click event when disabled', () => {
   const onClick = jest.fn();
   const wrapper = mount(Button, {
     propsData: {
-      disabled: true
+      disabled: true,
     },
     context: {
       on: {
-        click: onClick
-      }
-    }
+        click: onClick,
+      },
+    },
   });
 
   wrapper.trigger('click');
@@ -46,13 +56,13 @@ test('not trigger click event when loading', () => {
   const onClick = jest.fn();
   const wrapper = mount(Button, {
     propsData: {
-      loading: true
+      loading: true,
     },
     context: {
       on: {
-        click: onClick
-      }
-    }
+        click: onClick,
+      },
+    },
   });
 
   wrapper.trigger('click');
@@ -64,9 +74,9 @@ test('touchstart event', () => {
   const wrapper = mount(Button, {
     context: {
       on: {
-        touchstart: onTouchstart
-      }
-    }
+        touchstart: onTouchstart,
+      },
+    },
   });
 
   wrapper.trigger('touchstart');
@@ -76,9 +86,33 @@ test('touchstart event', () => {
 test('hide border when color is gradient', () => {
   const wrapper = mount(Button, {
     propsData: {
-      color: 'linear-gradient(#000, #fff)'
-    }
+      color: 'linear-gradient(#000, #fff)',
+    },
   });
 
   expect(wrapper.element.style.border).toEqual('0px');
+});
+
+test('icon-prefix prop', () => {
+  const wrapper = mount(Button, {
+    propsData: {
+      icon: 'success',
+      iconPrefix: 'my-icon',
+    },
+  });
+
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('loading slot', () => {
+  const wrapper = mount(Button, {
+    propsData: {
+      loading: true,
+    },
+    scopedSlots: {
+      loading: () => 'Custom Loading',
+    },
+  });
+
+  expect(wrapper).toMatchSnapshot();
 });

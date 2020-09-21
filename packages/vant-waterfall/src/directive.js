@@ -3,7 +3,7 @@ import {
   getScrollTop,
   getElementTop,
   getVisibleHeight,
-  getScrollEventTarget
+  getScrollEventTarget,
 } from './scroll';
 
 const CONTEXT = '@@Waterfall';
@@ -27,14 +27,18 @@ function handleScrollEvent() {
   // 判断是否到了底
   let needLoadMoreToLower = false;
   if (element === scrollEventTarget) {
-    needLoadMoreToLower = scrollEventTarget.scrollHeight - targetBottom < this.offset;
+    needLoadMoreToLower =
+      scrollEventTarget.scrollHeight - targetBottom < this.offset;
   } else {
     const elementBottom =
-      getElementTop(element) - getElementTop(scrollEventTarget) + getVisibleHeight(element);
+      getElementTop(element) -
+      getElementTop(scrollEventTarget) +
+      getVisibleHeight(element);
     needLoadMoreToLower = elementBottom - targetVisibleHeight < this.offset;
   }
   if (needLoadMoreToLower) {
-    this.cb.lower && this.cb.lower({ target: scrollEventTarget, top: targetScrollTop });
+    this.cb.lower &&
+      this.cb.lower({ target: scrollEventTarget, top: targetScrollTop });
   }
 
   // 判断是否到了顶
@@ -42,11 +46,13 @@ function handleScrollEvent() {
   if (element === scrollEventTarget) {
     needLoadMoreToUpper = targetScrollTop < this.offset;
   } else {
-    const elementTop = getElementTop(element) - getElementTop(scrollEventTarget);
+    const elementTop =
+      getElementTop(element) - getElementTop(scrollEventTarget);
     needLoadMoreToUpper = elementTop + this.offset > 0;
   }
   if (needLoadMoreToUpper) {
-    this.cb.upper && this.cb.upper({ target: scrollEventTarget, top: targetScrollTop });
+    this.cb.upper &&
+      this.cb.upper({ target: scrollEventTarget, top: targetScrollTop });
   }
 }
 
@@ -64,7 +70,7 @@ function doBindEvent() {
   const disabledExpr = this.el.getAttribute('waterfall-disabled');
   let disabled = false;
   if (disabledExpr) {
-    this.vm.$watch(disabledExpr, value => {
+    this.vm.$watch(disabledExpr, (value) => {
       this.disabled = value;
       this.scrollEventListener();
     });
@@ -93,7 +99,6 @@ function startBind(el) {
 function doCheckStartBind(el) {
   const context = el[CONTEXT];
 
-  // eslint-disable-next-line no-underscore-dangle
   if (context.vm._isMounted) {
     startBind(el);
   } else {
@@ -110,7 +115,7 @@ export default function (type) {
         el[CONTEXT] = {
           el,
           vm: vnode.context,
-          cb: {}
+          cb: {},
         };
       }
       el[CONTEXT].cb[type] = binding.value;
@@ -128,6 +133,6 @@ export default function (type) {
       if (context.scrollEventTarget) {
         off(context.scrollEventTarget, 'scroll', context.scrollEventListener);
       }
-    }
+    },
   };
 }

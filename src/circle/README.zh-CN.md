@@ -2,7 +2,7 @@
 
 ### 引入
 
-``` javascript
+```js
 import Vue from 'vue';
 import { Circle } from 'vant';
 
@@ -16,26 +16,21 @@ Vue.use(Circle);
 `rate`属性表示进度条的目标进度，`v-model`表示动画过程中的实时进度。当`rate`发生变化时，`v-model`会以`speed`的速度变化，直至达到`rate`设定的值。
 
 ```html
-<van-circle
-  v-model="currentRate"
-  :rate="30"
-  :speed="100"
-  :text="text"
-/>
+<van-circle v-model="currentRate" :rate="30" :speed="100" :text="text" />
 ```
 
-``` javascript
+```js
 export default {
   data() {
     return {
-      currentRate: 0
+      currentRate: 0,
     };
   },
   computed: {
     text() {
-      return this.currentRate.toFixed(0) + '%'
-    }
-  }
+      return this.currentRate.toFixed(0) + '%';
+    },
+  },
 };
 ```
 
@@ -78,17 +73,17 @@ export default {
 />
 ```
 
-``` javascript
+```js
 export default {
   data() {
     return {
       currentRate: 0,
       gradientColor: {
         '0%': '#3fecff',
-        '100%': '#6149f6'
-      }
+        '100%': '#6149f6',
+      },
     };
-  }
+  },
 };
 ```
 
@@ -110,33 +105,29 @@ export default {
 通过`size`属性设置圆环直径
 
 ```html
-<van-circle
-  v-model="currentRate"
-  :rate="rate"
-  size="120px"
-  text="大小定制"
-/>
+<van-circle v-model="currentRate" :rate="rate" size="120px" text="大小定制" />
 ```
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 版本 |
-|------|------|------|------|------|
-| v-model | 当前进度 | *number* | - | - |
-| rate | 目标进度 | *number* | `100` | - |
-| size | 圆环直径，默认单位为 `px` | *string \| number* | `100px` | - |
-| color | 进度条颜色，传入对象格式可以定义渐变色 | *string \| object* | `#1989fa` | 2.1.4 |
-| layer-color | 轨道颜色 | *string* | `#fff` | - |
-| fill | 填充颜色 | *string* | `none` | - |
-| speed | 动画速度（单位为 rate/s）| *number* | `0` | - |
-| text | 文字 | *string* | - | - |
-| stroke-width | 进度条宽度 | *number* | `40` | - |
-| clockwise | 是否顺时针增加 | *boolean* | `true` | - |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| v-model | 当前进度 | _number_ | - |
+| rate | 目标进度 | _number \| string_ | `100` |
+| size | 圆环直径，默认单位为 `px` | _number \| string_ | `100px` |
+| color | 进度条颜色，传入对象格式可以定义渐变色 | _string \| object_ | `#1989fa` |
+| layer-color | 轨道颜色 | _string_ | `white` |
+| fill | 填充颜色 | _string_ | `none` |
+| speed | 动画速度（单位为 rate/s） | _number \| string_ | `0` |
+| text | 文字 | _string_ | - |
+| stroke-width | 进度条宽度 | _number \| string_ | `40` |
+| stroke-linecap | 进度条端点的形状，可选值为`sqaure` `butt` | _string_ | `round` |
+| clockwise | 是否顺时针增加 | _boolean_ | `true` |
 
 ### Slots
 
-| 名称 | 说明 |
-|------|------|
+| 名称    | 说明           |
+| ------- | -------------- |
 | default | 自定义文字内容 |

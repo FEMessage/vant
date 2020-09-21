@@ -2,7 +2,7 @@
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
 import { Circle } from 'vant';
 
@@ -14,26 +14,21 @@ Vue.use(Circle);
 ### Basic Usage
 
 ```html
-<van-circle
-  v-model="currentRate"
-  :rate="30"
-  :speed="100"
-  :text="text"
-/>
+<van-circle v-model="currentRate" :rate="30" :speed="100" :text="text" />
 ```
 
-``` javascript
+```js
 export default {
   data() {
     return {
-      currentRate: 0
+      currentRate: 0,
     };
   },
   computed: {
     text() {
-      return this.currentRate.toFixed(0) + '%'
-    }
-  }
+      return this.currentRate.toFixed(0) + '%';
+    },
+  },
 };
 ```
 
@@ -70,17 +65,17 @@ export default {
 />
 ```
 
-``` javascript
+```js
 export default {
   data() {
     return {
       currentRate: 0,
       gradientColor: {
         '0%': '#3fecff',
-        '100%': '#6149f6'
-      }
+        '100%': '#6149f6',
+      },
     };
-  }
+  },
 };
 ```
 
@@ -110,21 +105,22 @@ export default {
 
 ### Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| v-model | Current rate | *number* | - | - |
-| rate | Target rate | *number* | `100` | - |
-| size | Circle size | *string \| number* | `100px` | - |
-| color | Progress color, passing object to render gradient | *string \| object* | `#1989fa` | 2.1.4 |
-| layer-color | Layer color | *string* | `#fff` | - |
-| fill | Fill color | *string* | `none` | - |
-| speed | Animate speed（rate/s）| *number* | `0` | - |
-| text | Text | *string* | - | - |
-| stroke-width | Stroke width | *number* | `40` | - |
-| clockwise | Is clockwise | *boolean* | `true` | - |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| v-model | Current rate | _number_ | - |
+| rate | Target rate | _number \| string_ | `100` |
+| size | Circle size | _number \| string_ | `100px` |
+| color | Progress color, passing object to render gradient | _string \| object_ | `#1989fa` |
+| layer-color | Layer color | _string_ | `white` |
+| fill | Fill color | _string_ | `none` |
+| speed | Animate speed（rate/s） | _number \| string_ | `0` |
+| text | Text | _string_ | - |
+| stroke-width | Stroke width | _number \| string_ | `40` |
+| stroke-linecap | Stroke linecap，can be set to `sqaure` `butt` | _string_ | `round` |
+| clockwise | Whether to be clockwise | _boolean_ | `true` |
 
 ### Slots
 
-| Name | Description |
-|------|------|
+| Name    | Description         |
+| ------- | ------------------- |
 | default | custom text content |

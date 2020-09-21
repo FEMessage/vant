@@ -1,3 +1,4 @@
+// Utils
 import { createNamespace, addUnit } from '../utils';
 import { inherit } from '../utils/functional';
 
@@ -6,8 +7,9 @@ import { CreateElement, RenderContext } from 'vue/types';
 import { DefaultSlots } from '../utils/types';
 
 export type SkeletonProps = {
-  row: number;
+  row: number | string;
   title?: boolean;
+  round?: boolean;
   avatar?: boolean;
   loading: boolean;
   animate: boolean;
@@ -33,7 +35,9 @@ function Skeleton(
 
   function Title() {
     if (props.title) {
-      return <h3 class={bem('title')} style={{ width: addUnit(props.titleWidth) }} />;
+      return (
+        <h3 class={bem('title')} style={{ width: addUnit(props.titleWidth) }} />
+      );
     }
   }
 
@@ -42,7 +46,7 @@ function Skeleton(
     const { rowWidth } = props;
 
     function getRowWidth(index: number) {
-      if (rowWidth === DEFAULT_ROW_WIDTH && index === props.row - 1) {
+      if (rowWidth === DEFAULT_ROW_WIDTH && index === +props.row - 1) {
         return DEFAULT_LAST_ROW_WIDTH;
       }
 
@@ -54,7 +58,9 @@ function Skeleton(
     }
 
     for (let i = 0; i < props.row; i++) {
-      Rows.push(<div class={bem('row')} style={{ width: addUnit(getRowWidth(i)) }} />);
+      Rows.push(
+        <div class={bem('row')} style={{ width: addUnit(getRowWidth(i)) }} />
+      );
     }
 
     return Rows;
@@ -73,7 +79,10 @@ function Skeleton(
   }
 
   return (
-    <div class={bem({ animate: props.animate })} {...inherit(ctx)}>
+    <div
+      class={bem({ animate: props.animate, round: props.round })}
+      {...inherit(ctx)}
+    >
       {Avatar()}
       <div class={bem('content')}>
         {Title()}
@@ -85,35 +94,36 @@ function Skeleton(
 
 Skeleton.props = {
   title: Boolean,
+  round: Boolean,
   avatar: Boolean,
   row: {
-    type: Number,
-    default: 0
+    type: [Number, String],
+    default: 0,
   },
   loading: {
     type: Boolean,
-    default: true
+    default: true,
   },
   animate: {
     type: Boolean,
-    default: true
+    default: true,
   },
   avatarSize: {
     type: String,
-    default: '32px'
+    default: '32px',
   },
   avatarShape: {
     type: String,
-    default: 'round'
+    default: 'round',
   },
   titleWidth: {
     type: [Number, String],
-    default: '40%'
+    default: '40%',
   },
   rowWidth: {
     type: [Number, String, Array],
-    default: DEFAULT_ROW_WIDTH
-  }
+    default: DEFAULT_ROW_WIDTH,
+  },
 };
 
 export default createComponent<SkeletonProps>(Skeleton);

@@ -1,36 +1,40 @@
+// Utils
 import { createNamespace } from '../utils';
 import { emit, inherit } from '../utils/functional';
+
+// Components
+import Tag from '../tag';
 import Icon from '../icon';
 import Cell from '../cell';
 import Radio from '../radio';
 
 // Types
 import { CreateElement, RenderContext } from 'vue/types';
-import { ScopedSlot, DefaultSlots } from '../utils/types';
+import { DefaultSlots, ScopedSlot } from '../utils/types';
 
 export type AddressItemData = {
   id: string | number;
   tel: string | number;
   name: string;
   address: string;
+  isDefault: boolean;
 };
 
 export type AddressItemProps = {
   data: AddressItemData;
   disabled?: boolean;
+  switchable?: boolean;
+  defaultTagText?: string;
 };
 
 export type AddressItemSlots = DefaultSlots & {
-  radioIcon?: ScopedSlot;
-  edit?: ScopedSlot;
-  delete?: ScopedSlot;
+  bottom?: ScopedSlot;
 };
 
 export type AddressItemEvents = {
   onEdit(): void;
   onClick(): void;
-  onDelete(): void;
-  onDefault(): void;
+  onSelect(): void;
 };
 
 const [createComponent, bem] = createNamespace('address-item');
@@ -41,79 +45,82 @@ function AddressItem(
   slots: AddressItemSlots,
   ctx: RenderContext<AddressItemProps>
 ) {
-  const { disabled } = props;
+  const { disabled, switchable } = props;
 
   function onClick() {
+    if (switchable) {
+      emit(ctx, 'select');
+    }
+
     emit(ctx, 'click');
   }
 
-  function onSetDefault() {
-    emit(ctx, 'default');
-  }
-
-  const renderRightIcon = () => (
-    <div class={bem('icons-wrapper')}>
-      <span
-        style="display: flex"
-        class={bem('edit')}
-        onClick={(event: Event) => {
-          event.stopPropagation();
-          emit(ctx, 'edit');
-        }}
-      >
-        {slots.edit ? slots.edit() : <Icon name="edit" />}
-      </span>
-      <span
-        style="display: flex"
-        class={bem('delete')}
-        onClick={(event: Event) => {
-          event.stopPropagation();
-          emit(ctx, 'delete');
-        }}
-      >
-        {slots.delete ? slots.delete() : <Icon name="delete" />}
-      </span>
-    </div>
+  const genRightIcon = () => (
+    <Icon
+      name="edit"
+      class={bem('edit')}
+      onClick={(event: Event) => {
+        event.stopPropagation();
+        emit(ctx, 'edit');
+        emit(ctx, 'click');
+      }}
+    />
   );
 
-  const renderContent = () => {
+  function genTag() {
+    if (props.data.isDefault && props.defaultTagText) {
+      return (
+        <Tag type="danger" round class={bem('tag')}>
+          {props.defaultTagText}
+        </Tag>
+      );
+    }
+  }
+
+  function genContent() {
     const { data } = props;
     const Info = [
-      <div class={bem('content')} onClick={onClick}>
-        <div class={bem('name')}>{`${data.name}，${data.tel}`}</div>
-        <div class={bem('address')}>{data.address}</div>
+      <div class={bem('name')}>
+        {`${data.name} ${data.tel}`}
+        {genTag()}
       </div>,
-      <div class={bem('bar')}>
-        <Radio
-          name={data.id}
-          onClick={onSetDefault}
-          class={bem('set-default')}
-          scopedSlots={{ icon: slots.radioIcon }}
-        >
-          设为默认
-        </Radio>
-        {renderRightIcon()}
-      </div>
+      <div class={bem('address')}>{data.address}</div>,
     ];
 
+    if (switchable && !disabled) {
+      return (
+        <Radio name={data.id} iconSize={18}>
+          {Info}
+        </Radio>
+      );
+    }
+
     return Info;
-  };
+  }
 
   return (
-    <Cell
-      class={bem({ disabled })}
-      clickable={!disabled}
-      scopedSlots={{
-        default: renderContent
-      }}
-      {...inherit(ctx)}
-    />
+    <div class={bem({ disabled })} onClick={onClick}>
+      <Cell
+        border={false}
+        valueClass={bem('value')}
+        scopedSlots={{
+          default: genContent,
+          'right-icon': genRightIcon,
+        }}
+        {...inherit(ctx)}
+      />
+      {slots.bottom?.({ ...props.data, disabled })}
+    </div>
   );
 }
 
 AddressItem.props = {
   data: Object,
-  disabled: Boolean
+  disabled: Boolean,
+  switchable: Boolean,
+  defaultTagText: String,
 };
 
-export default createComponent<AddressItemProps, AddressItemEvents>(AddressItem);
+export default createComponent<AddressItemProps, AddressItemEvents>(
+  AddressItem
+);

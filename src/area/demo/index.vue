@@ -1,29 +1,26 @@
 <template>
   <demo-section>
-    <demo-block :title="$t('basicUsage')">
-      <van-area :area-list="$t('areaList')" />
+    <demo-block card :title="t('basicUsage')">
+      <van-area :title="t('title')" :area-list="t('areaList')" />
     </demo-block>
 
-    <demo-block :title="$t('title2')">
-      <van-area
-        :area-list="$t('areaList')"
-        :value="value"
-      />
+    <demo-block card :title="t('title2')">
+      <van-area :title="t('title')" :area-list="t('areaList')" :value="value" />
     </demo-block>
 
-    <demo-block :title="$t('title3')">
+    <demo-block card :title="t('title3')">
       <van-area
-        :area-list="$t('areaList')"
+        :title="t('title')"
+        :area-list="t('areaList')"
         :columns-num="2"
-        :title="$t('title')"
       />
     </demo-block>
 
-    <demo-block :title="$t('title4')">
+    <demo-block card :title="t('title4')">
       <van-area
-        :area-list="$t('areaList')"
-        :columns-placeholder="$t('columnsPlaceholder')"
-        :title="$t('title')"
+        :title="t('title')"
+        :area-list="t('areaList')"
+        :columns-placeholder="t('columnsPlaceholder')"
       />
     </demo-block>
   </demo-section>
@@ -48,13 +45,13 @@ export default {
       title4: 'Columns Placeholder',
       columnsPlaceholder: ['Choose', 'Choose', 'Choose'],
       areaList: AreaListEn,
-    }
+    },
   },
 
   data() {
     return {
-      value: '330302'
+      value: '330302',
     };
-  }
+  },
 };
 </script>

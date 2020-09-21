@@ -1,13 +1,16 @@
+// Utils
 import { createNamespace } from '../utils';
 import { emit, inherit } from '../utils/functional';
 import { BORDER_SURROUND, WHITE } from '../utils/constant';
 import { routeProps, RouteProps, functionalRoute } from '../utils/router';
+
+// Components
 import Icon from '../icon';
 import Loading, { LoadingType } from '../loading';
 
 // Types
 import { CreateElement, RenderContext } from 'vue/types';
-import { DefaultSlots } from '../utils/types';
+import { ScopedSlot, DefaultSlots } from '../utils/types';
 
 export type ButtonType = 'default' | 'primary' | 'info' | 'warning' | 'danger';
 
@@ -28,13 +31,19 @@ export type ButtonProps = RouteProps & {
   hairline?: boolean;
   disabled?: boolean;
   nativeType?: string;
+  iconPrefix?: string;
   loadingSize: string;
   loadingType?: LoadingType;
   loadingText?: string;
+  iconPosition: 'left' | 'right';
 };
 
 export type ButtonEvents = {
   onClick?(event: Event): void;
+};
+
+export type ButttonSlots = DefaultSlots & {
+  loading?: ScopedSlot;
 };
 
 const [createComponent, bem] = createNamespace('button');
@@ -42,7 +51,7 @@ const [createComponent, bem] = createNamespace('button');
 function Button(
   h: CreateElement,
   props: ButtonProps,
-  slots: DefaultSlots,
+  slots: ButttonSlots,
   ctx: RenderContext<ButtonProps>
 ) {
   const {
@@ -54,7 +63,8 @@ function Button(
     disabled,
     loading,
     hairline,
-    loadingText
+    loadingText,
+    iconPosition,
   } = props;
 
   const style: Record<string, string | number> = {};
@@ -92,30 +102,43 @@ function Button(
       props.size,
       {
         plain,
+        loading,
         disabled,
         hairline,
         block: props.block,
         round: props.round,
-        square: props.square
-      }
+        square: props.square,
+      },
     ]),
-    { [BORDER_SURROUND]: hairline }
+    { [BORDER_SURROUND]: hairline },
   ];
 
-  function Content() {
-    const content = [];
-
+  function renderIcon() {
     if (loading) {
-      content.push(
+      return slots.loading ? (
+        slots.loading()
+      ) : (
         <Loading
           class={bem('loading')}
           size={props.loadingSize}
           type={props.loadingType}
-          color={type === 'default' ? undefined : ''}
+          color="currentColor"
         />
       );
-    } else if (icon) {
-      content.push(<Icon name={icon} class={bem('icon')} />);
+    }
+
+    if (icon) {
+      return (
+        <Icon name={icon} class={bem('icon')} classPrefix={props.iconPrefix} />
+      );
+    }
+  }
+
+  function renderContent() {
+    const content = [];
+
+    if (iconPosition === 'left') {
+      content.push(renderIcon());
     }
 
     let text;
@@ -127,6 +150,10 @@ function Button(
 
     if (text) {
       content.push(<span class={bem('text')}>{text}</span>);
+    }
+
+    if (iconPosition === 'right') {
+      content.push(renderIcon());
     }
 
     return content;
@@ -142,7 +169,7 @@ function Button(
       onTouchstart={onTouchstart}
       {...inherit(ctx)}
     >
-      {Content()}
+      <div class={bem('content')}>{renderContent()}</div>
     </tag>
   );
 }
@@ -159,25 +186,30 @@ Button.props = {
   loading: Boolean,
   hairline: Boolean,
   disabled: Boolean,
+  iconPrefix: String,
   nativeType: String,
   loadingText: String,
   loadingType: String,
   tag: {
     type: String,
-    default: 'button'
+    default: 'button',
   },
   type: {
     type: String,
-    default: 'default'
+    default: 'default',
   },
   size: {
     type: String,
-    default: 'normal'
+    default: 'normal',
   },
   loadingSize: {
     type: String,
-    default: '20px'
-  }
+    default: '20px',
+  },
+  iconPosition: {
+    type: String,
+    default: 'left',
+  },
 };
 
-export default createComponent<ButtonProps, ButtonEvents>(Button);
+export default createComponent<ButtonProps, ButtonEvents, ButttonSlots>(Button);

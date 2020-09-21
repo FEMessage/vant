@@ -2,7 +2,7 @@
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
 import { Loading } from 'vant';
 
@@ -14,15 +14,19 @@ Vue.use(Loading);
 ### Type
 
 ```html
-<van-loading />
-<van-loading type="spinner" />
+<van-loading /> <van-loading type="spinner" />
 ```
 
 ### Color
 
 ```html
-<van-loading color="#1989fa" />
-<van-loading type="spinner" color="#1989fa" />
+<van-loading color="#1989fa" /> <van-loading type="spinner" color="#1989fa" />
+```
+
+### Size
+
+```html
+<van-loading size="24" /> <van-loading type="spinner" size="24px" />
 ```
 
 ### Text
@@ -41,16 +45,16 @@ Vue.use(Loading);
 
 ### Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| color | Loading color | *string* | `#c9c9c9` | - |
-| type | Can be set to `spinner` | *string* | `circular` | - |
-| size | Icon size | *string \| number* | `30px` | - |
-| text-size | Text font size | *string \| number* | `14px` | - |
-| vertical | Whether to arrange icons and text content vertically | *boolean* | `false` | - |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| color | Loading color | _string_ | `#c9c9c9` |
+| type | Can be set to `spinner` | _string_ | `circular` |
+| size | Icon size | _number \| string_ | `30px` |
+| text-size | Text font size | _number \| string_ | `14px` |
+| vertical | Whether to arrange icons and text content vertically | _boolean_ | `false` |
 
 ### Slots
 
-| Name | Description |
-|------|------|
+| Name    | Description  |
+| ------- | ------------ |
 | default | Loading text |
