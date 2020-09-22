@@ -5,11 +5,11 @@ import { emit, inherit } from '../utils/functional';
 // Components
 import Button from '../button';
 import RadioGroup from '../radio-group';
-import AddressItem, { AddressItemData } from './Item';
+import AddressItem, { AddressItemData, AddressItemSlots } from './Item';
 
 // Types
 import { CreateElement, RenderContext } from 'vue/types';
-import { ScopedSlot, DefaultSlots } from '../utils/types';
+import { ScopedSlot } from '../utils/types';
 
 export type AddressListProps = {
   value?: string | number;
@@ -20,7 +20,7 @@ export type AddressListProps = {
   defaultTagText?: string;
 };
 
-export type AddressListSlots = DefaultSlots & {
+export type AddressListSlots = AddressItemSlots & {
   top?: ScopedSlot;
   'item-bottom'?: ScopedSlot;
 };
@@ -46,6 +46,9 @@ function AddressList(
         defaultTagText={props.defaultTagText}
         scopedSlots={{
           bottom: slots['item-bottom'],
+          radioIcon: slots.radioIcon,
+          edit: slots.edit,
+          delete: slots.delete,
         }}
         onEdit={() => {
           emit(ctx, disabled ? 'edit-disabled' : 'edit', item, index);

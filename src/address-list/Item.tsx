@@ -28,6 +28,9 @@ export type AddressItemProps = {
 
 export type AddressItemSlots = DefaultSlots & {
   bottom?: ScopedSlot;
+  radioIcon?: ScopedSlot;
+  edit?: ScopedSlot;
+  delete?: ScopedSlot;
 };
 
 export type AddressItemEvents = {
@@ -56,23 +59,27 @@ function AddressItem(
   }
 
   const genRightIcon = () => (
-    <div class={bem('icons')}>
-      <Icon
-        name="edit"
+    <div class={bem('icons-wrapper')}>
+      <span
+        style="display: flex"
         class={bem('edit')}
         onClick={(event: Event) => {
           event.stopPropagation();
           emit(ctx, 'edit');
         }}
-      />
-      <Icon
-        name="delete"
+      >
+        {slots.edit ? slots.edit() : <Icon name="edit" />}
+      </span>
+      <span
+        style="display: flex"
         class={bem('delete')}
         onClick={(event: Event) => {
           event.stopPropagation();
           emit(ctx, 'delete');
         }}
-      />
+      >
+        {slots.delete ? slots.delete() : <Icon name="delete" />}
+      </span>
     </div>
   );
 
@@ -97,7 +104,12 @@ function AddressItem(
         <div class={bem('address')}>{data.address}</div>
       </div>,
       <div class={bem('bar')}>
-        <Radio name={data.id} onClick={onSetDefault} class={bem('set-default')}>
+        <Radio
+          name={data.id}
+          onClick={onSetDefault}
+          class={bem('set-default')}
+          scopedSlots={{ icon: slots.radioIcon }}
+        >
           {t('setDefault')}
         </Radio>
         {genRightIcon()}
