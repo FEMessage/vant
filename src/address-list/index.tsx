@@ -51,7 +51,6 @@ function AddressList(
           emit(ctx, disabled ? 'edit-disabled' : 'edit', item, index);
         }}
         onClick={() => {
-          console.log('被 click 啦');
           emit(
             ctx,
             disabled ? 'set-default-disabled' : 'click-item',
@@ -63,7 +62,6 @@ function AddressList(
           emit(ctx, disabled ? 'edit-disabled' : 'delete', item, index);
         }}
         onDefault={() => {
-          console.log('被 setDefault 啦');
           emit(
             ctx,
             disabled ? 'set-default-disabled' : 'set-default',

@@ -51,7 +51,7 @@ export default createComponent({
       this.$emit('select', item, index);
     },
 
-    triggle(value) {
+    trigger(value) {
       console.log(value);
       this.showSheet = value;
     },
@@ -71,7 +71,7 @@ export default createComponent({
       <Field
         class={bem()}
         readonly={true}
-        onClick={() => this.triggle(true)}
+        onClick={() => this.trigger(true)}
         {...{ attrs: this.$attrs }}
         {...{ listeners: this.$listeners }}
         // 这个 value 必须在继承的 attrs 下面，为了 emit value，而显示 name
@@ -86,7 +86,7 @@ export default createComponent({
           value={this.showSheet}
           actions={this.options}
           closeOnClickAction={true}
-          onInput={this.triggle}
+          onInput={this.trigger}
         />
       </Field>
     );
