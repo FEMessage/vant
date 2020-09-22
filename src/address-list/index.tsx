@@ -56,13 +56,13 @@ function AddressList(
         onClick={() => {
           emit(
             ctx,
-            disabled ? 'set-default-disabled' : 'click-item',
+            disabled ? 'click-item-disabled' : 'click-item',
             item,
             index
           );
         }}
         onDelete={() => {
-          emit(ctx, disabled ? 'edit-disabled' : 'delete', item, index);
+          emit(ctx, disabled ? 'delete-disabled' : 'delete', item, index);
         }}
         onDefault={() => {
           emit(

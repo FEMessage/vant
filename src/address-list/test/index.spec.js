@@ -28,23 +28,22 @@ test('unswitchable', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-test('set default event', () => {
-  const onDefault = jest.fn();
+test('set-default event', () => {
+  const onSetDefault = jest.fn();
   const wrapper = mount(AddressList, {
     propsData: {
       list,
     },
     context: {
       on: {
-        'set-default': onDefault,
+        'set-default': onSetDefault,
       },
     },
   });
 
-  wrapper.find('.van-address-item__bar').trigger('click');
+  wrapper.find('.van-radio__icon').trigger('click');
 
-  // FIXME: 不知道为什么无法触发，实际操作是没有问题的
-  // expect(onDefault).toHaveBeenCalledTimes(1);
+  expect(onSetDefault).toHaveBeenCalledTimes(1);
 });
 
 test('click-item event', () => {

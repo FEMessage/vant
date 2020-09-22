@@ -103,10 +103,9 @@ function AddressItem(
         </div>
         <div class={bem('address')}>{data.address}</div>
       </div>,
-      <div class={bem('bar')}>
+      <div onClick={onSetDefault} class={bem('bar')}>
         <Radio
           name={data.id}
-          onClick={onSetDefault}
           class={bem('set-default')}
           scopedSlots={{ icon: slots.radioIcon }}
         >

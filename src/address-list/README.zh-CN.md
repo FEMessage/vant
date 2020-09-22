@@ -91,15 +91,17 @@ export default {
 
 ### Events
 
-| 事件名          | 说明                     | 回调参数                    |
-| --------------- | ------------------------ | --------------------------- |
-| add             | 点击新增按钮时触发       | -                           |
-| edit            | 点击编辑按钮时触发       | item: 地址对象，index: 索引 |
-| delete          | 点击删除按钮时触发       | item: 地址对象，index: 索引 |
-| edit-disabled   | 编辑不可配送的地址时触发 | item: 地址对象，index: 索引 |
-| select-disabled | 选中不可配送的地址时触发 | item: 地址对象，index: 索引 |
-| click-item      | 点击任意地址时触发       | item: 地址对象，index: 索引 |
-| set-default     | 点击设为默认时触发       | item: 地址对象，index: 索引 |
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| add | 点击新增按钮时触发 | - |
+| edit | 点击编辑按钮时触发 | item: 地址对象，index: 索引 |
+| edit-disabled | 点击编辑按钮时触发 | item: 地址对象，index: 索引 |
+| delete | 点击删除按钮时触发 | item: 地址对象，index: 索引 |
+| delete-disabled | 删除不可配送的地址时触发 | item: 地址对象，index: 索引 |
+| click-item | 点击任意地址时触发 | item: 地址对象，index: 索引 |
+| click-item-disabled | 点击不可配送的地址时触发 | item: 地址对象，index: 索引 |
+| set-default | 点击设为默认时触发 | item: 地址对象，index: 索引 |
+| set-default-disabled | 将不可配送的地址设为默认时触发 | item: 地址对象，index: 索引 |
 
 ### Address 数据结构
 
