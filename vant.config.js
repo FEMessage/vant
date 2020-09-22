@@ -3,7 +3,8 @@ module.exports = {
   build: {
     skipInstall: ['lazyload'],
     site: {
-      publicPath: process.env.PUBLIC_PATH || 'https://b.yzcdn.cn/vant/',
+      publicPath:
+        process.env.PUBLIC_PATH || 'https://femessage.github.io/vant/',
     },
     vetur: {
       tagPrefix: 'van-',
