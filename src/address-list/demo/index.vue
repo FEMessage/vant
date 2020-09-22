@@ -10,6 +10,8 @@
         @add="onAdd"
         @edit="onEdit"
         @delete="onDelete"
+        @click-item="onClick"
+        @set-default="onSetDefault"
       />
     </demo-block>
   </demo-section>
@@ -43,9 +45,11 @@ export default {
         },
       ],
       add: '新增地址',
+      click: '点击',
       edit: '编辑地址',
       disabledText: '以下地址超出配送范围',
       defaultTagText: '默认',
+      setDefault: '设为默认',
     },
     'en-US': {
       list: [
@@ -72,9 +76,11 @@ export default {
         },
       ],
       add: 'Add',
+      click: 'Click',
       edit: 'Edit',
       disabledText: 'The following address is out of range',
       defaultTagText: 'Default',
+      setDefault: 'Set Default',
     },
   },
 
@@ -95,6 +101,13 @@ export default {
 
     onDelete(item, index) {
       this.$toast(`${this.t('delete')}:${index}`);
+    },
+
+    onClick(item, index) {
+      this.$toast(`${this.t('click')}:${index}`);
+    },
+    onSetDefault(item, index) {
+      this.$toast(`${this.t('setDefault')}:${index}`);
     },
   },
 };

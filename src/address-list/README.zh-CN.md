@@ -23,6 +23,7 @@ Vue.use(AddressList);
   @add="onAdd"
   @edit="onEdit"
   @delete="onDelete"
+  @set-default="onSetDefault"
 />
 ```
 
@@ -68,6 +69,9 @@ export default {
     onDelete(item, index) {
       Toast('删除地址:' + index);
     },
+    onSetDefault(item, index) {
+      Toast('设为默认地址', index);
+    },
   },
 };
 ```
@@ -82,7 +86,6 @@ export default {
 | list                      | 地址列表          | _Address[]_ | `[]`       |
 | disabled-list             | 不可配送地址列表  | _Address[]_ | `[]`       |
 | disabled-text             | 不可配送提示文案  | _string_    | -          |
-| switchable                | 是否允许切换地址  | _boolean_   | `true`     |
 | add-button-text           | 底部按钮文字      | _string_    | `新增地址` |
 | default-tag-text `v2.3.0` | 默认地址标签文字  | _string_    | -          |
 
@@ -93,10 +96,10 @@ export default {
 | add             | 点击新增按钮时触发       | -                           |
 | edit            | 点击编辑按钮时触发       | item: 地址对象，index: 索引 |
 | delete          | 点击删除按钮时触发       | item: 地址对象，index: 索引 |
-| select          | 切换选中的地址时触发     | item: 地址对象，index: 索引 |
 | edit-disabled   | 编辑不可配送的地址时触发 | item: 地址对象，index: 索引 |
 | select-disabled | 选中不可配送的地址时触发 | item: 地址对象，index: 索引 |
 | click-item      | 点击任意地址时触发       | item: 地址对象，index: 索引 |
+| set-default     | 点击设为默认时触发       | item: 地址对象，index: 索引 |
 
 ### Address 数据结构
 

@@ -22,6 +22,8 @@ Vue.use(AddressList);
   default-tag-text="Default"
   @add="onAdd"
   @edit="onEdit"
+  @delete="onDelete"
+  @set-default="onSetDefault"
 />
 ```
 
@@ -64,6 +66,12 @@ export default {
     onEdit(item, index) {
       Toast('Edit:' + index);
     },
+    onDelete(item, index) {
+      Toast('Delete:' + index);
+    },
+    onSetDefault(item, index) {
+      Toast('SetDefault', index);
+    },
   },
 };
 ```
@@ -78,7 +86,6 @@ export default {
 | list | Address list | _Address[]_ | `[]` |
 | disabled-list | Disabled address list | _Address[]_ | `[]` |
 | disabled-text | Disabled text | _string_ | - |
-| switchable | Whether to allow switch address | _boolean_ | `true` |
 | add-button-text | Add button text | _string_ | `Add new address` |
 | default-tag-text `v2.3.0` | Default tag text | _string_ | - |
 
@@ -88,10 +95,11 @@ export default {
 | --- | --- | --- |
 | add | Triggered when click add button | - |
 | edit | Triggered when edit address | item: address object，index |
-| select | Triggered when select address | item: address object，index |
+| delete | Triggered when delete address | item: address object，index |
 | edit-disabled | Triggered when edit disabled address | item: address object，index |
 | select-disabled | Triggered when select disabled address | item: address object，index |
 | click-item | Triggered when click address item | item: address object，index |
+| set-default | Triggered when set default address item | item: address object，index |
 
 ### Data Structure of Address
 
