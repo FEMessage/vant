@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { Divider } from 'vant';
+import { Divider } from '@femessage/vant';
 
 Vue.use(Divider);
 ```

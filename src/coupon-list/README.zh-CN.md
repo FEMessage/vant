@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { CouponCell, CouponList } from 'vant';
+import { CouponCell, CouponList } from '@femessage/vant';
 
 Vue.use(CouponCell);
 Vue.use(CouponList);

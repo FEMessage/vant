@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { Icon } from 'vant';
+import { Icon } from '@femessage/vant';
 
 Vue.use(Icon);
 ```
@@ -54,7 +54,7 @@ Use `size` prop to set icon size
 Icon uses font file in `yzcdn.cn` by default，if you want to use the local font file，please import the following css file.
 
 ```js
-import 'vant/lib/icon/local.css';
+import '@femessage/vant/lib/icon/local.css';
 ```
 
 ### Add custom iconfont

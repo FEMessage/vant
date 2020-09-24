@@ -8,7 +8,7 @@
 
 ```js
 import Vue from 'vue';
-import { ContactCard, ContactList, ContactEdit } from 'vant';
+import { ContactCard, ContactList, ContactEdit } from '@femessage/vant';
 
 Vue.use(ContactCard);
 Vue.use(ContactList);

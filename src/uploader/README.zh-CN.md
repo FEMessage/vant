@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { Uploader } from 'vant';
+import { Uploader } from '@femessage/vant';
 
 Vue.use(Uploader);
 ```
@@ -120,7 +120,7 @@ export default {
 ```
 
 ```js
-import Toast from 'vant';
+import Toast from '@femessage/vant';
 
 export default {
   methods: {
@@ -177,7 +177,7 @@ export default {
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   methods: {

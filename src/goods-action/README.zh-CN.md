@@ -4,7 +4,11 @@
 
 ```js
 import Vue from 'vue';
-import { GoodsAction, GoodsActionIcon, GoodsActionButton } from 'vant';
+import {
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton,
+} from '@femessage/vant';
 
 Vue.use(GoodsAction);
 Vue.use(GoodsActionButton);
@@ -29,7 +33,7 @@ Vue.use(GoodsActionIcon);
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   methods: {

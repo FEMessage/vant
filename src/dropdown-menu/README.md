@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { DropdownMenu, DropdownItem } from 'vant';
+import { DropdownMenu, DropdownItem } from '@femessage/vant';
 
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);

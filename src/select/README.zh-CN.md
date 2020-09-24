@@ -2,11 +2,11 @@
 
 ### 引入
 
-Select 组件由 Felid 和 ActionSheet 组成，因此需要同时引入这两个基础组件
+Select 组件由 Felid 和 ActionSheet 组成，因此需要同时引入这两个基础组件 
 
-``` javascript
+```javascript
 import Vue from 'vue';
-import { Select, Felid, ActionSheet } from 'vant';
+import { Select, Felid, ActionSheet } from '@femessage/vant';
 
 Vue.use(Felid);
 Vue.use(ActionSheet);
@@ -21,7 +21,9 @@ v-model 用于绑定当前的选中值，[ActionSheetItem](https://femessage.git
 
 ```html
 <van-select v-model="value" :options="options" :placeholder="placeholder" />
+```
 
+```javascript
 export default {
   data() {
     return {
@@ -30,10 +32,10 @@ export default {
       options: [
         { name: '男', value: 1 },
         { name: '女', value: 2 },
-      ]
-    }
-  }
-}
+      ],
+    };
+  },
+};
 ```
 
 ### 事件监听
@@ -41,7 +43,12 @@ export default {
 Select 组件支持所有 Field 组件的事件，同时增加 `select` 和 `cancel` 事件，分别在点击选项和点击取消时触发。
 
 ```html
-<van-select v-model="value" :options="options" @select="onSelect" @cancel="onCancel" />
+<van-select
+  v-model="value"
+  :options="options"
+  @select="onSelect"
+  @cancel="onCancel"
+/>
 ```
 
 ## API
@@ -51,18 +58,18 @@ Select 组件支持所有 Field 组件的事件，同时增加 `select` 和 `can
 Select 默认支持 Input 标签所有的原生属性，比如 `maxlength`、`placeholder`、`autofocus` 等，同时继承了 Field 的所有属性。
 
 | 参数 | 说明 | 类型 | 默认值 | 版本 |
-|------|------|------|------|------|
-| options | 菜单选项，参考 ActionSheetItem | *ActionSheetItem[]* | `[]` | - |
-| sheetAttrs | 扩展 ActionSheet 的属性 | *object* | `{}` | - |
+| --- | --- | --- | --- | --- |
+| options | 菜单选项，参考 ActionSheetItem | _ActionSheetItem[]_ | `[]` | - |
+| sheetAttrs | 扩展 ActionSheet 的属性 | _object_ | `{}` | - |
 
 ### Events
 
 Select 同时支持 Field 的所有事件。
 
-| 事件名 | 说明 | 回调参数 |
-|------|------|------|
+| 事件名 | 说明       | 回调参数                          |
+| ------ | ---------- | --------------------------------- |
 | select | 选择选项时 | item: 当前选项; index: 选项的索引 |
-| cancel | 点击取消时 | - |
+| cancel | 点击取消时 | -                                 |
 
 ### Slots
 

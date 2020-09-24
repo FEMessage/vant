@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { Search } from 'vant';
+import { Search } from '@femessage/vant';
 
 Vue.use(Search);
 ```
@@ -37,7 +37,7 @@ Search 组件提供了 `search` 和 `cancel` 事件，`search` 事件在点击�
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   data() {

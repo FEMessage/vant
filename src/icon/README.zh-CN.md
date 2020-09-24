@@ -8,7 +8,7 @@
 
 ```js
 import Vue from 'vue';
-import { Icon } from 'vant';
+import { Icon } from '@femessage/vant';
 
 Vue.use(Icon);
 ```
@@ -56,7 +56,7 @@ Vue.use(Icon);
 Icon 组件默认引用有赞 CDN 提供的字体文件，并通过网络下载。如果需要在项目中使用本地字体文件，请引入下面的 CSS 文件，并在项目中配置`url-loader`
 
 ```js
-import 'vant/lib/icon/local.css';
+import '@femessage/vant/lib/icon/local.css';
 ```
 
 ### 自定义图标

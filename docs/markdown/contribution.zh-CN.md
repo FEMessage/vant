@@ -19,7 +19,7 @@
 
 ```bash
 # 克隆仓库
-git clone git@github.com:FEMessage/vant.git
+git clone https://github.com/FEMessage/vant.git
 
 # 安装依赖
 cd vant && npm run bootstrap

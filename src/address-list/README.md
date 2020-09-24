@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { AddressList } from 'vant';
+import { AddressList } from '@femessage/vant';
 
 Vue.use(AddressList);
 ```
@@ -28,7 +28,7 @@ Vue.use(AddressList);
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   data() {
