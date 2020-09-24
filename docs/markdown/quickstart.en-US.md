@@ -1,32 +1,13 @@
 # Quickstart
 
-### Starter kit
-
-We recomment to use [Vue Cli](https://cli.vuejs.org/zh/) to create a project.
-
-```bash
-# Install Vue Cli
-npm install -g @vue/cli
-
-# Create a project
-vue create hello-world
-
-# Open GUI
-vue ui
-```
-
-![](https://img.yzcdn.cn/vant/vue-cli-demo-201809030812.png)
-
-In the GUI, click on 'Dependencies' -> `Install Dependencies` and add `vant` to the dependencies.
-
 ### Install
 
 ```bash
 # Using npm
-npm i vant -S
+npm i @femessage/vant -S
 
 # Using yarn
-yarn add vant
+yarn add @femessage/vant
 ```
 
 > Tips: Please install Vant 3.0 for Vue 3 projects, see [issue#7035](https://github.com/femessage/vant/issues/7035)
@@ -101,12 +82,12 @@ The easiest way to use Vant is to include a CDN link in the html file, after whi
 <!-- import style -->
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/vant@2.10/lib/index.css"
+  href="https://cdn.jsdelivr.net/npm/@femessage/vant@latest/lib/index.css"
 />
 
 <!-- import script -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vant@2.10/lib/vant.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@femessage/vant@latest/lib/vant.min.js"></script>
 
 <script>
   // Render the Button component
