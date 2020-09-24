@@ -35,12 +35,12 @@ module.exports = {
     [
       'import',
       {
-        libraryName: 'vant',
+        libraryName: '@femessage/vant',
         libraryDirectory: 'es',
         // specify less file path
         style: (name) => `${name}/style/less`,
       },
-      'vant',
+      '@femessage/vant',
     ],
   ],
 };
@@ -50,10 +50,10 @@ module.exports = {
 
 ```js
 // import all styles
-import 'vant/lib/index.less';
+import '@femessage/vant/lib/index.less';
 
 // import style of single component
-import 'vant/lib/button/style/less';
+import '@femessage/vant/lib/button/style/less';
 ```
 
 ### Step 2: modify less variables

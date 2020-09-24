@@ -29,7 +29,7 @@ npm i vant -S
 yarn add vant
 ```
 
-> Tips: Please install Vant 3.0 for Vue 3 projects, see [issue#7035](https://github.com/youzan/vant/issues/7035)
+> Tips: Please install Vant 3.0 for Vue 3 projects, see [issue#7035](https://github.com/femessage/vant/issues/7035)
 
 ## Usage
 
@@ -48,7 +48,7 @@ npm i babel-plugin-import -D
 {
   "plugins": [
     ["import", {
-      "libraryName": "vant",
+      "libraryName": "@femessage/vant",
       "libraryDirectory": "es",
       "style": true
     }]
@@ -59,17 +59,17 @@ npm i babel-plugin-import -D
 module.exports = {
   plugins: [
     ['import', {
-      libraryName: 'vant',
+      libraryName: '@femessage/vant',
       libraryDirectory: 'es',
       style: true
-    }, 'vant']
+    }, '@femessage/vant']
   ]
 };
 ```
 
 ```js
 // Then you can import components from vant
-import { Button } from 'vant';
+import { Button } from '@femessage/vant';
 ```
 
 > If you are using TypeScript，please use [ts-import-plugin](https://github.com/Brooooooklyn/ts-import-plugin) instead
@@ -77,16 +77,16 @@ import { Button } from 'vant';
 ### 2. Manually import
 
 ```js
-import Button from 'vant/lib/button';
-import 'vant/lib/button/style';
+import Button from '@femessage/vant/lib/button';
+import '@femessage/vant/lib/button/style';
 ```
 
 ### 3. Import all components
 
 ```js
 import Vue from 'vue';
-import Vant from 'vant';
-import 'vant/lib/index.css';
+import Vant from '@femessage/vant';
+import '@femessage/vant/lib/index.css';
 
 Vue.use(Vant);
 ```

@@ -71,10 +71,10 @@ npm i babel-plugin-import -D
 module.exports = {
   plugins: [
     ['import', {
-      libraryName: 'vant',
+      libraryName: '@femessage/vant',
       libraryDirectory: 'es',
       style: true
-    }, 'vant']
+    }, '@femessage/vant']
   ]
 };
 ```
@@ -82,7 +82,7 @@ module.exports = {
 ```js
 // 接着你可以在代码中直接引入 Vant 组件
 // 插件会自动将代码转化为方式二中的按需引入形式
-import { Button } from 'vant';
+import { Button } from '@femessage/vant';
 ```
 
 > 如果你在使用 TypeScript，可以使用 [ts-import-plugin](https://github.com/Brooooooklyn/ts-import-plugin) 实现按需引入
@@ -92,8 +92,8 @@ import { Button } from 'vant';
 在不使用插件的情况下，可以手动引入需要的组件
 
 ```js
-import Button from 'vant/lib/button';
-import 'vant/lib/button/style';
+import Button from '@femessage/vant/lib/button';
+import '@femessage/vant/lib/button/style';
 ```
 
 ### 方式三. 导入所有组件
@@ -102,8 +102,8 @@ Vant 支持一次性导入所有组件，引入所有组件会增加代码包体
 
 ```js
 import Vue from 'vue';
-import Vant from 'vant';
-import 'vant/lib/index.css';
+import Vant from '@femessage/vant';
+import '@femessage/vant/lib/index.css';
 
 Vue.use(Vant);
 ```

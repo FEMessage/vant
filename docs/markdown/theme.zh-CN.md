@@ -39,12 +39,12 @@ module.exports = {
     [
       'import',
       {
-        libraryName: 'vant',
+        libraryName: '@femessage/vant',
         libraryDirectory: 'es',
         // 指定样式路径
         style: (name) => `${name}/style/less`,
       },
-      'vant',
+      '@femessage/vant',
     ],
   ],
 };
@@ -54,10 +54,10 @@ module.exports = {
 
 ```js
 // 引入全部样式
-import 'vant/lib/index.less';
+import '@femessage/vant/lib/index.less';
 
 // 引入单个组件样式
-import 'vant/lib/button/style/less';
+import '@femessage/vant/lib/button/style/less';
 ```
 
 ### 步骤二 修改样式变量

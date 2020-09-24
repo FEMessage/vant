@@ -45,10 +45,10 @@ Vant 是**有赞前端团队**开源的移动端组件库，于 2016 年开源�
 
 ```bash
 # 通过 npm 安装
-npm i vant -S
+npm i @femessage/vant -S
 
 # 通过 yarn 安装
-yarn add vant
+yarn add @femessage/vant
 ```
 
 > Tips: Vue 3 项目请安装 Vant 3.0，参见 [issue#7035](https://github.com/youzan/vant/issues/7035)
@@ -57,7 +57,7 @@ yarn add vant
 
 ```js
 import Vue from 'vue';
-import { Button } from 'vant';
+import { Button } from '@femessage/vant';
 import 'vant/lib/index.css';
 
 Vue.use(Button);
