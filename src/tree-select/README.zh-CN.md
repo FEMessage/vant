@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { TreeSelect } from 'vant';
+import { TreeSelect } from '@femessage/vant';
 
 Vue.use(TreeSelect);
 ```

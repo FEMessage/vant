@@ -28,11 +28,11 @@ module.exports = {
         links: [
           {
             logo: 'https://b.yzcdn.cn/vant/logo/weapp.svg',
-            url: '/vant-weapp',
+            url: 'https://vant-contrib.gitee.io/vant-weapp',
           },
           {
             logo: 'https://b.yzcdn.cn/vant/logo/github.svg',
-            url: 'https://github.com/youzan/vant',
+            url: 'https://github.com/femessage/vant',
           },
         ],
         searchConfig: {
@@ -403,11 +403,11 @@ module.exports = {
         links: [
           {
             logo: 'https://b.yzcdn.cn/vant/logo/weapp.svg',
-            url: '/vant-weapp',
+            url: 'https://vant-contrib.gitee.io/vant-weapp',
           },
           {
             logo: 'https://b.yzcdn.cn/vant/logo/github.svg',
-            url: 'https://github.com/youzan/vant',
+            url: 'https://github.com/femessage/vant',
           },
         ],
         searchConfig: {

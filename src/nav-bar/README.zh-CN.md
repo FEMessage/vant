@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { NavBar } from 'vant';
+import { NavBar } from '@femessage/vant';
 
 Vue.use(NavBar);
 ```
@@ -25,7 +25,7 @@ Vue.use(NavBar);
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   methods: {

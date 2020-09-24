@@ -8,7 +8,7 @@
 
 ```js
 import Vue from 'vue';
-import { PasswordInput, NumberKeyboard } from 'vant';
+import { PasswordInput, NumberKeyboard } from '@femessage/vant';
 
 Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);

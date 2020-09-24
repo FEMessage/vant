@@ -1,47 +1,18 @@
 # 快速上手
 
-### 脚手架
-
-在新项目中使用 Vant 时，推荐使用 Vue 官方提供的脚手架 [Vue Cli](https://cli.vuejs.org/zh/) 创建项目
-
-```bash
-# 安装 Vue Cli
-npm install -g @vue/cli
-
-# 创建一个项目
-vue create hello-world
-
-# 创建完成后，可以通过命令打开图形化界面，如下图所示
-vue ui
-```
-
-![](https://img.yzcdn.cn/vant/vue-cli-demo-201809032000.png)
-
-在图形化界面中，点击`依赖` -> `安装依赖`，然后将 `vant` 添加到依赖中即可。
-
 ### 通过 npm 安装
 
 在现有项目中使用 Vant 时，可以通过`npm`或`yarn`安装
 
 ```bash
 # 通过 npm 安装
-npm i vant -S
+npm i @femessage/vant -S
 
 # 通过 yarn 安装
-yarn add vant
+yarn add @femessage/vant
 ```
 
 > Tips: Vue 3 项目请安装 Vant 3.0，参见 [issue#7035](https://github.com/youzan/vant/issues/7035)
-
-### 示例工程
-
-我们提供了一个基于 Vue Cli 的[示例工程](https://github.com/youzan/vant-demo)，示例工程会帮助你了解如下内容：
-
-- 基于 Vant 搭建单页面应用，配置按需引入组件
-- 配置基于 Rem 的适配方案
-- 配置基于 Viewport 的适配方案
-- 配置基于 TypeScript 的工程
-- 配置自定义主题色方案
 
 ## 引入组件
 
@@ -60,7 +31,7 @@ npm i babel-plugin-import -D
 {
   "plugins": [
     ["import", {
-      "libraryName": "vant",
+      "libraryName": "@femessage/vant",
       "libraryDirectory": "es",
       "style": true
     }]
@@ -71,10 +42,10 @@ npm i babel-plugin-import -D
 module.exports = {
   plugins: [
     ['import', {
-      libraryName: 'vant',
+      libraryName: '@femessage/vant',
       libraryDirectory: 'es',
       style: true
-    }, 'vant']
+    }, '@femessage/vant']
   ]
 };
 ```
@@ -82,7 +53,7 @@ module.exports = {
 ```js
 // 接着你可以在代码中直接引入 Vant 组件
 // 插件会自动将代码转化为方式二中的按需引入形式
-import { Button } from 'vant';
+import { Button } from '@femessage/vant';
 ```
 
 > 如果你在使用 TypeScript，可以使用 [ts-import-plugin](https://github.com/Brooooooklyn/ts-import-plugin) 实现按需引入
@@ -92,8 +63,8 @@ import { Button } from 'vant';
 在不使用插件的情况下，可以手动引入需要的组件
 
 ```js
-import Button from 'vant/lib/button';
-import 'vant/lib/button/style';
+import Button from '@femessage/vant/lib/button';
+import '@femessage/vant/lib/button/style';
 ```
 
 ### 方式三. 导入所有组件
@@ -102,8 +73,8 @@ Vant 支持一次性导入所有组件，引入所有组件会增加代码包体
 
 ```js
 import Vue from 'vue';
-import Vant from 'vant';
-import 'vant/lib/index.css';
+import Vant from '@femessage/vant';
+import '@femessage/vant/lib/index.css';
 
 Vue.use(Vant);
 ```
@@ -118,12 +89,12 @@ Vue.use(Vant);
 <!-- 引入样式文件 -->
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/vant@2.10/lib/index.css"
+  href="https://cdn.jsdelivr.net/npm/@femessage/vant@latest/lib/index.css"
 />
 
 <!-- 引入 Vue 和 Vant 的 JS 文件 -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vant@2.10/lib/vant.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@femessage/vant@latest/lib/vant.min.js"></script>
 
 <script>
   // 在 #app 标签下渲染一个按钮组件

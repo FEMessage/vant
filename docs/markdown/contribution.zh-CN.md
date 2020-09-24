@@ -19,7 +19,7 @@
 
 ```bash
 # 克隆仓库
-git clone git@github.com:youzan/vant.git
+git clone https://github.com/FEMessage/vant.git
 
 # 安装依赖
 cd vant && npm run bootstrap
@@ -82,7 +82,7 @@ src
 
 ```bash
 # 添加主仓库到 remote，作为 fork 后仓库的上游仓库
-git remote add upstream https://github.com/youzan/vant.git
+git remote add upstream https://github.com/FEMessage/vant.git
 
 # 拉取主仓库最新代码
 git fetch upstream

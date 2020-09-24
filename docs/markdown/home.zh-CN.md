@@ -31,7 +31,7 @@ Vant 是**有赞前端团队**开源的移动端组件库，于 2016 年开源�
 
 修改代码请阅读我们的[开发指南](#/zh-CN/contribution)。
 
-使用过程中发现任何问题都可以提 [Issue](https://github.com/youzan/vant/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://github.com/youzan/vant/pulls)。
+使用过程中发现任何问题都可以提 [Issue](https://github.com/femessage/vant/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://github.com/femessage/vant/pulls)。
 
 ### 浏览器支持
 
@@ -58,13 +58,13 @@ Vant 是**有赞前端团队**开源的移动端组件库，于 2016 年开源�
 | [vant-demo](https://github.com/youzan/vant-demo) | Vant 官方示例合集 |
 | [vant-weapp](https://github.com/youzan/vant-weapp) | 微信小程序组件库 |
 | [vant-react](https://github.com/mxdi9i7/vant-react) | Vant React 版（由社区维护） |
-| [vant-cli](https://github.com/youzan/vant/tree/dev/packages/vant-cli) | 开箱即用的组件库搭建工具 |
-| [vant-icons](https://github.com/youzan/vant/tree/dev/packages/vant-icons) | Vant 图标库 |
-| [vant-touch-emulator](https://github.com/youzan/vant/tree/dev/packages/vant-touch-emulator) | 在桌面端使用 Vant 的辅助库 |
+| [vant-cli](https://github.com/femessage/vant/tree/dev/packages/vant-cli) | 开箱即用的组件库搭建工具 |
+| [vant-icons](https://github.com/femessage/vant/tree/dev/packages/vant-icons) | Vant 图标库 |
+| [vant-touch-emulator](https://github.com/femessage/vant/tree/dev/packages/vant-touch-emulator) | 在桌面端使用 Vant 的辅助库 |
 
 ### 链接
 
-- [意见反馈](https://github.com/youzan/vant/issues)
+- [意见反馈](https://github.com/femessage/vant/issues)
 - [更新日志](#/zh-CN/changelog)
 - [码云镜像](https://vant-contrib.gitee.io/vant)
 - [Gitter 讨论组](https://gitter.im/vant-contrib/discuss?utm_source=share-link&utm_medium=link&utm_campaign=share-link)

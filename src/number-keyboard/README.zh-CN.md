@@ -8,7 +8,7 @@
 
 ```js
 import Vue from 'vue';
-import { NumberKeyboard } from 'vant';
+import { NumberKeyboard } from '@femessage/vant';
 
 Vue.use(NumberKeyboard);
 ```
@@ -32,7 +32,7 @@ Vue.use(NumberKeyboard);
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   data() {

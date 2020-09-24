@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { Sku } from 'vant';
+import { Sku } from '@femessage/vant';
 
 Vue.use(Sku);
 ```

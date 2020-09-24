@@ -23,7 +23,7 @@ See in [Quickstart](#/en-US/quickstart).
 
 ### Contribution
 
-Please make sure to read the [Contributing Guide](https://github.com/youzan/vant/blob/dev/.github/CONTRIBUTING.md) before making a pull request.
+Please make sure to read the [Contributing Guide](https://github.com/femessage/vant/blob/dev/.github/CONTRIBUTING.md) before making a pull request.
 
 ### Browser Support
 
@@ -36,13 +36,13 @@ Modern browsers and Android 4.0+, iOS 8.0+.
 | [vant-demo](https://github.com/youzan/vant-demo) | Official vant demo collection |
 | [vant-weapp](https://github.com/youzan/vant-weapp) | WeChat MiniProgram UI |
 | [vant-react](https://github.com/mxdi9i7/vant-react) | Vant React (maintained by the community) |
-| [vant-cli](https://github.com/youzan/vant/tree/dev/packages/vant-cli) | Scaffold for UI library |
-| [vant-icons](https://github.com/youzan/vant/tree/dev/packages/vant-icons) | Vant icons |
-| [vant-touch-emulator](https://github.com/youzan/vant/tree/dev/packages/vant-touch-emulator) | Using vant in desktop browsers |
+| [vant-cli](https://github.com/femessage/vant/tree/dev/packages/vant-cli) | Scaffold for UI library |
+| [vant-icons](https://github.com/femessage/vant/tree/dev/packages/vant-icons) | Vant icons |
+| [vant-touch-emulator](https://github.com/femessage/vant/tree/dev/packages/vant-touch-emulator) | Using vant in desktop browsers |
 
 ### Links
 
-- [Feedback](https://github.com/youzan/vant/issues)
+- [Feedback](https://github.com/femessage/vant/issues)
 - [Changelog](#/en-US/changelog)
 - [Gitter](https://gitter.im/vant-contrib/discuss?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 

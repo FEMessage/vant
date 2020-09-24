@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { Stepper } from 'vant';
+import { Stepper } from '@femessage/vant';
 
 Vue.use(Stepper);
 ```
@@ -76,7 +76,7 @@ export default {
 ```
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 export default {
   data() {

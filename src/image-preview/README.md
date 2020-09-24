@@ -4,7 +4,7 @@
 
 ```js
 import Vue from 'vue';
-import { ImagePreview } from 'vant';
+import { ImagePreview } from '@femessage/vant';
 
 Vue.use(ImagePreview);
 ```
@@ -49,7 +49,7 @@ ImagePreview({
 ### Close Event
 
 ```js
-import { Toast } from 'vant';
+import { Toast } from '@femessage/vant';
 
 ImagePreview({
   images: [
