@@ -40,10 +40,6 @@
     margin-bottom: @padding-sm;
   }
 
-  &__value {
-    padding-right: 44px;
-  }
-
   &__name {
     display: flex;
     align-items: center;
@@ -66,20 +62,40 @@
     line-height: @address-list-item-line-height;
   }
 
+  &__bar {
+    display: flex;
+    padding-top: 10px;
+  }
+
+  &__set-default {
+    flex: 1;
+  }
+
+  &__icons-wrapper {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    font-size: @address-list-edit-icon-size;
+  }
+
   &--disabled {
     .van-address-item__name,
-    .van-address-item__address {
+    .van-address-item__address,
+    .van-address-item__set-default .van-radio__label {
       color: @address-list-item-disabled-text-color;
     }
   }
 
   &__edit {
-    position: absolute;
-    top: 50%;
-    right: @padding-md;
+    margin-right: 10px;
+  }
+
+  &__edit,
+  &__delete {
     color: @gray-6;
     font-size: @address-list-edit-icon-size;
-    transform: translate(0, -50%);
   }
 
   .van-cell {

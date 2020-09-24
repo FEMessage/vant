@@ -5,15 +5,14 @@ import { emit, inherit } from '../utils/functional';
 // Components
 import Button from '../button';
 import RadioGroup from '../radio-group';
-import AddressItem, { AddressItemData } from './Item';
+import AddressItem, { AddressItemData, AddressItemSlots } from './Item';
 
 // Types
 import { CreateElement, RenderContext } from 'vue/types';
-import { ScopedSlot, DefaultSlots } from '../utils/types';
+import { ScopedSlot } from '../utils/types';
 
 export type AddressListProps = {
   value?: string | number;
-  switchable: boolean;
   disabledText?: string;
   addButtonText?: string;
   list?: AddressItemData[];
@@ -21,7 +20,7 @@ export type AddressListProps = {
   defaultTagText?: string;
 };
 
-export type AddressListSlots = DefaultSlots & {
+export type AddressListSlots = AddressItemSlots & {
   top?: ScopedSlot;
   'item-bottom'?: ScopedSlot;
 };
@@ -44,23 +43,38 @@ function AddressList(
         data={item}
         key={item.id}
         disabled={disabled}
-        switchable={props.switchable}
         defaultTagText={props.defaultTagText}
         scopedSlots={{
           bottom: slots['item-bottom'],
-        }}
-        onSelect={() => {
-          emit(ctx, disabled ? 'select-disabled' : 'select', item, index);
-
-          if (!disabled) {
-            emit(ctx, 'input', item.id);
-          }
+          radioIcon: slots.radioIcon,
+          edit: slots.edit,
+          delete: slots.delete,
         }}
         onEdit={() => {
           emit(ctx, disabled ? 'edit-disabled' : 'edit', item, index);
         }}
         onClick={() => {
-          emit(ctx, 'click-item', item, index);
+          emit(
+            ctx,
+            disabled ? 'click-item-disabled' : 'click-item',
+            item,
+            index
+          );
+        }}
+        onDelete={() => {
+          emit(ctx, disabled ? 'delete-disabled' : 'delete', item, index);
+        }}
+        onDefault={() => {
+          emit(
+            ctx,
+            disabled ? 'set-default-disabled' : 'set-default',
+            item,
+            index
+          );
+
+          if (!disabled) {
+            emit(ctx, 'input', item.id);
+          }
         }}
       />
     ));
@@ -101,10 +115,6 @@ AddressList.props = {
   disabledText: String,
   addButtonText: String,
   defaultTagText: String,
-  switchable: {
-    type: Boolean,
-    default: true,
-  },
 };
 
 export default createComponent<AddressListProps>(AddressList);

@@ -30,13 +30,14 @@ export default {
 `search` event will be triggered when click the search button on the keyboard, `cancel` event will be triggered when click the cancel button.
 
 ```html
-<form action="/">
+<form action="javascript:;">
   <van-search
     v-model="value"
     show-action
     placeholder="Placeholder"
     @search="onSearch"
     @cancel="onCancel"
+    :remove-form="true"
   />
 </form>
 ```
@@ -126,6 +127,7 @@ Use `action` slot to custom right button, `cancel` event will no longer be trigg
 | input-align | Text align of field, can be set to `center` `right` | _string_ | `left` |
 | left-icon | Left icon name | _string_ | `search` |
 | right-icon | Right icon name | _string_ | - |
+| removeForm | render component without form element | _boolean_ | `false` | - |
 
 ### Events
 

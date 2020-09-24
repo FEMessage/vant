@@ -23,21 +23,24 @@ export type AddressItemData = {
 export type AddressItemProps = {
   data: AddressItemData;
   disabled?: boolean;
-  switchable?: boolean;
   defaultTagText?: string;
 };
 
 export type AddressItemSlots = DefaultSlots & {
   bottom?: ScopedSlot;
+  radioIcon?: ScopedSlot;
+  edit?: ScopedSlot;
+  delete?: ScopedSlot;
 };
 
 export type AddressItemEvents = {
   onEdit(): void;
   onClick(): void;
-  onSelect(): void;
+  onDelete(): void;
+  onDefault(): void;
 };
 
-const [createComponent, bem] = createNamespace('address-item');
+const [createComponent, bem, t] = createNamespace('address-item');
 
 function AddressItem(
   h: CreateElement,
@@ -45,26 +48,39 @@ function AddressItem(
   slots: AddressItemSlots,
   ctx: RenderContext<AddressItemProps>
 ) {
-  const { disabled, switchable } = props;
+  const { disabled } = props;
 
   function onClick() {
-    if (switchable) {
-      emit(ctx, 'select');
-    }
-
     emit(ctx, 'click');
   }
 
+  function onSetDefault() {
+    emit(ctx, 'default');
+  }
+
   const genRightIcon = () => (
-    <Icon
-      name="edit"
-      class={bem('edit')}
-      onClick={(event: Event) => {
-        event.stopPropagation();
-        emit(ctx, 'edit');
-        emit(ctx, 'click');
-      }}
-    />
+    <div class={bem('icons-wrapper')}>
+      <span
+        style="display: flex"
+        class={bem('edit')}
+        onClick={(event: Event) => {
+          event.stopPropagation();
+          emit(ctx, 'edit');
+        }}
+      >
+        {slots.edit ? slots.edit() : <Icon name="edit" />}
+      </span>
+      <span
+        style="display: flex"
+        class={bem('delete')}
+        onClick={(event: Event) => {
+          event.stopPropagation();
+          emit(ctx, 'delete');
+        }}
+      >
+        {slots.delete ? slots.delete() : <Icon name="delete" />}
+      </span>
+    </div>
   );
 
   function genTag() {
@@ -80,32 +96,34 @@ function AddressItem(
   function genContent() {
     const { data } = props;
     const Info = [
-      <div class={bem('name')}>
-        {`${data.name} ${data.tel}`}
-        {genTag()}
+      <div class={bem('content')} onClick={onClick}>
+        <div class={bem('name')}>
+          {`${data.name} ${data.tel}`}
+          {genTag()}
+        </div>
+        <div class={bem('address')}>{data.address}</div>
       </div>,
-      <div class={bem('address')}>{data.address}</div>,
-    ];
-
-    if (switchable && !disabled) {
-      return (
-        <Radio name={data.id} iconSize={18}>
-          {Info}
+      <div onClick={onSetDefault} class={bem('bar')}>
+        <Radio
+          name={data.id}
+          class={bem('set-default')}
+          scopedSlots={{ icon: slots.radioIcon }}
+        >
+          {t('setDefault')}
         </Radio>
-      );
-    }
+        {genRightIcon()}
+      </div>,
+    ];
 
     return Info;
   }
 
   return (
-    <div class={bem({ disabled })} onClick={onClick}>
+    <div class={bem({ disabled })}>
       <Cell
         border={false}
-        valueClass={bem('value')}
         scopedSlots={{
           default: genContent,
-          'right-icon': genRightIcon,
         }}
         {...inherit(ctx)}
       />
@@ -117,7 +135,6 @@ function AddressItem(
 AddressItem.props = {
   data: Object,
   disabled: Boolean,
-  switchable: Boolean,
   defaultTagText: String,
 };
 

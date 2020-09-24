@@ -5,20 +5,36 @@ exports[`unswitchable 1`] = `
   <div role="radiogroup" class="van-radio-group">
     <div class="van-address-item">
       <div class="van-cell van-cell--borderless">
-        <div class="van-cell__value van-cell__value--alone van-address-item__value">
-          <div class="van-address-item__name">张三 13000000000</div>
-          <div class="van-address-item__address">浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室</div>
-        </div><i class="van-icon van-icon-edit van-address-item__edit">
-          <!----></i>
+        <div class="van-cell__value van-cell__value--alone">
+          <div class="van-address-item__content">
+            <div class="van-address-item__name">张三 13000000000</div>
+            <div class="van-address-item__address">浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室</div>
+          </div>
+          <div class="van-address-item__bar">
+            <div role="radio" tabindex="-1" aria-checked="false" class="van-radio van-address-item__set-default">
+              <div class="van-radio__icon van-radio__icon--round"><i class="van-icon van-icon-success">
+                  <!----></i></div><span class="van-radio__label">设为默认</span>
+            </div>
+            <div class="van-address-item__icons-wrapper"><span class="van-address-item__edit" style="display: flex;"><i class="van-icon van-icon-edit"><!----></i></span><span class="van-address-item__delete" style="display: flex;"><i class="van-icon van-icon-delete"><!----></i></span></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="van-address-item">
       <div class="van-cell van-cell--borderless">
-        <div class="van-cell__value van-cell__value--alone van-address-item__value">
-          <div class="van-address-item__name">李四 1310000000</div>
-          <div class="van-address-item__address">浙江省杭州市拱墅区莫干山路 50 号</div>
-        </div><i class="van-icon van-icon-edit van-address-item__edit">
-          <!----></i>
+        <div class="van-cell__value van-cell__value--alone">
+          <div class="van-address-item__content">
+            <div class="van-address-item__name">李四 1310000000</div>
+            <div class="van-address-item__address">浙江省杭州市拱墅区莫干山路 50 号</div>
+          </div>
+          <div class="van-address-item__bar">
+            <div role="radio" tabindex="-1" aria-checked="false" class="van-radio van-address-item__set-default">
+              <div class="van-radio__icon van-radio__icon--round"><i class="van-icon van-icon-success">
+                  <!----></i></div><span class="van-radio__label">设为默认</span>
+            </div>
+            <div class="van-address-item__icons-wrapper"><span class="van-address-item__edit" style="display: flex;"><i class="van-icon van-icon-edit"><!----></i></span><span class="van-address-item__delete" style="display: flex;"><i class="van-icon van-icon-delete"><!----></i></span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

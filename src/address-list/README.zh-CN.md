@@ -22,6 +22,8 @@ Vue.use(AddressList);
   default-tag-text="默认"
   @add="onAdd"
   @edit="onEdit"
+  @delete="onDelete"
+  @set-default="onSetDefault"
 />
 ```
 
@@ -64,6 +66,12 @@ export default {
     onEdit(item, index) {
       Toast('编辑地址:' + index);
     },
+    onDelete(item, index) {
+      Toast('删除地址:' + index);
+    },
+    onSetDefault(item, index) {
+      Toast('设为默认地址', index);
+    },
   },
 };
 ```
@@ -78,20 +86,22 @@ export default {
 | list                      | 地址列表          | _Address[]_ | `[]`       |
 | disabled-list             | 不可配送地址列表  | _Address[]_ | `[]`       |
 | disabled-text             | 不可配送提示文案  | _string_    | -          |
-| switchable                | 是否允许切换地址  | _boolean_   | `true`     |
 | add-button-text           | 底部按钮文字      | _string_    | `新增地址` |
 | default-tag-text `v2.3.0` | 默认地址标签文字  | _string_    | -          |
 
 ### Events
 
-| 事件名          | 说明                     | 回调参数                    |
-| --------------- | ------------------------ | --------------------------- |
-| add             | 点击新增按钮时触发       | -                           |
-| edit            | 点击编辑按钮时触发       | item: 地址对象，index: 索引 |
-| select          | 切换选中的地址时触发     | item: 地址对象，index: 索引 |
-| edit-disabled   | 编辑不可配送的地址时触发 | item: 地址对象，index: 索引 |
-| select-disabled | 选中不可配送的地址时触发 | item: 地址对象，index: 索引 |
-| click-item      | 点击任意地址时触发       | item: 地址对象，index: 索引 |
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| add | 点击新增按钮时触发 | - |
+| edit | 点击编辑按钮时触发 | item: 地址对象，index: 索引 |
+| edit-disabled | 编辑不可配送的地址时触发 | item: 地址对象，index: 索引 |
+| delete | 点击删除按钮时触发 | item: 地址对象，index: 索引 |
+| delete-disabled | 删除不可配送的地址时触发 | item: 地址对象，index: 索引 |
+| click-item | 点击任意地址时触发 | item: 地址对象，index: 索引 |
+| click-item-disabled | 点击不可配送的地址时触发 | item: 地址对象，index: 索引 |
+| set-default | 点击设为默认时触发 | item: 地址对象，index: 索引 |
+| set-default-disabled | 将不可配送的地址设为默认时触发 | item: 地址对象，index: 索引 |
 
 ### Address 数据结构
 
@@ -105,8 +115,11 @@ export default {
 
 ### Slots
 
-| 名称                 | 说明                 | SlotProps  |
-| -------------------- | -------------------- | ---------- |
-| default              | 在列表下方插入内容   | -          |
-| top                  | 在顶部插入内容       | -          |
-| item-bottom `v2.5.0` | 在列表项底部插入内容 | 列表项的值 |
+| 名称                 | 说明                 | SlotProps               |
+| -------------------- | -------------------- | ----------------------- |
+| default              | 在列表下方插入内容   | -                       |
+| top                  | 在顶部插入内容       | -                       |
+| item-bottom `v2.5.0` | 在列表项底部插入内容 | 列表项的值              |
+| radioIcon            | 自定义 radio 图标    | checked: 是否为选中状态 |
+| edit                 | 自定义编辑 icon      | -                       |
+| delete               | 自定义删除 icon      | -                       |

@@ -22,6 +22,8 @@ Vue.use(AddressList);
   default-tag-text="Default"
   @add="onAdd"
   @edit="onEdit"
+  @delete="onDelete"
+  @set-default="onSetDefault"
 />
 ```
 
@@ -64,6 +66,12 @@ export default {
     onEdit(item, index) {
       Toast('Edit:' + index);
     },
+    onDelete(item, index) {
+      Toast('Delete:' + index);
+    },
+    onSetDefault(item, index) {
+      Toast('SetDefault', index);
+    },
   },
 };
 ```
@@ -78,7 +86,6 @@ export default {
 | list | Address list | _Address[]_ | `[]` |
 | disabled-list | Disabled address list | _Address[]_ | `[]` |
 | disabled-text | Disabled text | _string_ | - |
-| switchable | Whether to allow switch address | _boolean_ | `true` |
 | add-button-text | Add button text | _string_ | `Add new address` |
 | default-tag-text `v2.3.0` | Default tag text | _string_ | - |
 
@@ -88,10 +95,13 @@ export default {
 | --- | --- | --- |
 | add | Triggered when click add button | - |
 | edit | Triggered when edit address | item: address object，index |
-| select | Triggered when select address | item: address object，index |
 | edit-disabled | Triggered when edit disabled address | item: address object，index |
-| select-disabled | Triggered when select disabled address | item: address object，index |
+| delete | Triggered when delete address | item: address object，index |
+| delete-disabled | Triggered when delete disabled address | item: address object，index |
 | click-item | Triggered when click address item | item: address object，index |
+| click-item-disabled | Triggered when click disabled address | item: address object，index |
+| set-default | Triggered when set default address item | item: address object，index |
+| set-default-disabled | Triggered when set default disabled address | item: address object，index |
 
 ### Data Structure of Address
 
@@ -105,8 +115,11 @@ export default {
 
 ### Slots
 
-| Name                 | Description                    | SlotProps |
-| -------------------- | ------------------------------ | --------- |
-| default              | Custom content after list      | -         |
-| top                  | Custom content before list     | -         |
-| item-bottom `v2.5.0` | Custom content after list item | item      |
+| Name | Description | SlotProps |
+| --- | --- | --- |
+| default | Custom content after list | - |
+| top | Custom content before list | - |
+| item-bottom `v2.5.0` | Custom content after list item | item |
+| radioIcon | Custom radio icon | checked: checked or not |
+| edit | Custom edit icon | - |
+| delete | Custom delete icon | - |

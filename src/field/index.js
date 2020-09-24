@@ -604,6 +604,7 @@ export default createComponent({
             />
           )}
           {this.genRightIcon()}
+          {this.slots('default')}
           {slots('button') && (
             <div class={bem('button')}>{slots('button')}</div>
           )}

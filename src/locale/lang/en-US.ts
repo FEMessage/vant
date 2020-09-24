@@ -74,4 +74,7 @@ export default {
   vanAddressList: {
     add: 'Add new address',
   },
+  vanAddressItem: {
+    setDefault: 'Set Default',
+  },
 };

@@ -75,4 +75,7 @@ export default {
   vanAddressList: {
     add: '新增地址',
   },
+  vanAddressItem: {
+    setDefault: '设为默认',
+  },
 };
