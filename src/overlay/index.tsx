@@ -1,4 +1,5 @@
-import { createNamespace, isDef } from '../utils';
+// Utils
+import { createNamespace, isDef, noop } from '../utils';
 import { inherit } from '../utils/functional';
 import { preventDefault, stopPropagation } from '../utils/dom/event';
 
@@ -11,6 +12,7 @@ export type OverlayProps = {
   zIndex?: number | string;
   duration: number | string | null;
   className?: any;
+  lockScroll?: boolean;
   customStyle?: object;
 };
 
@@ -32,7 +34,7 @@ function Overlay(
 ) {
   const style: { [key: string]: any } = {
     zIndex: props.zIndex,
-    ...props.customStyle
+    ...props.customStyle,
   };
 
   if (isDef(props.duration)) {
@@ -45,11 +47,11 @@ function Overlay(
         vShow={props.show}
         style={style}
         class={[bem(), props.className]}
-        onTouchmove={preventTouchMove}
+        onTouchmove={props.lockScroll ? preventTouchMove : noop}
         onClick={stopPropagation}
         {...inherit(ctx, true)}
       >
-        {slots.default && slots.default()}
+        {slots.default?.()}
       </div>
     </transition>
   );
@@ -57,12 +59,13 @@ function Overlay(
 
 Overlay.props = {
   show: Boolean,
+  zIndex: [Number, String],
   duration: [Number, String],
   className: null as any,
   customStyle: Object,
-  zIndex: {
-    type: [Number, String],
-    default: 1
+  lockScroll: {
+    type: Boolean,
+    default: true,
   },
 };
 

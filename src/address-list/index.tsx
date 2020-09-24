@@ -1,5 +1,8 @@
+// Utils
 import { createNamespace } from '../utils';
 import { emit, inherit } from '../utils/functional';
+
+// Components
 import Button from '../button';
 import RadioGroup from '../radio-group';
 import AddressItem, { AddressItemData, AddressItemSlots } from './Item';
@@ -14,10 +17,12 @@ export type AddressListProps = {
   addButtonText?: string;
   list?: AddressItemData[];
   disabledList?: AddressItemData[];
+  defaultTagText?: string;
 };
 
 export type AddressListSlots = AddressItemSlots & {
   top?: ScopedSlot;
+  'item-bottom'?: ScopedSlot;
 };
 
 const [createComponent, bem, t] = createNamespace('address-list');
@@ -28,7 +33,7 @@ function AddressList(
   slots: AddressListSlots,
   ctx: RenderContext<AddressListProps>
 ) {
-  function renderList(list?: AddressItemData[], disabled?: boolean) {
+  function genList(list?: AddressItemData[], disabled?: boolean) {
     if (!list) {
       return;
     }
@@ -38,7 +43,9 @@ function AddressList(
         data={item}
         key={item.id}
         disabled={disabled}
+        defaultTagText={props.defaultTagText}
         scopedSlots={{
+          bottom: slots['item-bottom'],
           radioIcon: slots.radioIcon,
           edit: slots.edit,
           delete: slots.delete,
@@ -47,13 +54,23 @@ function AddressList(
           emit(ctx, disabled ? 'edit-disabled' : 'edit', item, index);
         }}
         onClick={() => {
-          emit(ctx, 'click-item', item, index);
+          emit(
+            ctx,
+            disabled ? 'click-item-disabled' : 'click-item',
+            item,
+            index
+          );
         }}
         onDelete={() => {
-          emit(ctx, 'delete', item, index);
+          emit(ctx, disabled ? 'delete-disabled' : 'delete', item, index);
         }}
         onDefault={() => {
-          emit(ctx, disabled ? 'set-default-disabled' : 'set-default', item, index);
+          emit(
+            ctx,
+            disabled ? 'set-default-disabled' : 'set-default',
+            item,
+            index
+          );
 
           if (!disabled) {
             emit(ctx, 'input', item.id);
@@ -63,36 +80,41 @@ function AddressList(
     ));
   }
 
-  const List = renderList(props.list);
-  const DisabledList = renderList(props.disabledList, true);
+  const List = genList(props.list);
+  const DisabledList = genList(props.disabledList, true);
 
   return (
     <div class={bem()} {...inherit(ctx)}>
-      {slots.top && slots.top()}
+      {slots.top?.()}
       <RadioGroup value={props.value}>{List}</RadioGroup>
-      {props.disabledText && <div class={bem('disabled-text')}>{props.disabledText}</div>}
+      {props.disabledText && (
+        <div class={bem('disabled-text')}>{props.disabledText}</div>
+      )}
       {DisabledList}
-      {slots.default && slots.default()}
-      <Button
-        square
-        size="large"
-        type="danger"
-        class={bem('add')}
-        text={props.addButtonText || t('add')}
-        onClick={() => {
-          emit(ctx, 'add');
-        }}
-      />
+      {slots.default?.()}
+      <div class={bem('bottom')}>
+        <Button
+          round
+          block
+          type="danger"
+          class={bem('add')}
+          text={props.addButtonText || t('add')}
+          onClick={() => {
+            emit(ctx, 'add');
+          }}
+        />
+      </div>
     </div>
   );
 }
 
 AddressList.props = {
   list: Array,
+  value: [Number, String],
   disabledList: Array,
   disabledText: String,
   addButtonText: String,
-  value: [Number, String]
+  defaultTagText: String,
 };
 
 export default createComponent<AddressListProps>(AddressList);

@@ -1,5 +1,8 @@
-import { createNamespace } from '../utils';
-import { BORDER_TOP_BOTTOM } from '../utils/constant';
+// Utils
+import { createNamespace, isDef } from '../utils';
+import { getScroller } from '../utils/dom/scroll';
+
+// Mixins
 import { ParentMixin } from '../mixins/relation';
 import { ClickOutsideMixin } from '../mixins/click-outside';
 
@@ -10,44 +13,62 @@ export default createComponent({
     ParentMixin('vanDropdownMenu'),
     ClickOutsideMixin({
       event: 'click',
-      method: 'onClickOutside'
-    })
+      method: 'onClickOutside',
+    }),
   ],
 
   props: {
+    zIndex: [Number, String],
     activeColor: String,
     overlay: {
       type: Boolean,
-      default: true
-    },
-    zIndex: {
-      type: Number,
-      default: 10
+      default: true,
     },
     duration: {
-      type: Number,
-      default: 0.2
+      type: [Number, String],
+      default: 0.2,
     },
     direction: {
       type: String,
-      default: 'down'
+      default: 'down',
     },
     closeOnClickOverlay: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
 
   data() {
     return {
-      offset: 0
+      offset: 0,
     };
+  },
+
+  computed: {
+    scroller() {
+      return getScroller(this.$el);
+    },
+
+    opened() {
+      return this.children.some((item) => item.showWrapper);
+    },
+
+    barStyle() {
+      if (this.opened && isDef(this.zIndex)) {
+        return {
+          zIndex: 1 + this.zIndex,
+        };
+      }
+    },
   },
 
   methods: {
     updateOffset() {
-      const { menu } = this.$refs;
-      const rect = menu.getBoundingClientRect();
+      if (!this.$refs.bar) {
+        return;
+      }
+
+      const rect = this.$refs.bar.getBoundingClientRect();
 
       if (this.direction === 'down') {
         this.offset = rect.bottom;
@@ -67,10 +88,10 @@ export default createComponent({
     },
 
     onClickOutside() {
-      this.children.forEach(item => {
+      this.children.forEach((item) => {
         item.toggle(false);
       });
-    }
+    },
   },
 
   render() {
@@ -89,22 +110,30 @@ export default createComponent({
           class={[
             bem('title', {
               active: item.showPopup,
-              down: item.showPopup === (this.direction === 'down')
+              down: item.showPopup === (this.direction === 'down'),
             }),
-            item.titleClass
+            item.titleClass,
           ]}
           style={{ color: item.showPopup ? this.activeColor : '' }}
         >
-          <div class="van-ellipsis">{item.displayTitle}</div>
+          <div class="van-ellipsis">
+            {item.slots('title') || item.displayTitle}
+          </div>
         </span>
       </div>
     ));
 
     return (
-      <div ref="menu" class={[bem(), BORDER_TOP_BOTTOM]}>
-        {Titles}
+      <div class={bem()}>
+        <div
+          ref="bar"
+          style={this.barStyle}
+          class={bem('bar', { opened: this.opened })}
+        >
+          {Titles}
+        </div>
         {this.slots('default')}
       </div>
     );
-  }
+  },
 });

@@ -2,9 +2,9 @@
 
 ### 引入
 
-``` javascript
+```js
 import Vue from 'vue';
-import { SwipeCell } from 'vant';
+import { SwipeCell } from '@femessage/vant';
 
 Vue.use(SwipeCell);
 ```
@@ -17,32 +17,59 @@ Vue.use(SwipeCell);
 
 ```html
 <van-swipe-cell>
-  <template slot="left">
+  <template #left>
     <van-button square type="primary" text="选择" />
   </template>
-
   <van-cell :border="false" title="单元格" value="内容" />
-
-  <template slot="right">
+  <template #right>
     <van-button square type="danger" text="删除" />
-    <van-button square type="primary" text="收藏"/>
+    <van-button square type="primary" text="收藏" />
   </template>
 </van-swipe-cell>
 ```
 
-### 异步关闭
+### 自定义内容
 
-通过传入`on-close`回调函数，可以自定义两侧滑动内容关闭时的行为
+`SwipeCell`内容可以嵌套任意内容，比如嵌套一个商品卡片
 
 ```html
-<van-swipe-cell :on-close="onClose">
-  <template slot="left">
+<van-swipe-cell>
+  <van-card
+    num="2"
+    price="2.00"
+    desc="描述信息"
+    title="商品标题"
+    class="goods-card"
+    thumb="https://img.yzcdn.cn/vant/cat.jpeg"
+  />
+  <template #right>
+    <van-button square text="删除" type="danger" class="delete-button" />
+  </template>
+</van-swipe-cell>
+
+<style>
+  .goods-card {
+    margin: 0;
+    background-color: @white;
+  }
+
+  .delete-button {
+    height: 100%;
+  }
+</style>
+```
+
+### 异步关闭
+
+通过传入`before-close`回调函数，可以自定义两侧滑动内容关闭时的行为
+
+```html
+<van-swipe-cell :before-close="beforeClose">
+  <template #left>
     <van-button square type="primary" text="选择" />
   </template>
-
   <van-cell :border="false" title="单元格" value="内容" />
-
-  <template slot="right">
+  <template #right>
     <van-button square type="danger" text="删除" />
   </template>
 </van-swipe-cell>
@@ -51,9 +78,10 @@ Vue.use(SwipeCell);
 ```js
 export default {
   methods: {
-    // clickPosition 表示关闭时点击的位置
-    onClose(clickPosition, instance) {
-      switch (clickPosition) {
+    // position 为关闭时点击的位置
+    // instance 为对应的 SwipeCell 实例
+    beforeClose({ position, instance }) {
+      switch (position) {
         case 'left':
         case 'cell':
         case 'outside':
@@ -61,57 +89,67 @@ export default {
           break;
         case 'right':
           Dialog.confirm({
-            message: '确定删除吗？'
+            message: '确定删除吗？',
           }).then(() => {
             instance.close();
           });
           break;
       }
-    }
-  }
-}
+    },
+  },
+};
 ```
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 版本 |
-|------|------|------|------|------|
-| name | 标识符，可以在 onClose 的参数中获取到 | *string \| number* | - | 2.0.4 |
-| on-close | 关闭时的回调函数 | *Function* | - | - |
-| disabled | 是否禁用滑动 | *boolean* | `false` | - |
-| left-width | 指定左侧滑动区域宽度 | *number* | `auto` | - |
-| right-width | 指定右侧滑动区域宽度 | *number* | `auto` | - |
-| stop-propagation | 是否阻止滑动事件冒泡 | *boolean* | `false` | 2.1.0 |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| name | 标识符，可以在事件参数中获取到 | _number \| string_ | - |
+| left-width | 指定左侧滑动区域宽度，单位为`px` | _number \| string_ | `auto` |
+| right-width | 指定右侧滑动区域宽度，单位为`px` | _number \| string_ | `auto` |
+| before-close `v2.3.0` | 关闭前的回调函数 | _Function_ | - |
+| disabled | 是否禁用滑动 | _boolean_ | `false` |
+| stop-propagation | 是否阻止滑动事件冒泡 | _boolean_ | `false` |
 
 ### Slots
 
-| 名称 | 说明 |
-|------|------|
+| 名称    | 说明           |
+| ------- | -------------- |
 | default | 自定义显示内容 |
-| left | 左侧滑动内容 |
-| right | 右侧滑动内容 |
+| left    | 左侧滑动内容   |
+| right   | 右侧滑动内容   |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-|------|------|------|
-| click | 点击时触发 | 关闭时的点击位置 (`left` `right` `cell` `outside`) |
+| 事件名 | 说明       | 回调参数                                           |
+| ------ | ---------- | -------------------------------------------------- |
+| click  | 点击时触发 | 关闭时的点击位置 (`left` `right` `cell` `outside`) |
+| open   | 打开时触发 | { position: 'left' \| 'right' , name: string }     |
+| close  | 关闭时触发 | { position: string , name: string }                |
 
-### onClose 参数
+### beforeClose 参数
 
-| 参数名 | 说明 | 类型 |
-|------|------|------|
-| clickPosition | 关闭时的点击位置 (`left` `right` `cell` `outside`) | *string* |
-| instance | SwipeCell 实例，用于调用实例方法 | *object* |
-| detail | 额外信息，包含 name 字段 | *object* |
+beforeClose 的第一个参数为对象，对象中包含以下属性：
+
+| 参数名   | 说明                                               | 类型        |
+| -------- | -------------------------------------------------- | ----------- |
+| name     | 标识符                                             | _string_    |
+| position | 关闭时的点击位置 (`left` `right` `cell` `outside`) | _string_    |
+| instance | SwipeCell 实例，用于调用实例方法                   | _SwipeCell_ |
 
 ### 方法
 
-通过 ref 可以获取到 SwipeCell 实例并调用实例方法
+通过 ref 可以获取到 SwipeCell 实例并调用实例方法，详见[组件实例方法](#/zh-CN/quickstart#zu-jian-shi-li-fang-fa)
 
-| 方法名 | 说明 | 参数 | 返回值 |
-|------|------|------|------|
-| open | 打开单元格侧边栏 | position: `left | right` | - |
-| close | 收起单元格侧边栏 | - | - |
+| 方法名 | 说明             | 参数                     | 返回值 |
+| ------ | ---------------- | ------------------------ | ------ |
+| open   | 打开单元格侧边栏 | position: `left | right` | -      |
+| close  | 收起单元格侧边栏 | -                        | -      |
+
+## 常见问题
+
+### 在桌面端无法操作组件？
+
+参见[在桌面端使用](#/zh-CN/quickstart#zai-zhuo-mian-duan-shi-yong)。

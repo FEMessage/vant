@@ -2,11 +2,11 @@
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
-import { Image } from 'vant';
+import { Image as VanImage } from '@femessage/vant';
 
-Vue.use(Image);
+Vue.use(VanImage);
 ```
 
 ## Usage
@@ -14,11 +14,7 @@ Vue.use(Image);
 ### Basic Usage
 
 ```html
-<van-image
-  width="100"
-  height="100"
-  src="https://img.yzcdn.cn/vant/cat.jpeg"
-/>
+<van-image width="100" height="100" src="https://img.yzcdn.cn/vant/cat.jpeg" />
 ```
 
 ### Fit Mode
@@ -57,7 +53,8 @@ Show round image, it may not works at `fit=contain` and `fit=scale-down`
 ```
 
 ```js
-import { Lazyload } from 'vant';
+import Vue from 'vue';
+import { Lazyload } from '@femessage/vant';
 
 Vue.use(Lazyload);
 ```
@@ -66,23 +63,25 @@ Vue.use(Lazyload);
 
 ### Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| src | Src | *string* | - | - |
-| fit | Fit mode | *string* | `fill` | - |
-| alt | Alt | *string* | - | - |
-| width | Width | *string \| number* | - | - |
-| height | Height | *string \| number* | - | - |
-| radius | Border Radius | *string \| number* | `0` | 2.1.6 |
-| round | Whether to be round | *boolean* | `false` | - |
-| lazy-load | Whether to enable lazy load，should register [Lazyload](#/en-US/lazyload) component | *boolean* | `false` | - |
-| show-error | Whether to show error placeholder | *boolean* | `true` | 2.0.9 |
-| show-loading | Whether to show loading placeholder | *boolean* | `true` | 2.0.9 |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| src | Src | _string_ | - |
+| fit | Fit mode | _string_ | `fill` |
+| alt | Alt | _string_ | - |
+| width | Width | _number \| string_ | - |
+| height | Height | _number \| string_ | - |
+| radius | Border Radius | _number \| string_ | `0` |
+| round | Whether to be round | _boolean_ | `false` |
+| lazy-load | Whether to enable lazy load，should register [Lazyload](#/en-US/lazyload) component | _boolean_ | `false` |
+| show-error | Whether to show error placeholder | _boolean_ | `true` |
+| show-loading | Whether to show loading placeholder | _boolean_ | `true` |
+| error-icon `v2.4.2` | Error icon | _string_ | `photo-fail` |
+| loading-icon `v2.4.2` | Loading icon | _string_ | `photo` |
 
 ### fit optional value
 
 | name | desctription |
-|------|------|
+| --- | --- |
 | contain | Keep aspect ratio, fully display the long side of the image |
 | cover | Keep aspect ratio, fully display the short side of the image, cutting the long side |
 | fill | Stretch and resize image to fill the content box |
@@ -91,15 +90,16 @@ Vue.use(Lazyload);
 
 ### Events
 
-| Event | Description | Arguments |
-|------|------|------|
-| click | Triggered when click image | event: Event |
-| load | Triggered when image loaded | - |
-| error | Triggered when image load failed | - |
+| Event | Description                      | Arguments      |
+| ----- | -------------------------------- | -------------- |
+| click | Triggered when click image       | _event: Event_ |
+| load  | Triggered when image loaded      | -              |
+| error | Triggered when image load failed | -              |
 
 ### Slots
 
-| Name | Description |
-|------|------|
-| loading | Custom loading placeholder |
-| error | Custom error placeholder |
+| Name             | Description                        |
+| ---------------- | ---------------------------------- |
+| default `v2.9.0` | Custom the content below the image |
+| loading          | Custom loading placeholder         |
+| error            | Custom error placeholder           |

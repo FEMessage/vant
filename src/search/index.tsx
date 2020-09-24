@@ -1,6 +1,9 @@
+// Utils
 import { createNamespace } from '../utils';
 import { inherit, emit } from '../utils/functional';
 import { preventDefault } from '../utils/dom/event';
+
+// Components
 import Field from '../field';
 
 // Types
@@ -20,9 +23,11 @@ export type SearchProps = {
   actionText?: string;
   showAction?: boolean;
   removeForm?: boolean;
+  clearTrigger?: string;
 };
 
 export type SearchSlots = DefaultSlots & {
+  left?: ScopedSlot;
   label?: ScopedSlot;
   action?: ScopedSlot;
   'left-icon'?: ScopedSlot;
@@ -44,7 +49,11 @@ function Search(
 ) {
   function Label() {
     if (slots.label || props.label) {
-      return <div class={bem('label')}>{slots.label ? slots.label() : props.label}</div>;
+      return (
+        <div class={bem('label')}>
+          {slots.label ? slots.label() : props.label}
+        </div>
+      );
     }
   }
 
@@ -80,12 +89,12 @@ function Search(
           emit(ctx, 'search', props.value);
         }
         emit(ctx, 'keypress', event);
-      }
-    }
+      },
+    },
   };
 
   const inheritData = inherit(ctx);
-  delete inheritData.attrs;
+  inheritData.attrs = undefined;
 
   function SearchInput() {
     return (
@@ -94,6 +103,7 @@ function Search(
         style={{ background: props.background }}
         {...inheritData}
       >
+        {slots.left?.()}
         <div class={bem('content', props.shape)}>
           {Label()}
           <Field
@@ -103,9 +113,10 @@ function Search(
             leftIcon={props.leftIcon}
             rightIcon={props.rightIcon}
             clearable={props.clearable}
+            clearTrigger={props.clearTrigger}
             scopedSlots={{
               'left-icon': slots['left-icon'],
-              'right-icon': slots['right-icon']
+              'right-icon': slots['right-icon'],
             }}
             {...fieldData}
           />
@@ -122,9 +133,7 @@ function Search(
   return (
     // 在 input 外层增加 form 标签，且 action 不为空，同时 input 的 type 为 search，即可在 iOS 输入法中显示搜索按钮。
     // eslint-disable-next-line
-    <form action="javascript:;">
-      {SearchInput()}
-    </form>
+    <form action="javascript:;">{SearchInput()}</form>
   );
 }
 
@@ -133,27 +142,25 @@ Search.props = {
   label: String,
   rightIcon: String,
   actionText: String,
+  background: String,
   showAction: Boolean,
+  clearTrigger: String,
   shape: {
     type: String,
-    default: 'square'
+    default: 'square',
   },
   clearable: {
     type: Boolean,
-    default: true
-  },
-  background: {
-    type: String,
-    default: '#fff'
+    default: true,
   },
   leftIcon: {
     type: String,
-    default: 'search'
+    default: 'search',
   },
   removeForm: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 };
 
 export default createComponent<SearchProps, SearchEvents, SearchSlots>(Search);

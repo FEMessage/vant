@@ -3,17 +3,28 @@
 .van-address-list {
   box-sizing: border-box;
   height: 100%;
-  padding-bottom: 100px;
+  padding: @address-list-padding;
 
-  &__add {
+  &__bottom {
     position: fixed;
     bottom: 0;
     left: 0;
     z-index: @address-list-add-button-z-index;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 @padding-md;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    background-color: @white;
+  }
+
+  &__add {
+    height: 40px;
+    margin: 5px 0;
   }
 
   &__disabled-text {
-    padding: 0 @padding-md;
+    padding: @address-list-disabled-text-padding;
     color: @address-list-disabled-text-color;
     font-size: @address-list-disabled-text-font-size;
     line-height: @address-list-disabled-text-line-height;
@@ -22,12 +33,27 @@
 
 .van-address-item {
   padding: @address-list-item-padding;
+  background-color: @white;
+  border-radius: @border-radius-lg;
+
+  &:not(:last-child) {
+    margin-bottom: @padding-sm;
+  }
 
   &__name {
-    margin-bottom: @padding-base;
-    font-weight: @font-weight-bold;
-    font-size: @font-size-md;
-    line-height: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: @padding-xs;
+    font-size: @font-size-lg;
+    line-height: @line-height-lg;
+  }
+
+  &__tag {
+    flex: none;
+    margin-left: @padding-xs;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.4em;
   }
 
   &__address {
@@ -48,7 +74,9 @@
   &__icons-wrapper {
     display: flex;
     flex: 1;
+    align-items: center;
     justify-content: flex-end;
+    height: 100%;
     font-size: @address-list-edit-icon-size;
   }
 
@@ -62,6 +90,20 @@
 
   &__edit {
     margin-right: 10px;
+  }
+
+  &__edit,
+  &__delete {
+    color: @gray-6;
+    font-size: @address-list-edit-icon-size;
+  }
+
+  .van-cell {
+    padding: 0;
+  }
+
+  .van-radio__label {
+    margin-left: @padding-sm;
   }
 
   .van-radio__icon--checked .van-icon {

@@ -1,22 +1,10 @@
-import Vue from 'vue';
-import IndexBar from '..';
-import IndexAnchor from '../../index-anchor';
-import { mount, trigger, triggerDrag } from '../../../test/utils';
-
-Vue.use(IndexBar);
-Vue.use(IndexAnchor);
-
-function mockScrollIntoView() {
-  const fn = jest.fn();
-  Element.prototype.scrollIntoView = fn;
-  return fn;
-}
+import { mount, trigger, triggerDrag, mockScrollIntoView } from '../../../test';
 
 function mockOffsetHeight(offsetHeight) {
   Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
     get() {
       return offsetHeight;
-    }
+    },
   });
 }
 
@@ -27,7 +15,7 @@ test('custom anchor text', () => {
         <van-index-anchor index="A">Title A</van-index-anchor>
         <van-index-anchor index="B">Title B</van-index-anchor>
       </van-index-bar>
-    `
+    `,
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -43,8 +31,8 @@ test('click and scroll to anchor', () => {
       </van-index-bar>
     `,
     methods: {
-      onSelect
-    }
+      onSelect,
+    },
   });
 
   const fn = mockScrollIntoView();
@@ -66,8 +54,8 @@ test('touch and scroll to anchor', () => {
       </van-index-bar>
     `,
     methods: {
-      onSelect
-    }
+      onSelect,
+    },
   });
 
   const fn = mockScrollIntoView();
@@ -83,7 +71,7 @@ test('touch and scroll to anchor', () => {
 
     if (index === 3) {
       return {
-        dataset: {}
+        dataset: {},
       };
     }
   };
@@ -108,7 +96,7 @@ test('scroll and update active anchor', () => {
   Element.prototype.getBoundingClientRect = function () {
     const { index } = this.dataset;
     return {
-      top: index ? index * 10 : 0
+      top: index ? index * 10 : 0,
     };
   };
 
@@ -127,9 +115,9 @@ test('scroll and update active anchor', () => {
     `,
     data() {
       return {
-        sticky: false
+        sticky: false,
       };
-    }
+    },
   });
 
   window.scrollTop = 0;

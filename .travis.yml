@@ -24,7 +24,7 @@ after_script:
   - ./notify.sh
 deploy:
   - provider: pages
-    local-dir: docs/dist
+    local-dir: site
     github-token: $GITHUB_TOKEN
     skip-cleanup: true
   - provider: npm

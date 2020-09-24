@@ -15,12 +15,7 @@ const selectProps = {
   },
 };
 
-const fieldSlots = [
-  'label',
-  'left-icon',
-  'right-icon',
-  'button',
-];
+const fieldSlots = ['label', 'left-icon', 'right-icon', 'button'];
 
 const [createComponent, bem] = createNamespace('select');
 
@@ -38,7 +33,9 @@ export default createComponent({
   computed: {
     showValue() {
       const { value } = this.$attrs;
-      const targetOption = this.options.find(item => item.value === value || item.name === value);
+      const targetOption = this.options.find(
+        (item) => item.value === value || item.name === value
+      );
       return targetOption && targetOption.name;
     },
   },
@@ -54,16 +51,18 @@ export default createComponent({
       this.$emit('select', item, index);
     },
 
-    triggle(value) {
+    trigger(value) {
+      console.log(value);
       this.showSheet = value;
     },
 
     inheritSlots() {
-      return fieldSlots.map(slotName => (
-        this.slots(slotName) && <template slot={slotName}>
-          {this.slots(slotName)}
-        </template>
-      ));
+      return fieldSlots.map(
+        (slotName) =>
+          this.slots(slotName) && (
+            <template slot={slotName}>{this.slots(slotName)}</template>
+          )
+      );
     },
   },
 
@@ -72,7 +71,7 @@ export default createComponent({
       <Field
         class={bem()}
         readonly={true}
-        onClick={() => this.triggle(true)}
+        onClick={() => this.trigger(true)}
         {...{ attrs: this.$attrs }}
         {...{ listeners: this.$listeners }}
         // 这个 value 必须在继承的 attrs 下面，为了 emit value，而显示 name
@@ -87,7 +86,7 @@ export default createComponent({
           value={this.showSheet}
           actions={this.options}
           closeOnClickAction={true}
-          onInput={this.triggle}
+          onInput={this.trigger}
         />
       </Field>
     );

@@ -1,11 +1,11 @@
 import Rate from '..';
-import { mount, triggerDrag } from '../../../test/utils';
+import { mount, triggerDrag } from '../../../test';
 
 function mockGetBoundingClientRect(items) {
   items.filter((icon, index) => {
     icon.element.getBoundingClientRect = () => ({
       left: index * 25,
-      width: 25
+      width: 25,
     });
     return true;
   });
@@ -17,12 +17,12 @@ test('change event', () => {
 
   const wrapper = mount(Rate, {
     listeners: {
-      input: value => {
+      input: (value) => {
         onInput(value);
         wrapper.setProps({ value });
       },
-      change: onChange
-    }
+      change: onChange,
+    },
   });
   const item4 = wrapper.findAll('.van-rate__icon').at(3);
 
@@ -41,12 +41,12 @@ test('allow half', () => {
 
   const wrapper = mount(Rate, {
     propsData: {
-      allowHalf: true
+      allowHalf: true,
     },
     listeners: {
       input: onInput,
-      change: onChange
-    }
+      change: onChange,
+    },
   });
   const item4 = wrapper.findAll('.van-rate__icon--half').at(3);
 
@@ -61,12 +61,12 @@ test('disabled', () => {
 
   const wrapper = mount(Rate, {
     propsData: {
-      disabled: true
+      disabled: true,
     },
     listeners: {
       input: onInput,
-      change: onChange
-    }
+      change: onChange,
+    },
   });
   const item4 = wrapper.findAll('.van-rate__item').at(3);
 
@@ -81,8 +81,8 @@ test('touchmove to select item', () => {
   const onChange = jest.fn();
   const wrapper = mount(Rate, {
     listeners: {
-      change: onChange
-    }
+      change: onChange,
+    },
   });
 
   const icons = wrapper.findAll('.van-rate__item');
@@ -100,11 +100,11 @@ test('touchmove to select half item', () => {
   const onChange = jest.fn();
   const wrapper = mount(Rate, {
     propsData: {
-      allowHalf: true
+      allowHalf: true,
     },
     listeners: {
-      change: onChange
-    }
+      change: onChange,
+    },
   });
 
   const icons = wrapper.findAll('.van-rate__item');
@@ -121,8 +121,8 @@ test('touchmove to select half item', () => {
 test('gutter prop', () => {
   const wrapper = mount(Rate, {
     propsData: {
-      gutter: 10
-    }
+      gutter: 10,
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -131,8 +131,8 @@ test('gutter prop', () => {
 test('size prop', () => {
   const wrapper = mount(Rate, {
     propsData: {
-      size: '2rem'
-    }
+      size: '2rem',
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -142,11 +142,11 @@ test('untouchable', () => {
   const onChange = jest.fn();
   const wrapper = mount(Rate, {
     propsData: {
-      touchable: false
+      touchable: false,
     },
     listeners: {
-      change: onChange
-    }
+      change: onChange,
+    },
   });
 
   triggerDrag(wrapper, 100, 0);

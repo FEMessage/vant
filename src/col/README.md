@@ -6,11 +6,12 @@ Quickly and easily create layouts with `van-row` and `van-col`
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
-import { Row, Col } from 'vant';
+import { Col, Row } from '@femessage/vant';
 
-Vue.use(Row).use(Col);
+Vue.use(Col);
+Vue.use(Row);
 ```
 
 ## Usage
@@ -37,11 +38,9 @@ Layout are based on 24-column. The attribute `span` in `Col` means the number of
 </van-row>
 ```
 
-
 ### Column Spacing
 
 Set grid spacing using `gutter` attribute. The default value is 0
-
 
 ```html
 <van-row gutter="20">
@@ -91,30 +90,30 @@ Setting `type` to `flex` to enable flex layout
 
 ### Row Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| type | Layout type, can be set to `flex` | *string* | - | - |
-| gutter | Grid spacing（px） | *string \| number* | - | - |
-| tag | Custom element tag | *string* | `div` | - |
-| justify | Flex main axis，can be set to  end/center/space-around/space-between | *string* | `start` | - |
-| align | Flex cross axis, be set to  center/bottom | *string* | `top` | - |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| type | Layout type, can be set to `flex` | _string_ | - |
+| gutter | Grid spacing（px） | _number \| string_ | - |
+| tag | Custom element tag | _string_ | `div` |
+| justify | Flex main axis，can be set to end/center/space-around/space-between | _string_ | `start` |
+| align | Flex cross axis, be set to center/bottom | _string_ | `top` |
 
 ### Col Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| span | number of column the grid spans | *string \| number* | - | - |
-| offset | number of spacing on the left side of the grid | *string \| number* | - | - |
-| tag | Custom element tag | *string* | `div` | - |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| span | number of column the grid spans | _number \| string_ | - |
+| offset | number of spacing on the left side of the grid | _number \| string_ | - |
+| tag | Custom element tag | _string_ | `div` |
 
 ### Row Events
 
-| Event | Description | Arguments |
-|------|------|------|
-| click | Triggered when click row | event: Event |
+| Event | Description              | Arguments      |
+| ----- | ------------------------ | -------------- |
+| click | Triggered when click row | _event: Event_ |
 
 ### Col Events
 
-| Event | Description | Arguments |
-|------|------|------|
-| click | Triggered when click col | event: Event |
+| Event | Description              | Arguments      |
+| ----- | ------------------------ | -------------- |
+| click | Triggered when click col | _event: Event_ |

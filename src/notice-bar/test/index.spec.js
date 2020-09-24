@@ -1,5 +1,5 @@
 import NoticeBar from '..';
-import { mount } from '../../../test/utils';
+import { mount, later } from '../../../test';
 
 test('click event', () => {
   const wrapper = mount(NoticeBar);
@@ -11,8 +11,8 @@ test('click event', () => {
 test('close event', () => {
   const wrapper = mount(NoticeBar, {
     propsData: {
-      mode: 'closeable'
-    }
+      mode: 'closeable',
+    },
   });
   const close = wrapper.find('.van-notice-bar__right-icon');
 
@@ -30,9 +30,67 @@ test('icon slot', () => {
       </notice-bar>
     `,
     components: {
-      NoticeBar
-    }
+      NoticeBar,
+    },
   });
+
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('replay event', async () => {
+  const wrapper = mount(NoticeBar, {
+    propsData: {
+      text: 'foo',
+    },
+  });
+
+  wrapper.find('.van-notice-bar__content').trigger('transitionend');
+  await later(80);
+  expect(wrapper.emitted('replay')).toBeTruthy();
+});
+
+test('should scroll when content width > wrap width ', async () => {
+  const wrapper = mount(NoticeBar, {
+    propsData: {
+      text: 'foo',
+      delay: 0,
+    },
+  });
+
+  const wrap = wrapper.find('.van-notice-bar__wrap');
+  const content = wrapper.find('.van-notice-bar__content');
+
+  wrap.element.getBoundingClientRect = () => ({
+    width: 50,
+  });
+  content.element.getBoundingClientRect = () => ({
+    width: 100,
+  });
+
+  await later(50);
+
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('should not scroll when content width > wrap width ', async () => {
+  const wrapper = mount(NoticeBar, {
+    propsData: {
+      text: 'foo',
+      delay: 0,
+    },
+  });
+
+  const wrap = wrapper.find('.van-notice-bar__wrap');
+  const content = wrapper.find('.van-notice-bar__content');
+
+  wrap.element.getBoundingClientRect = () => ({
+    width: 200,
+  });
+  content.element.getBoundingClientRect = () => ({
+    width: 100,
+  });
+
+  await later(50);
 
   expect(wrapper).toMatchSnapshot();
 });

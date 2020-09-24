@@ -1,12 +1,12 @@
 <template>
   <demo-section>
-    <demo-block :title="$t('basicUsage')">
+    <demo-block :title="t('basicUsage')">
       <van-cell-group>
         <van-select
           v-model="value"
           label="基本用法"
           :options="options0"
-          :placeholder="$t('genders')"
+          :placeholder="t('genders')"
           @select="onSelect"
         />
       </van-cell-group>
@@ -34,7 +34,7 @@ export default {
       phoneError: '手机号格式错误',
       genders: '请选择性别',
       male: '男',
-      female: '女'
+      female: '女',
     },
     'en-US': {
       title2: 'Custom type',
@@ -53,8 +53,8 @@ export default {
       phoneError: 'Invalid phone',
       genders: 'Select your gender',
       male: 'male',
-      female: 'female'
-    }
+      female: 'female',
+    },
   },
 
   data() {
@@ -72,22 +72,22 @@ export default {
   computed: {
     options0() {
       return [
-        { name: this.$t('male'), value: 1 },
-        { name: this.$t('female'), value: 2 },
+        { name: this.t('male'), value: 1 },
+        { name: this.t('female'), value: 2 },
       ];
-    }
+    },
   },
 
   watch: {
     value(val) {
       this.$toast(val);
-    }
+    },
   },
 
   methods: {
     onSelect(item, index) {
       console.log(item, index);
-    }
+    },
   },
 };
 </script>

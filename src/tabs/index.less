@@ -2,19 +2,16 @@
 
 .van-tab {
   position: relative;
+  display: flex;
   flex: 1;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  min-width: 0; // hack for flex ellipsis
-  padding: 0 5px;
+  padding: 0 @padding-base;
   color: @tab-text-color;
   font-size: @tab-font-size;
-  line-height: @tabs-line-height;
-  text-align: center;
+  line-height: @tab-line-height;
   cursor: pointer;
-
-  span {
-    display: block;
-  }
 
   &--active {
     color: @tab-active-text-color;
@@ -23,6 +20,20 @@
 
   &--disabled {
     color: @tab-disabled-text-color;
+    cursor: not-allowed;
+  }
+
+  &__text {
+    &--ellipsis {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  &__text-wrapper {
+    position: relative;
   }
 }
 
@@ -43,20 +54,22 @@
 
     &--scrollable {
       .van-tab {
-        flex: 0 0 22%;
-
-        &--complete {
-          flex: 1 0 auto;
-        }
+        flex: 1 0 auto;
+        padding: 0 @padding-sm;
       }
 
       .van-tabs__nav {
-        overflow: hidden;
         overflow-x: auto;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
 
         &::-webkit-scrollbar {
           display: none;
+        }
+
+        &--complete {
+          padding-right: 8px;
+          padding-left: 8px;
         }
       }
     }
@@ -83,7 +96,6 @@
 
       .van-tab {
         color: @tabs-default-color;
-        line-height: @tabs-card-height - 2px;
         border-right: @border-width-base solid @tabs-default-color;
 
         &:last-child {
@@ -107,6 +119,7 @@
     bottom: 15px;
     left: 0;
     z-index: 1;
+    width: @tabs-bottom-bar-width;
     height: @tabs-bottom-bar-height;
     background-color: @tabs-bottom-bar-color;
     border-radius: @tabs-bottom-bar-height;

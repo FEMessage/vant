@@ -2,7 +2,7 @@
 set -e
 #rm -rf docs/dist
 
-npx cross-env NODE_ENV=production webpack --config build/webpack.site.prd.js
+yarn build:site
 
 #superman-cdn /vant ./docs/dist/*.js
 #

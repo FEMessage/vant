@@ -2,11 +2,12 @@
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
-import { DropdownMenu, DropdownItem } from 'vant';
+import { DropdownMenu, DropdownItem } from '@femessage/vant';
 
-Vue.use(DropdownMenu).use(DropdownItem);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 ```
 
 ## Usage
@@ -29,15 +30,15 @@ export default {
       option1: [
         { text: 'Option1', value: 0 },
         { text: 'Option2', value: 1 },
-        { text: 'Option3', value: 2 }
+        { text: 'Option3', value: 2 },
       ],
       option2: [
         { text: 'Option A', value: 'a' },
         { text: 'Option B', value: 'b' },
         { text: 'Option C', value: 'c' },
-      ]
-    }
-  }
+      ],
+    };
+  },
 };
 ```
 
@@ -47,9 +48,21 @@ export default {
 <van-dropdown-menu>
   <van-dropdown-item v-model="value" :options="option" />
   <van-dropdown-item title="Title" ref="item">
-    <van-switch-cell v-model="switch1" title="Title" />
-    <van-switch-cell v-model="switch2" title="Title" />
-    <van-button block type="info" @click="onConfirm">Confirm</van-button>
+    <van-cell center title="Title">
+      <template #right-icon>
+        <van-switch v-model="switch1" size="24" active-color="#ee0a24" />
+      </template>
+    </van-cell>
+    <van-cell center title="Title">
+      <template #right-icon>
+        <van-switch v-model="switch2" size="24" active-color="#ee0a24" />
+      </template>
+    </van-cell>
+    <div style="padding: 5px 16px;">
+      <van-button type="danger" block round @click="onConfirm">
+        Confirm
+      </van-button>
+    </div>
   </van-dropdown-item>
 </van-dropdown-menu>
 ```
@@ -64,16 +77,15 @@ export default {
       option: [
         { text: 'Option1', value: 0 },
         { text: 'Option2', value: 1 },
-        { text: 'Option3', value: 2 }
-      ]
-    }
+        { text: 'Option3', value: 2 },
+      ],
+    };
   },
-
   methods: {
     onConfirm() {
       this.$refs.item.toggle();
-    }
-  }
+    },
+  },
 };
 ```
 
@@ -82,7 +94,7 @@ export default {
 Use `active-color` prop to custom active color of the title and options
 
 ```html
-<van-dropdown-menu active-color="#ee0a24">
+<van-dropdown-menu active-color="#1989fa">
   <van-dropdown-item v-model="value1" :options="option1" />
   <van-dropdown-item v-model="value2" :options="option2" />
 </van-dropdown-menu>
@@ -110,48 +122,57 @@ Use `active-color` prop to custom active color of the title and options
 
 ### DropdownMenu Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| active-color | Active color of title and option | *string* | `#1989fa` | - |
-| z-index | z-index of menu item | *number* | `10` | - |
-| duration | Transition duration, unit second | *number* | `0.2` | - |
-| direction | Expand direction, can be set to `up` | *string* | `down` | 2.0.1 |
-| overlay | Whether to show overlay | *boolean* | `true` | - |
-| close-on-click-overlay | Whether to close when click overlay | *boolean* | `true` | - |
-| close-on-click-outside | Whether to close when click outside | *boolean* | `true` | 2.0.7 |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| active-color | Active color of title and option | _string_ | `#ee0a24` |
+| direction | Expand direction, can be set to `up` | _string_ | `down` |
+| z-index | z-index of menu item | _number \| string_ | `10` |
+| duration | Transition duration, unit second | _number \| string_ | `0.2` |
+| overlay | Whether to show overlay | _boolean_ | `true` |
+| close-on-click-overlay | Whether to close when click overlay | _boolean_ | `true` |
+| close-on-click-outside | Whether to close when click outside | _boolean_ | `true` |
 
 ### DropdownItem Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| value | Value of current option，can use `v-model` | *string \| number* | - | - |
-| title | Item title | *string* | Text of selected option | - |
-| options | Options | *Option[]* | `[]` | - |
-| disabled | Whether to disable dropdown item | *boolean* | `false` | - |
-| title-class | Title class | *string* | - | - |
-| get-container | Return the mount node for menu | *string \| () => Element* | - | 2.2.4 |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| value | Value of current option，can use `v-model` | _number \| string_ | - |
+| title | Item title | _string_ | Text of selected option |
+| options | Options | _Option[]_ | `[]` |
+| disabled | Whether to disable dropdown item | _boolean_ | `false` |
+| lazy-render `v2.8.5` | Whether to lazy render util opened | _boolean_ | `true` |
+| title-class | Title class | _string_ | - |
+| get-container | Return the mount node for menu | _string \| () => Element_ | - |
 
 ### DropdownItem Events
 
-| Event | Description | Arguments |
-|------|------|------|
-| change | Triggered select option and value changed | value |
-| open | Triggered when open menu | - |
-| opened | Triggered when opened menu | - |
-| close | Triggered when close menu | - |
+| Event  | Description                               | Arguments |
+| ------ | ----------------------------------------- | --------- |
+| change | Triggered select option and value changed | value     |
+| open   | Triggered when open menu                  | -         |
+| close  | Triggered when close menu                 | -         |
+| opened | Triggered when menu opened                | -         |
+| closed | Triggered when menu closed                | -         |
+
+### DropdownItem Slots
+
+| Name    | Description  |
+| ------- | ------------ |
+| default | Content      |
+| title   | Custom title |
 
 ### DropdownItem Methods
 
-Use ref to get DropdownItem instance and call instance methods
+Use [ref](https://vuejs.org/v2/api/#ref) to get DropdownItem instance and call instance methods
 
-| Name | Description | Attribute | Return value |
-|------|------|------|------|
-| toggle | Toggle display | show: boolean | - |
+| Name   | Description    | Attribute     | Return value |
+| ------ | -------------- | ------------- | ------------ |
+| toggle | Toggle display | show: boolean | -            |
 
 ### Data Structure of Option
 
-| Key | Description | Type |
-|------|------|------|
-| text | Text | *string* |
-| value | Value | *string \| number* |
-| icon | Left icon | *string* |
+| Key   | Description | Type               |
+| ----- | ----------- | ------------------ |
+| text  | Text        | _string_           |
+| value | Value       | _number \| string_ |
+| icon  | Left icon   | _string_           |

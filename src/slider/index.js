@@ -1,54 +1,78 @@
 import { createNamespace, addUnit } from '../utils';
-import { TouchMixin } from '../mixins/touch';
+import { deepClone } from '../utils/deep-clone';
 import { preventDefault } from '../utils/dom/event';
+import { TouchMixin } from '../mixins/touch';
+import { FieldMixin } from '../mixins/field';
 
 const [createComponent, bem] = createNamespace('slider');
 
+const isSameValue = (newValue, oldValue) => {
+  return JSON.stringify(newValue) === JSON.stringify(oldValue);
+};
+
 export default createComponent({
-  mixins: [TouchMixin],
+  mixins: [TouchMixin, FieldMixin],
 
   props: {
     disabled: Boolean,
     vertical: Boolean,
+    range: Boolean,
+    barHeight: [Number, String],
+    buttonSize: [Number, String],
     activeColor: String,
     inactiveColor: String,
     min: {
-      type: Number,
-      default: 0
+      type: [Number, String],
+      default: 0,
     },
     max: {
-      type: Number,
-      default: 100
+      type: [Number, String],
+      default: 100,
     },
     step: {
-      type: Number,
-      default: 1
+      type: [Number, String],
+      default: 1,
     },
     value: {
-      type: Number,
-      default: 0
+      type: [Number, Array],
+      default: 0,
     },
-    barHeight: {
-      type: [Number, String],
-      default: 2
-    }
   },
 
   data() {
     return {
-      dragStatus: ''
+      dragStatus: '',
     };
   },
 
   computed: {
-    range() {
+    scope() {
       return this.max - this.min;
-    }
+    },
+
+    buttonStyle() {
+      if (this.buttonSize) {
+        const size = addUnit(this.buttonSize);
+        return {
+          width: size,
+          height: size,
+        };
+      }
+    },
   },
 
   created() {
     // format initial value
     this.updateValue(this.value);
+  },
+
+  mounted() {
+    if (this.range) {
+      this.bindTouchEvent(this.$refs.wrapper0);
+      this.bindTouchEvent(this.$refs.wrapper1);
+    } else {
+      this.bindTouchEvent(this.$refs.wrapper);
+    }
   },
 
   methods: {
@@ -58,7 +82,12 @@ export default createComponent({
       }
 
       this.touchStart(event);
-      this.startValue = this.format(this.value);
+      this.currentValue = this.value;
+      if (this.range) {
+        this.startValue = this.value.map(this.format);
+      } else {
+        this.startValue = this.format(this.value);
+      }
       this.dragStatus = 'start';
     },
 
@@ -78,10 +107,14 @@ export default createComponent({
       const rect = this.$el.getBoundingClientRect();
       const delta = this.vertical ? this.deltaY : this.deltaX;
       const total = this.vertical ? rect.height : rect.width;
-      const diff = (delta / total) * this.range;
+      const diff = (delta / total) * this.scope;
 
-      this.newValue = this.startValue + diff;
-      this.updateValue(this.newValue);
+      if (this.range) {
+        this.currentValue[this.index] = this.startValue[this.index] + diff;
+      } else {
+        this.currentValue = this.startValue + diff;
+      }
+      this.updateValue(this.currentValue);
     },
 
     onTouchEnd() {
@@ -90,7 +123,7 @@ export default createComponent({
       }
 
       if (this.dragStatus === 'draging') {
-        this.updateValue(this.newValue, true);
+        this.updateValue(this.currentValue, true);
         this.$emit('drag-end');
       }
 
@@ -103,76 +136,150 @@ export default createComponent({
       if (this.disabled) return;
 
       const rect = this.$el.getBoundingClientRect();
-      const delta = this.vertical ? event.clientY - rect.top : event.clientX - rect.left;
+      const delta = this.vertical
+        ? event.clientY - rect.top
+        : event.clientX - rect.left;
       const total = this.vertical ? rect.height : rect.width;
-      const value = (delta / total) * this.range + this.min;
+      let value = +this.min + (delta / total) * this.scope;
+
+      if (this.range) {
+        let [left, right] = this.value;
+        const middle = (left + right) / 2;
+        if (value <= middle) {
+          left = value;
+        } else {
+          right = value;
+        }
+        value = [left, right];
+      }
 
       this.startValue = this.value;
       this.updateValue(value, true);
     },
 
-    updateValue(value, end) {
-      value = this.format(value);
+    // 处理两个滑块重叠之后的情况
+    handleOverlap(value) {
+      if (value[0] > value[1]) {
+        value = deepClone(value);
+        return value.reverse();
+      }
+      return value;
+    },
 
-      if (value !== this.value) {
+    updateValue(value, end) {
+      if (this.range) {
+        value = this.handleOverlap(value).map(this.format);
+      } else {
+        value = this.format(value);
+      }
+
+      if (!isSameValue(value, this.value)) {
         this.$emit('input', value);
       }
 
-      if (end && value !== this.startValue) {
+      if (end && !isSameValue(value, this.startValue)) {
         this.$emit('change', value);
       }
     },
 
     format(value) {
       return (
-        Math.round(Math.max(this.min, Math.min(value, this.max)) / this.step) * this.step
+        Math.round(Math.max(this.min, Math.min(value, this.max)) / this.step) *
+        this.step
       );
-    }
+    },
   },
 
   render() {
     const { vertical } = this;
-    const style = {
-      background: this.inactiveColor
-    };
-
     const mainAxis = vertical ? 'height' : 'width';
     const crossAxis = vertical ? 'width' : 'height';
 
-    const barStyle = {
-      [mainAxis]: `${((this.value - this.min) * 100) / this.range}%`,
+    const wrapperStyle = {
+      background: this.inactiveColor,
       [crossAxis]: addUnit(this.barHeight),
-      background: this.activeColor
+    };
+
+    // 计算选中条的长度百分比
+    const calcMainAxis = () => {
+      const { value, min, range, scope } = this;
+      if (range) {
+        return `${((value[1] - value[0]) * 100) / scope}%`;
+      }
+      return `${((value - min) * 100) / scope}%`;
+    };
+
+    // 计算选中条的开始位置的偏移量
+    const calcOffset = () => {
+      const { value, min, range, scope } = this;
+      if (range) {
+        return `${((value[0] - min) * 100) / scope}%`;
+      }
+      return null;
+    };
+
+    const barStyle = {
+      [mainAxis]: calcMainAxis(),
+      left: this.vertical ? null : calcOffset(),
+      top: this.vertical ? calcOffset() : null,
+      background: this.activeColor,
     };
 
     if (this.dragStatus) {
       barStyle.transition = 'none';
     }
 
+    const renderButton = (i) => {
+      const map = ['left', 'right'];
+      const isNumber = typeof i === 'number';
+      const getClassName = () => {
+        if (isNumber) {
+          return `button-wrapper-${map[i]}`;
+        }
+        return `button-wrapper`;
+      };
+      const getRefName = () => {
+        if (isNumber) {
+          return `wrapper${i}`;
+        }
+        return `wrapper`;
+      };
+
+      return (
+        <div
+          ref={getRefName()}
+          role="slider"
+          tabindex={this.disabled ? -1 : 0}
+          aria-valuemin={this.min}
+          aria-valuenow={this.value}
+          aria-valuemax={this.max}
+          aria-orientation={this.vertical ? 'vertical' : 'horizontal'}
+          class={bem(getClassName())}
+          onTouchstart={() => {
+            if (isNumber) {
+              // 保存当前按钮的索引
+              this.index = i;
+            }
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {this.slots('button') || (
+            <div class={bem('button')} style={this.buttonStyle} />
+          )}
+        </div>
+      );
+    };
+
     return (
       <div
-        style={style}
+        style={wrapperStyle}
         class={bem({ disabled: this.disabled, vertical })}
         onClick={this.onClick}
       >
         <div class={bem('bar')} style={barStyle}>
-          <div
-            role="slider"
-            tabindex={this.disabled ? -1 : 0}
-            aria-valuemin={this.min}
-            aria-valuenow={this.value}
-            aria-valuemax={this.max}
-            aria-orientation={this.vertical ? 'vertical' : 'horizontal'}
-            class={bem('button-wrapper')}
-            onTouchstart={this.onTouchStart}
-            onTouchmove={this.onTouchMove}
-            onTouchend={this.onTouchEnd}
-            onTouchcancel={this.onTouchEnd}
-          >
-            {this.slots('button') || <div class={bem('button')} />}
-          </div>
+          {this.range ? [renderButton(0), renderButton(1)] : renderButton()}
         </div>
       </div>
     );
-  }
+  },
 });

@@ -9,8 +9,8 @@ The default language of Vant is Chinese. If you want to use other languages, you
 Vant supports multiple languages with the Locale component, and the `Locale.use` method allows you to switch to different languages.
 
 ```js
-import { Locale } from 'vant';
-import enUS from 'vant/lib/locale/lang/en-US';
+import { Locale } from '@femessage/vant';
+import enUS from '@femessage/vant/lib/locale/lang/en-US';
 
 Locale.use('en-US', enUS);
 ```
@@ -20,14 +20,14 @@ Locale.use('en-US', enUS);
 Use `Locale.add` method to modify the default configs.
 
 ```js
-import { Locale } from 'vant';
+import { Locale } from '@femessage/vant';
 
 const messages = {
   'en-US': {
     vanPicker: {
-      confirm: 'Close'
-    }
-  }
+      confirm: 'Close',
+    },
+  },
 };
 
 Locale.add(messages);
@@ -37,13 +37,16 @@ Locale.add(messages);
 
 Current supported languages:
 
-| Language | Filename |
-|------|------|
-| Chinese | zh-CN |
-| Traditional Chinese (HK) | zh-HK |
-| Traditional Chinese (TW) | zh-TW |
-| English | en-US |
-| Turkish | tr-TR |
-| Spanish (Spain) | es-ES |
+| Language                 | Filename |
+| ------------------------ | -------- |
+| Chinese                  | zh-CN    |
+| Traditional Chinese (HK) | zh-HK    |
+| Traditional Chinese (TW) | zh-TW    |
+| English                  | en-US    |
+| Turkish                  | tr-TR    |
+| Spanish (Spain)          | es-ES    |
+| Japanese                 | ja-JP    |
+| Romanian                 | ro-RO    |
+| Norwegian                | nb-NO    |
 
 > View all language configs [Here](https://github.com/youzan/vant/tree/dev/src/locale/lang).

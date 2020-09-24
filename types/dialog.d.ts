@@ -1,3 +1,5 @@
+import { VanComponent } from './component';
+
 type DialogAction = 'confirm' | 'cancel';
 type DialogDone = (close?: boolean) => void;
 
@@ -5,8 +7,10 @@ export type DialogOptions = {
   title?: string;
   width?: string | number;
   message?: string;
+  theme?: string;
   overlay?: boolean;
   className?: any;
+  allowHtml?: boolean;
   lockScroll?: boolean;
   transition?: string;
   messageAlign?: string;
@@ -32,7 +36,7 @@ export interface Dialog {
   install(): void;
   setDefaultOptions(options: DialogOptions): void;
   resetDefaultOptions(): void;
-  Component: any;
+  Component: typeof VanComponent;
 }
 
 declare module 'vue/types/vue' {

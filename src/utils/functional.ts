@@ -13,22 +13,22 @@ const inheritKey = [
   'nativeOn',
   'directives',
   'staticClass',
-  'staticStyle'
+  'staticStyle',
 ];
 
 const mapInheritKey: ObjectIndex = { nativeOn: 'on' };
 
 // inherit partial context, map nativeOn to on
-export function inherit(context: Context, inheritListeners?: boolean): InheritContext {
-  const result = inheritKey.reduce(
-    (obj, key) => {
-      if (context.data[key]) {
-        obj[mapInheritKey[key] || key] = context.data[key];
-      }
-      return obj;
-    },
-    {} as InheritContext
-  );
+export function inherit(
+  context: Context,
+  inheritListeners?: boolean
+): InheritContext {
+  const result = inheritKey.reduce((obj, key) => {
+    if (context.data[key]) {
+      obj[mapInheritKey[key] || key] = context.data[key];
+    }
+    return obj;
+  }, {} as InheritContext);
 
   if (inheritListeners) {
     result.on = result.on || {};
@@ -43,7 +43,7 @@ export function emit(context: Context, eventName: string, ...args: any[]) {
   const listeners = context.listeners[eventName];
   if (listeners) {
     if (Array.isArray(listeners)) {
-      listeners.forEach(listener => {
+      listeners.forEach((listener) => {
         listener(...args);
       });
     } else {
@@ -60,9 +60,9 @@ export function mount(Component: any, data?: VNodeData) {
     render(h) {
       return h(Component, {
         props: this.$props,
-        ...data
+        ...data,
       });
-    }
+    },
   });
 
   document.body.appendChild(instance.$el);
