@@ -1,10 +1,4 @@
-import Vue from 'vue';
-import Grid from '..';
-import GridItem from '../../grid-item';
-import { mount } from '../../../test/utils';
-
-Vue.use(Grid);
-Vue.use(GridItem);
+import { mount } from '../../../test';
 
 test('click grid item', () => {
   const onClick = jest.fn();
@@ -15,8 +9,8 @@ test('click grid item', () => {
       </van-grid>
     `,
     methods: {
-      onClick
-    }
+      onClick,
+    },
   });
 
   const Item = wrapper.find('.van-grid-item__content');
@@ -33,7 +27,7 @@ test('sqaure and set gutter', () => {
         <van-grid-item />
         <van-grid-item />
       </van-grid>
-    `
+    `,
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -45,7 +39,23 @@ test('icon-size prop', () => {
       <van-grid icon-size="10">
         <van-grid-item icon="success" />
       </van-grid>
-    `
+    `,
+  });
+
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('render icon-slot', () => {
+  const wrapper = mount({
+    template: `
+      <van-grid icon-size="10">
+        <van-grid-item info="1">
+          <template #icon>
+            <div>Custom Icon</div>
+          </template>
+        </van-grid-item>
+      </van-grid>
+    `,
   });
 
   expect(wrapper).toMatchSnapshot();

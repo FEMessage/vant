@@ -2,11 +2,12 @@
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
 import { IndexBar } from 'vant';
 
 Vue.use(IndexBar);
+Vue.use(IndexAnchor);
 ```
 
 ## Usage
@@ -51,38 +52,38 @@ Vue.use(IndexBar);
 export default {
   data() {
     return {
-      indexList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    }
-  }
-}
+      indexList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    };
+  },
+};
 ```
 
 ## API
 
 ### IndexBar Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| index-list | Index List | *string[] \| number[]* | `A-Z` | - |
-| z-index | z-index | *number* | `1` | - |
-| sticky | Whether to enable anchor sticky top | *boolean* | `true` | - |
-| sticky-offset-top | Anchor offset top when sticky | *number* | `0` | 2.0.7 |
-| highlight-color | Index character highlight color | *string* | `#07c160` | - | - |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| index-list | Index List | _string[] \| number[]_ | `A-Z` |
+| z-index | z-index | _number \| string_ | `1` |
+| sticky | Whether to enable anchor sticky top | _boolean_ | `true` |
+| sticky-offset-top | Anchor offset top when sticky | _number_ | `0` |
+| highlight-color | Index character highlight color | _string_ | `#07c160` | - |
 
 ### IndexAnchor Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| index | Index | *string \| number* | - | - |
+| Attribute | Description | Type               | Default |
+| --------- | ----------- | ------------------ | ------- |
+| index     | Index       | _number \| string_ | -       |
 
 ### IndexBar Events
 
-| Event | Description | Arguments |
-|------|------|------|
-| select | Triggered when select index | index |
+| Event  | Description                 | Arguments |
+| ------ | --------------------------- | --------- |
+| select | Triggered when select index | index     |
 
 ### IndexAnchor Slots
 
-| Name | Description |
-|------|------|
+| Name    | Description                           |
+| ------- | ------------------------------------- |
 | default | Anchor content, show index by default |

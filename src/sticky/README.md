@@ -2,7 +2,7 @@
 
 ### Install
 
-``` javascript
+```js
 import Vue from 'vue';
 import { Sticky } from 'vant';
 
@@ -41,12 +41,12 @@ Vue.use(Sticky);
 export default {
   data() {
     return {
-      container: null
+      container: null,
     };
   },
   mounted() {
     this.container = this.$refs.container;
-  }
+  },
 };
 ```
 
@@ -54,14 +54,14 @@ export default {
 
 ### Props
 
-| Attribute | Description | Type | Default | Version |
-|------|------|------|------|------|
-| offset-top | Offset top | *number* | `0` | - |
-| z-index | z-index when sticky | *number* | `99` | - |
-| container | Container DOM | *HTMLElement* | - | - |
+| Attribute | Description | Type | Default |
+| --- | --- | --- | --- |
+| offset-top `v2.8.7` | Offset top, supports `px` `vw` `rem` unit, default `px` | _number \| string_ | `0` |
+| z-index | z-index when sticky | _number \| string_ | `99` |
+| container | Container DOM | _Element_ | - |
 
 ### Events
 
-| Event | Description | Arguments |
-|------|------|------|
+| Event  | Description           | Arguments                      |
+| ------ | --------------------- | ------------------------------ |
 | scroll | Triggered when scroll | object: { scrollTop, isFixed } |

@@ -5,32 +5,41 @@ import { isServer } from '../utils';
 let instance;
 
 const defaultConfig = {
-  images: [],
   loop: true,
-  swipeDuration: 500,
   value: true,
-  minZoom: 1 / 3,
+  images: [],
   maxZoom: 3,
-  className: '',
+  minZoom: 1 / 3,
   onClose: null,
   onChange: null,
-  lazyLoad: false,
+  className: '',
   showIndex: true,
+  closeable: false,
+  closeIcon: 'clear',
   asyncClose: false,
+  getContainer: 'body',
   startPosition: 0,
+  swipeDuration: 500,
   showIndicators: false,
-  closeOnPopstate: false
+  closeOnPopstate: true,
+  closeIconPosition: 'top-right',
 };
 
 const initInstance = () => {
   instance = new (Vue.extend(VueImagePreview))({
-    el: document.createElement('div')
+    el: document.createElement('div'),
   });
   document.body.appendChild(instance.$el);
 
-  instance.$on('change', index => {
+  instance.$on('change', (index) => {
     if (instance.onChange) {
       instance.onChange(index);
+    }
+  });
+
+  instance.$on('scale', (data) => {
+    if (instance.onScale) {
+      instance.onScale(data);
     }
   });
 };
@@ -49,16 +58,23 @@ const ImagePreview = (images, startPosition = 0) => {
 
   Object.assign(instance, defaultConfig, options);
 
-  instance.$once('input', show => {
+  instance.$once('input', (show) => {
     instance.value = show;
   });
 
+  instance.$once('closed', () => {
+    instance.images = [];
+  });
+
   if (options.onClose) {
+    instance.$off('close');
     instance.$once('close', options.onClose);
   }
 
   return instance;
 };
+
+ImagePreview.Component = VueImagePreview;
 
 ImagePreview.install = () => {
   Vue.use(VueImagePreview);

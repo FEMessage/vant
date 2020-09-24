@@ -3,15 +3,15 @@ import {
   mount,
   trigger,
   triggerDrag,
-  mockGetBoundingClientRect
-} from '../../../test/utils';
+  mockGetBoundingClientRect,
+} from '../../../test';
 
 function mockRect(vertical) {
   return mockGetBoundingClientRect({
     width: vertical ? 0 : 100,
     height: vertical ? 100 : 0,
     top: vertical ? 0 : 100,
-    left: vertical ? 100 : 0
+    left: vertical ? 100 : 0,
   });
 }
 
@@ -21,11 +21,11 @@ test('drag button', () => {
   const wrapper = mount(Slider, {
     propsData: {
       value: 50,
-      disabled: true
-    }
+      disabled: true,
+    },
   });
 
-  wrapper.vm.$on('input', value => {
+  wrapper.vm.$on('input', (value) => {
     wrapper.setProps({ value });
   });
 
@@ -46,17 +46,17 @@ test('drag button', () => {
   restoreMock();
 });
 
-it('click bar', () => {
+test('click bar', () => {
   const restoreMock = mockRect();
 
   const wrapper = mount(Slider, {
     propsData: {
       value: 50,
-      disabled: true
-    }
+      disabled: true,
+    },
   });
 
-  wrapper.vm.$on('input', value => {
+  wrapper.vm.$on('input', (value) => {
     wrapper.setProps({ value });
   });
 
@@ -76,11 +76,11 @@ test('drag button vertical', () => {
   const wrapper = mount(Slider, {
     propsData: {
       value: 50,
-      vertical: true
-    }
+      vertical: true,
+    },
   });
 
-  wrapper.vm.$on('input', value => {
+  wrapper.vm.$on('input', (value) => {
     wrapper.setProps({ value });
   });
 
@@ -91,17 +91,17 @@ test('drag button vertical', () => {
   restoreMock();
 });
 
-it('click vertical', () => {
+test('click vertical', () => {
   const restoreMock = mockRect(true);
 
   const wrapper = mount(Slider, {
     propsData: {
       value: 50,
-      vertical: true
-    }
+      vertical: true,
+    },
   });
 
-  wrapper.vm.$on('input', value => {
+  wrapper.vm.$on('input', (value) => {
     wrapper.setProps({ value });
   });
 
@@ -111,27 +111,38 @@ it('click vertical', () => {
   restoreMock();
 });
 
-it('bar height', () => {
+test('bar-height prop', () => {
   const wrapper = mount(Slider, {
     propsData: {
       value: 50,
-      barHeight: 10
-    }
+      barHeight: 10,
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
 });
 
-it('should not emit change event when value not changed', () => {
+test('button-size prop', () => {
   const wrapper = mount(Slider, {
     propsData: {
-      value: 50
+      value: 50,
+      buttonSize: 10,
+    },
+  });
+
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('should not emit change event when value not changed', () => {
+  const wrapper = mount(Slider, {
+    propsData: {
+      value: 50,
     },
     listeners: {
       input(value) {
         wrapper.setProps({ value });
-      }
-    }
+      },
+    },
   });
 
   trigger(wrapper, 'click', 100, 0);
@@ -140,16 +151,16 @@ it('should not emit change event when value not changed', () => {
   expect(wrapper.emitted('change').length).toEqual(1);
 });
 
-it('should format initial value', done => {
+test('should format initial value', (done) => {
   mount(Slider, {
     propsData: {
-      value: null
+      value: null,
     },
     listeners: {
       input(value) {
         expect(value).toEqual(0);
         done();
-      }
-    }
+      },
+    },
   });
 });

@@ -1,37 +1,31 @@
-import { createNamespace, isDef, addUnit } from '../utils';
-import { BLUE, WHITE } from '../utils/constant';
+import { createNamespace, addUnit } from '../utils';
 
 const [createComponent, bem] = createNamespace('progress');
 
 export default createComponent({
   props: {
+    color: String,
     inactive: Boolean,
     pivotText: String,
+    textColor: String,
     pivotColor: String,
-    strokeWidth: [String, Number],
+    trackColor: String,
+    strokeWidth: [Number, String],
     percentage: {
-      type: Number,
+      type: [Number, String],
       required: true,
-      validator: value => value >= 0 && value <= 100
+      validator: (value) => value >= 0 && value <= 100,
     },
     showPivot: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    color: {
-      type: String,
-      default: BLUE
-    },
-    textColor: {
-      type: String,
-      default: WHITE
-    }
   },
 
   data() {
     return {
       pivotWidth: 0,
-      progressWidth: 0
+      progressWidth: 0,
     };
   },
 
@@ -41,7 +35,7 @@ export default createComponent({
 
   watch: {
     showPivot: 'setWidth',
-    pivotText: 'setWidth'
+    pivotText: 'setWidth',
   },
 
   methods: {
@@ -50,32 +44,30 @@ export default createComponent({
         this.progressWidth = this.$el.offsetWidth;
         this.pivotWidth = this.$refs.pivot ? this.$refs.pivot.offsetWidth : 0;
       });
-    }
+    },
   },
 
   render() {
     const { pivotText, percentage } = this;
-    const text = isDef(pivotText) ? pivotText : percentage + '%';
+    const text = pivotText ?? percentage + '%';
     const showPivot = this.showPivot && text;
     const background = this.inactive ? '#cacaca' : this.color;
 
     const pivotStyle = {
       color: this.textColor,
-      left: `${(this.progressWidth - this.pivotWidth) * percentage / 100}px`,
-      background: this.pivotColor || background
+      left: `${((this.progressWidth - this.pivotWidth) * percentage) / 100}px`,
+      background: this.pivotColor || background,
     };
 
     const portionStyle = {
       background,
-      width: (this.progressWidth * percentage) / 100 + 'px'
+      width: (this.progressWidth * percentage) / 100 + 'px',
     };
 
-    let wrapperStyle;
-    if (this.strokeWidth) {
-      wrapperStyle = {
-        height: addUnit(this.strokeWidth)
-      };
-    }
+    const wrapperStyle = {
+      background: this.trackColor,
+      height: addUnit(this.strokeWidth),
+    };
 
     return (
       <div class={bem()} style={wrapperStyle}>
@@ -88,5 +80,5 @@ export default createComponent({
         </span>
       </div>
     );
-  }
+  },
 });

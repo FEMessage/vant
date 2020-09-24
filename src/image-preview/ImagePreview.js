@@ -1,320 +1,229 @@
-import { createNamespace } from '../utils';
-import { range } from '../utils/format/number';
-import { preventDefault } from '../utils/dom/event';
+// Utils
+import { bem, createComponent } from './shared';
+
+// Mixins
 import { PopupMixin } from '../mixins/popup';
 import { TouchMixin } from '../mixins/touch';
-import { CloseOnPopstateMixin } from '../mixins/close-on-popstate';
-import Image from '../image';
-import Loading from '../loading';
+import { BindEventMixin } from '../mixins/bind-event';
+
+// Components
+import Icon from '../icon';
 import Swipe from '../swipe';
-import SwipeItem from '../swipe-item';
-
-const [createComponent, bem] = createNamespace('image-preview');
-
-function getDistance(touches) {
-  return Math.sqrt(
-    ((touches[0].clientX - touches[1].clientX) ** 2) +
-    ((touches[0].clientY - touches[1].clientY) ** 2)
-  );
-}
+import ImagePreviewItem from './ImagePreviewItem';
 
 export default createComponent({
-  mixins: [PopupMixin, TouchMixin, CloseOnPopstateMixin],
+  mixins: [
+    TouchMixin,
+    PopupMixin({
+      skipToggleEvent: true,
+    }),
+    BindEventMixin(function (bind) {
+      bind(window, 'resize', this.resize, true);
+      bind(window, 'orientationchange', this.resize, true);
+    }),
+  ],
 
   props: {
     className: null,
-    lazyLoad: Boolean,
+    closeable: Boolean,
     asyncClose: Boolean,
     showIndicators: Boolean,
     images: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     loop: {
       type: Boolean,
-      default: true
-    },
-    swipeDuration: {
-      type: Number,
-      default: 500
+      default: true,
     },
     overlay: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+    minZoom: {
+      type: [Number, String],
+      default: 1 / 3,
+    },
+    maxZoom: {
+      type: [Number, String],
+      default: 3,
     },
     showIndex: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+    swipeDuration: {
+      type: [Number, String],
+      default: 500,
     },
     startPosition: {
-      type: Number,
-      default: 0
-    },
-    minZoom: {
-      type: Number,
-      default: 1 / 3
-    },
-    maxZoom: {
-      type: Number,
-      default: 3
+      type: [Number, String],
+      default: 0,
     },
     overlayClass: {
       type: String,
-      default: bem('overlay')
+      default: bem('overlay'),
     },
-    closeOnClickOverlay: {
+    closeIcon: {
+      type: String,
+      default: 'clear',
+    },
+    closeOnPopstate: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
+    closeIconPosition: {
+      type: String,
+      default: 'top-right',
+    },
   },
 
   data() {
-    this.bindStatus = false;
-
     return {
-      scale: 1,
-      moveX: 0,
-      moveY: 0,
-      moving: false,
-      zooming: false,
       active: 0,
-      doubleClickTimer: null
+      rootWidth: 0,
+      rootHeight: 0,
+      doubleClickTimer: null,
     };
   },
 
-  computed: {
-    imageStyle() {
-      const { scale } = this;
-      const style = {
-        transitionDuration: this.zooming || this.moving ? '0s' : '.3s'
-      };
-
-      if (scale !== 1) {
-        style.transform = `scale3d(${scale}, ${scale}, 1) translate(${this.moveX /
-          scale}px, ${this.moveY / scale}px)`;
-      }
-
-      return style;
-    }
+  mounted() {
+    this.resize();
   },
 
   watch: {
-    value() {
-      this.setActive(this.startPosition);
-    },
+    startPosition: 'setActive',
 
-    startPosition(active) {
-      this.setActive(active);
-    }
+    value(val) {
+      if (val) {
+        this.setActive(+this.startPosition);
+        this.$nextTick(() => {
+          this.resize();
+          this.$refs.swipe.swipeTo(+this.startPosition, { immediate: true });
+        });
+      } else {
+        this.$emit('close', {
+          index: this.active,
+          url: this.images[this.active],
+        });
+      }
+    },
   },
 
   methods: {
-    onWrapperTouchStart() {
-      this.touchStartTime = new Date();
-    },
-
-    onWrapperTouchEnd(event) {
-      preventDefault(event);
-
-      const deltaTime = new Date() - this.touchStartTime;
-      const { offsetX = 0, offsetY = 0 } = this.$refs.swipe || {};
-
-      // prevent long tap to close component
-      if (deltaTime < 300 && offsetX < 10 && offsetY < 10) {
-        if (!this.doubleClickTimer) {
-          this.doubleClickTimer = setTimeout(() => {
-            const index = this.active;
-
-            this.$emit('close', {
-              index,
-              url: this.images[index]
-            });
-
-            if (!this.asyncClose) {
-              this.$emit('input', false);
-            }
-
-            this.doubleClickTimer = null;
-          }, 300);
-        } else {
-          clearTimeout(this.doubleClickTimer);
-          this.doubleClickTimer = null;
-          this.toggleScale();
-        }
+    resize() {
+      if (this.$el && this.$el.getBoundingClientRect) {
+        const rect = this.$el.getBoundingClientRect();
+        this.rootWidth = rect.width;
+        this.rootHeight = rect.height;
       }
     },
 
-    startMove(event) {
-      const image = event.currentTarget;
-      const rect = image.getBoundingClientRect();
-      const winWidth = window.innerWidth;
-      const winHeight = window.innerHeight;
-
-      this.touchStart(event);
-      this.moving = true;
-      this.startMoveX = this.moveX;
-      this.startMoveY = this.moveY;
-      this.maxMoveX = Math.max(0, (rect.width - winWidth) / 2);
-      this.maxMoveY = Math.max(0, (rect.height - winHeight) / 2);
-    },
-
-    startZoom(event) {
-      this.moving = false;
-      this.zooming = true;
-      this.startScale = this.scale;
-      this.startDistance = getDistance(event.touches);
-    },
-
-    onImageTouchStart(event) {
-      const { touches } = event;
-      const { offsetX = 0 } = this.$refs.swipe || {};
-
-      if (touches.length === 1 && this.scale !== 1) {
-        this.startMove(event);
-      } /* istanbul ignore else */ else if (touches.length === 2 && !offsetX) {
-        this.startZoom(event);
+    emitClose() {
+      if (!this.asyncClose) {
+        this.$emit('input', false);
       }
     },
 
-    onImageTouchMove(event) {
-      const { touches } = event;
-      if (this.moving || this.zooming) {
-        preventDefault(event, true);
-      }
-
-      if (this.moving) {
-        this.touchMove(event);
-        const moveX = this.deltaX + this.startMoveX;
-        const moveY = this.deltaY + this.startMoveY;
-        this.moveX = range(moveX, -this.maxMoveX, this.maxMoveX);
-        this.moveY = range(moveY, -this.maxMoveY, this.maxMoveY);
-      }
-
-      if (this.zooming && touches.length === 2) {
-        const distance = getDistance(touches);
-        const scale = (this.startScale * distance) / this.startDistance;
-        this.scale = range(scale, this.minZoom, this.maxZoom);
-      }
-    },
-
-    onImageTouchEnd(event) {
-      /* istanbul ignore else */
-      if (this.moving || this.zooming) {
-        let stopPropagation = true;
-
-        if (
-          this.moving &&
-          this.startMoveX === this.moveX &&
-          this.startMoveY === this.moveY
-        ) {
-          stopPropagation = false;
-        }
-
-        if (!event.touches.length) {
-          this.moving = false;
-          this.zooming = false;
-          this.startMoveX = 0;
-          this.startMoveY = 0;
-          this.startScale = 1;
-
-          if (this.scale < 1) {
-            this.resetScale();
-          }
-        }
-
-        if (stopPropagation) {
-          preventDefault(event, true);
-        }
-      }
+    emitScale(args) {
+      this.$emit('scale', args);
     },
 
     setActive(active) {
-      this.resetScale();
-
       if (active !== this.active) {
         this.active = active;
         this.$emit('change', active);
       }
     },
 
-    resetScale() {
-      this.scale = 1;
-      this.moveX = 0;
-      this.moveY = 0;
-    },
-
-    toggleScale() {
-      const scale = this.scale > 1 ? 1 : 2;
-
-      this.scale = scale;
-      this.moveX = 0;
-      this.moveY = 0;
-    },
-
     genIndex() {
       if (this.showIndex) {
         return (
           <div class={bem('index')}>
-            {this.slots('index') || `${this.active + 1}/${this.images.length}`}
+            {this.slots('index') ||
+              `${this.active + 1} / ${this.images.length}`}
           </div>
         );
       }
     },
 
-    genImages() {
-      const imageSlots = {
-        loading: () => <Loading type="spinner" />
-      };
+    genCover() {
+      const cover = this.slots('cover');
 
+      if (cover) {
+        return <div class={bem('cover')}>{cover}</div>;
+      }
+    },
+
+    genImages() {
       return (
         <Swipe
           ref="swipe"
+          lazyRender
           loop={this.loop}
+          class={bem('swipe')}
           duration={this.swipeDuration}
-          indicatorColor="white"
           initialSwipe={this.startPosition}
           showIndicators={this.showIndicators}
+          indicatorColor="white"
           onChange={this.setActive}
         >
-          {this.images.map((image, index) => (
-            <SwipeItem>
-              <Image
-                src={image}
-                fit="contain"
-                class={bem('image')}
-                lazyLoad={this.lazyLoad}
-                scopedSlots={imageSlots}
-                style={index === this.active ? this.imageStyle : null}
-                nativeOnTouchstart={this.onImageTouchStart}
-                nativeOnTouchmove={this.onImageTouchMove}
-                nativeOnTouchend={this.onImageTouchEnd}
-                nativeOnTouchcancel={this.onImageTouchEnd}
-              />
-            </SwipeItem>
+          {this.images.map((image) => (
+            <ImagePreviewItem
+              src={image}
+              show={this.value}
+              active={this.active}
+              maxZoom={this.maxZoom}
+              minZoom={this.minZoom}
+              rootWidth={this.rootWidth}
+              rootHeight={this.rootHeight}
+              onScale={this.emitScale}
+              onClose={this.emitClose}
+            />
           ))}
         </Swipe>
       );
-    }
+    },
+
+    genClose() {
+      if (this.closeable) {
+        return (
+          <Icon
+            role="button"
+            name={this.closeIcon}
+            class={bem('close-icon', this.closeIconPosition)}
+            onClick={this.emitClose}
+          />
+        );
+      }
+    },
+
+    onClosed() {
+      this.$emit('closed');
+    },
+
+    // @exposed-api
+    swipeTo(index, options) {
+      if (this.$refs.swipe) {
+        this.$refs.swipe.swipeTo(index, options);
+      }
+    },
   },
 
   render() {
-    if (!this.value) {
+    if (!this.shouldRender) {
       return;
     }
 
     return (
-      <transition name="van-fade">
-        <div
-          class={[bem(), this.className]}
-          onTouchstart={this.onWrapperTouchStart}
-          onTouchMove={preventDefault}
-          onTouchend={this.onWrapperTouchEnd}
-          onTouchcancel={this.onWrapperTouchEnd}
-        >
+      <transition name="van-fade" onAfterLeave={this.onClosed}>
+        <div vShow={this.value} class={[bem(), this.className]}>
+          {this.genClose()}
           {this.genImages()}
           {this.genIndex()}
+          {this.genCover()}
         </div>
       </transition>
     );
-  }
+  },
 });

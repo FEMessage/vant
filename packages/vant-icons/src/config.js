@@ -8,7 +8,7 @@ module.exports = {
     'arrow',
     'arrow-left',
     'arrow-up',
-    'arrow-down'
+    'arrow-down',
   ],
   outline: [
     // has corresponding filled icon
@@ -54,6 +54,7 @@ module.exports = {
     'video-o',
     'shop-o',
     'shop-collect-o',
+    'share-o',
     'chat-o',
     'smile-comment-o',
     'vip-card-o',
@@ -65,7 +66,7 @@ module.exports = {
     'photo-o',
     'gift-card-o',
     'expand-o',
-    'medel-o',
+    'medal-o',
     'good-job-o',
     'manager-o',
     'label-o',
@@ -97,13 +98,13 @@ module.exports = {
     'newspaper-o',
     'warn-o',
     'notes-o',
-    'calender-o',
+    'calendar-o',
     'bulb-o',
     'user-circle-o',
     'desktop-o',
     'apps-o',
     'home-o',
-    'share',
+    'back-top',
     'search',
     'points',
     'edit',
@@ -142,7 +143,7 @@ module.exports = {
     'discount',
     'idcard',
     'replay',
-    'shrink'
+    'shrink',
   ],
   filled: [
     // has corresponding outline icon
@@ -188,6 +189,7 @@ module.exports = {
     'video',
     'shop',
     'shop-collect',
+    'share',
     'chat',
     'smile-comment',
     'vip-card',
@@ -199,7 +201,7 @@ module.exports = {
     'photo',
     'gift-card',
     'expand',
-    'medel',
+    'medal',
     'good-job',
     'manager',
     'label',
@@ -235,6 +237,8 @@ module.exports = {
     'ascending',
     'descending',
     'bars',
-    'wap-nav'
-  ]
+    'wap-nav',
+    'enlarge',
+    'photo-fail',
+  ],
 };

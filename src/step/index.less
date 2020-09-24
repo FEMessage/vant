@@ -17,6 +17,7 @@
   &__line {
     position: absolute;
     background-color: @step-line-color;
+    transition: background-color @animation-duration-base;
   }
 
   &--horizontal {
@@ -87,7 +88,7 @@
     display: block;
     float: none;
     padding: 10px 10px 10px 0;
-    line-height: 18px;
+    line-height: @line-height-sm;
 
     &:not(:last-child)::after {
       border-bottom-width: 1px;
@@ -136,6 +137,15 @@
     .van-step__circle,
     .van-step__line {
       background-color: @step-finish-line-color;
+    }
+  }
+
+  &__icon,
+  &__title {
+    transition: color @animation-duration-base;
+
+    &--active {
+      color: @step-active-color;
     }
   }
 }

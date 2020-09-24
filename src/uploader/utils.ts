@@ -9,7 +9,7 @@ export function toArray<T>(item: T | T[]): T[] {
 }
 
 export function readFile(file: File, resultType: ResultType) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     if (resultType === 'file') {
       resolve();
       return;
@@ -17,7 +17,7 @@ export function readFile(file: File, resultType: ResultType) {
 
     const reader = new FileReader();
 
-    reader.onload = event => {
+    reader.onload = (event) => {
       resolve((event.target as FileReader).result);
     };
 
@@ -29,8 +29,11 @@ export function readFile(file: File, resultType: ResultType) {
   });
 }
 
-export function isOversize(files: File | File[], maxSize: number): boolean {
-  return toArray(files).some(file => file.size > maxSize);
+export function isOversize(
+  files: File | File[],
+  maxSize: number | string
+): boolean {
+  return toArray(files).some((file) => file.size > maxSize);
 }
 
 export type FileListItem = {
@@ -38,6 +41,8 @@ export type FileListItem = {
   file?: File;
   content?: string; // dataUrl
   isImage?: boolean;
+  status?: '' | 'uploading' | 'done' | 'failed';
+  message?: string;
 };
 
 const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;

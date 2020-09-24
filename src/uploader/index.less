@@ -7,6 +7,10 @@
   &__wrapper {
     display: flex;
     flex-wrap: wrap;
+
+    &--disabled {
+      opacity: @uploader-disabled-opacity;
+    }
   }
 
   &__input {
@@ -22,6 +26,10 @@
     &-wrapper {
       position: relative;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 
   &__upload {
@@ -35,8 +43,10 @@
     height: @uploader-size;
     margin: 0 @padding-xs @padding-xs 0;
     background-color: @uploader-upload-background-color;
-    border: 1px dashed @uploader-upload-border-color;
-    border-radius: @uploader-upload-border-radius;
+
+    &:active {
+      background-color: @uploader-upload-active-color;
+    }
 
     &-icon {
       color: @uploader-icon-color;
@@ -53,22 +63,73 @@
   &__preview {
     position: relative;
     margin: 0 @padding-xs @padding-xs 0;
+    cursor: pointer;
 
     &-image {
       display: block;
       width: @uploader-size;
       height: @uploader-size;
+      overflow: hidden;
     }
 
     &-delete {
       position: absolute;
-      top: -8px;
-      right: -8px;
-      color: @uploader-delete-color;
-      font-size: @uploader-delete-icon-size;
+      top: 0;
+      right: 0;
+      width: @uploader-delete-icon-size;
+      height: @uploader-delete-icon-size;
       background-color: @uploader-delete-background-color;
-      border-radius: 100%;
+      border-radius: 0 0 0 12px;
+
+      &-icon {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        color: #fff;
+        color: @uploader-delete-color;
+        font-size: 16px;
+        transform: scale(0.5);
+      }
     }
+
+    &-cover {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  &__mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: @white;
+    background-color: @uploader-mask-background-color;
+
+    &-icon {
+      font-size: @uploader-mask-icon-size;
+    }
+
+    &-message {
+      margin-top: 6px;
+      padding: 0 @padding-base;
+      font-size: @uploader-mask-message-font-size;
+      line-height: @uploader-mask-message-line-height;
+    }
+  }
+
+  &__loading {
+    width: @uploader-loading-icon-size;
+    height: @uploader-loading-icon-size;
+    color: @uploader-loading-icon-color;
   }
 
   &__file {

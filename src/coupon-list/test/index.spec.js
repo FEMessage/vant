@@ -1,7 +1,7 @@
 import Coupon from '../../coupon';
 import CouponList from '..';
 import CouponCell from '../../coupon-cell';
-import { later, mount } from '../../../test/utils';
+import { later, mount } from '../../../test';
 
 const coupon = {
   id: 1,
@@ -13,17 +13,23 @@ const coupon = {
   name: 'name',
   description: 'description',
   startAt: 1489104000,
-  endAt: 1514592000
+  endAt: 1514592000,
 };
 
 const coupon2 = {
   ...coupon,
-  denominations: 100
+  denominations: 100,
 };
 
 const coupon3 = {
   ...coupon,
-  denominations: 123
+  denominations: 123,
+};
+
+const coupon4 = {
+  ...coupon,
+  startAt: 1600327871,
+  endAt: 1700327871,
 };
 
 const emptyCoupon = {
@@ -32,7 +38,7 @@ const emptyCoupon = {
   denominations: 0,
   originCondition: 0,
   startAt: 1489104000,
-  endAt: 1514592000
+  endAt: 1514592000,
 };
 
 const discountCoupon = {
@@ -42,7 +48,7 @@ const discountCoupon = {
   denominations: 0,
   originCondition: 50,
   value: 12,
-  description: ''
+  description: '',
 };
 
 const discountCoupon2 = {
@@ -52,28 +58,28 @@ const discountCoupon2 = {
   denominations: 0,
   originCondition: 50,
   value: 12,
-  description: ''
+  description: '',
 };
 
 const disabledCoupon = {
   ...coupon,
   id: 3,
-  reason: 'reason'
+  reason: 'reason',
 };
 
 const disabledDiscountCoupon = {
   ...discountCoupon,
   discount: 10,
   id: 4,
-  reason: ''
+  reason: '',
 };
 
 test('render disabled coupon', () => {
   const wrapper = mount(Coupon, {
     propsData: {
       coupon: disabledCoupon,
-      disabled: true
-    }
+      disabled: true,
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -83,9 +89,16 @@ test('render coupon list', async () => {
   const wrapper = mount(CouponList, {
     propsData: {
       chosenCoupon: 1,
-      coupons: [emptyCoupon, coupon, coupon2, coupon3, discountCoupon, discountCoupon2],
-      disabledCoupons: [disabledCoupon, disabledDiscountCoupon]
-    }
+      coupons: [
+        emptyCoupon,
+        coupon,
+        coupon2,
+        coupon3,
+        discountCoupon,
+        discountCoupon2,
+      ],
+      disabledCoupons: [disabledCoupon, disabledDiscountCoupon],
+    },
   });
   await later();
   expect(wrapper).toMatchSnapshot();
@@ -95,8 +108,8 @@ test('render empty coupon list', () => {
   const wrapper = mount(CouponList, {
     propsData: {
       coupons: [],
-      disabledCoupons: []
-    }
+      disabledCoupons: [],
+    },
   });
   wrapper.findAll('.van-tab').at(1).trigger('click');
   expect(wrapper).toMatchSnapshot();
@@ -105,8 +118,8 @@ test('render empty coupon list', () => {
 test('empty-image prop', () => {
   const wrapper = mount(CouponList, {
     propsData: {
-      emptyImage: 'https://img.yzcdn.com/xxx.png'
-    }
+      emptyImage: 'https://img.yzcdn.com/xxx.png',
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -118,7 +131,7 @@ test('exchange coupon', () => {
 
   wrapper.setData({
     currentCode: '1',
-    displayedCouponIndex: 1
+    displayedCouponIndex: 1,
   });
   exchange.trigger('click');
   wrapper.setProps({ code: '2' });
@@ -136,9 +149,9 @@ test('render coupon cell', () => {
   const wrapper = mount(CouponCell, {
     context: {
       on: {
-        click: onClick
-      }
-    }
+        click: onClick,
+      },
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -150,8 +163,18 @@ test('render coupon cell with coupon', () => {
   const wrapper = mount(CouponCell, {
     propsData: {
       coupons: [{ value: 100 }],
-      chosenCoupon: 0
-    }
+      chosenCoupon: 0,
+    },
+  });
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('render coupon cell with zero discount', () => {
+  const wrapper = mount(CouponCell, {
+    propsData: {
+      coupons: [{ ...coupon4, value: 0, denominations: 150 }],
+      chosenCoupon: 0,
+    },
   });
   expect(wrapper).toMatchSnapshot();
 });

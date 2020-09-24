@@ -1,38 +1,45 @@
+// Utils
 import { createNamespace } from '../../utils';
-import Cell from '../../cell';
-import CellGroup from '../../cell-group';
-import Field from '../../field';
 import { isEmail } from '../../utils/validate/email';
-import { isNumber } from '../../utils/validate/number';
+import { isNumeric } from '../../utils/validate/number';
+
+// Components
+import Cell from '../../cell';
+import Field from '../../field';
 import SkuImgUploader from './SkuImgUploader';
+import SkuDateTimeField from './SkuDateTimeField';
 
 const [createComponent, bem, t] = createNamespace('sku-messages');
 
 export default createComponent({
   props: {
+    messageConfig: Object,
+    goodsId: [Number, String],
     messages: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
-    messageConfig: Object,
-    goodsId: [Number, String]
   },
 
   data() {
     return {
-      messageValues: this.resetMessageValues(this.messages)
+      messageValues: this.resetMessageValues(this.messages),
     };
   },
 
   watch: {
     messages(val) {
       this.messageValues = this.resetMessageValues(val);
-    }
+    },
   },
 
   methods: {
     resetMessageValues(messages) {
-      return (messages || []).map(() => ({ value: '' }));
+      const { messageConfig } = this;
+      const { initialMessages = {} } = messageConfig;
+      return (messages || []).map((message) => ({
+        value: initialMessages[message.name] || '',
+      }));
     },
 
     getType(message) {
@@ -42,18 +49,14 @@ export default createComponent({
       if (message.type === 'id_no') {
         return 'text';
       }
-      return message.datetime > 0 ? 'datetime-local' : message.type;
+      return message.datetime > 0 ? 'datetime' : message.type;
     },
 
     getMessages() {
       const messages = {};
 
       this.messageValues.forEach((item, index) => {
-        let { value } = item;
-        if (this.messages[index].datetime > 0) {
-          value = value.replace(/T/g, ' ');
-        }
-        messages[`message_${index}`] = value;
+        messages[`message_${index}`] = item.value;
       });
 
       return messages;
@@ -63,12 +66,8 @@ export default createComponent({
       const messages = {};
 
       this.messageValues.forEach((item, index) => {
-        let { value } = item;
         const message = this.messages[index];
-        if (message.datetime > 0) {
-          value = value.replace(/T/g, ' ');
-        }
-        messages[message.name] = value;
+        messages[message.name] = item.value;
       });
 
       return messages;
@@ -94,7 +93,7 @@ export default createComponent({
             return textType + message.name;
           }
         } else {
-          if (message.type === 'tel' && !isNumber(value)) {
+          if (message.type === 'tel' && !isNumeric(value)) {
             return t('invalid.tel');
           }
           if (message.type === 'mobile' && !/^\d{6,20}$/.test(value)) {
@@ -103,44 +102,83 @@ export default createComponent({
           if (message.type === 'email' && !isEmail(value)) {
             return t('invalid.email');
           }
-          if (message.type === 'id_no' && (value.length < 15 || value.length > 18)) {
+          if (
+            message.type === 'id_no' &&
+            (value.length < 15 || value.length > 18)
+          ) {
             return t('invalid.id_no');
           }
         }
       }
-    }
-  },
+    },
+    /**
+     * The phone number copied from IOS mobile phone address book
+     * will add spaces and invisible Unicode characters
+     * which cannot pass the /^\d+$/ verification
+     * so keep numbers and dots
+     */
+    getFormatter(message) {
+      return function formatter(value) {
+        if (message.type === 'mobile' || message.type === 'tel') {
+          return value.replace(/[^\d.]/g, '');
+        }
 
-  render() {
-    return (
-      <CellGroup class={bem()} border={this.messages.length > 0}>
-        {this.messages.map((message, index) => (message.type === 'image' ? (
+        return value;
+      };
+    },
+
+    genMessage(message, index) {
+      if (message.type === 'image') {
+        return (
           <Cell
-            class={bem('image-cell')}
-            value-class={bem('image-cell-value')}
-            label={t('imageLabel')}
-            title={message.name}
             key={`${this.goodsId}-${index}`}
+            title={message.name}
+            class={bem('image-cell')}
             required={String(message.required) === '1'}
+            valueClass={bem('image-cell-value')}
           >
             <SkuImgUploader
               vModel={this.messageValues[index].value}
-              uploadImg={this.messageConfig.uploadImg}
               maxSize={this.messageConfig.uploadMaxSize}
+              uploadImg={this.messageConfig.uploadImg}
             />
+            <div class={bem('image-cell-label')}>{t('imageLabel')}</div>
           </Cell>
-        ) : (
-          <Field
+        );
+      }
+
+      // 时间和日期使用的vant选择器
+      const isDateOrTime = ['date', 'time'].indexOf(message.type) > -1;
+      if (isDateOrTime) {
+        return (
+          <SkuDateTimeField
             vModel={this.messageValues[index].value}
-            maxlength="200"
             label={message.name}
             key={`${this.goodsId}-${index}`}
             required={String(message.required) === '1'}
             placeholder={this.getPlaceholder(message)}
             type={this.getType(message)}
           />
-        )))}
-      </CellGroup>
-    );
-  }
+        );
+      }
+
+      return (
+        <Field
+          vModel={this.messageValues[index].value}
+          maxlength="200"
+          center={!message.multiple}
+          label={message.name}
+          key={`${this.goodsId}-${index}`}
+          required={String(message.required) === '1'}
+          placeholder={this.getPlaceholder(message)}
+          type={this.getType(message)}
+          formatter={this.getFormatter(message)}
+        />
+      );
+    },
+  },
+
+  render() {
+    return <div class={bem()}>{this.messages.map(this.genMessage)}</div>;
+  },
 });

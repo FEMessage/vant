@@ -1,24 +1,29 @@
+// Utils
 import { createNamespace } from '../utils';
 import { isHidden } from '../utils/dom/style';
+import { getScroller } from '../utils/dom/scroll';
+
+// Mixins
 import { BindEventMixin } from '../mixins/bind-event';
-import { getScrollEventTarget } from '../utils/dom/scroll';
+
+// Components
 import Loading from '../loading';
 
 const [createComponent, bem, t] = createNamespace('list');
 
 export default createComponent({
   mixins: [
-    BindEventMixin(function(bind) {
+    BindEventMixin(function (bind) {
       if (!this.scroller) {
-        this.scroller = getScrollEventTarget(this.$el);
+        this.scroller = getScroller(this.$el);
       }
 
       bind(this.scroller, 'scroll', this.check);
-    })
+    }),
   ],
 
   model: {
-    prop: 'loading'
+    prop: 'loading',
   },
 
   props: {
@@ -30,16 +35,27 @@ export default createComponent({
     finishedText: String,
     immediateCheck: {
       type: Boolean,
-      default: true
+      default: true,
     },
     offset: {
-      type: Number,
-      default: 300
+      type: [Number, String],
+      default: 300,
     },
     direction: {
       type: String,
-      default: 'down'
-    }
+      default: 'down',
+    },
+  },
+
+  data() {
+    return {
+      // use sync innerLoading state to avoid repeated loading in some edge cases
+      innerLoading: this.loading,
+    };
+  },
+
+  updated() {
+    this.innerLoading = this.loading;
   },
 
   mounted() {
@@ -50,13 +66,14 @@ export default createComponent({
 
   watch: {
     loading: 'check',
-    finished: 'check'
+    finished: 'check',
   },
 
   methods: {
+    // @exposed-api
     check() {
       this.$nextTick(() => {
-        if (this.loading || this.finished || this.error) {
+        if (this.innerLoading || this.finished || this.error) {
           return;
         }
 
@@ -68,7 +85,7 @@ export default createComponent({
         } else {
           scrollerRect = {
             top: 0,
-            bottom: scroller.innerHeight
+            bottom: scroller.innerHeight,
           };
         }
 
@@ -83,12 +100,13 @@ export default createComponent({
         const placeholderRect = this.$refs.placeholder.getBoundingClientRect();
 
         if (direction === 'up') {
-          isReachEdge = placeholderRect.top - scrollerRect.top <= offset;
+          isReachEdge = scrollerRect.top - placeholderRect.top <= offset;
         } else {
           isReachEdge = placeholderRect.bottom - scrollerRect.bottom <= offset;
         }
 
         if (isReachEdge) {
+          this.innerLoading = true;
           this.$emit('input', true);
           this.$emit('load');
         }
@@ -98,32 +116,58 @@ export default createComponent({
     clickErrorText() {
       this.$emit('update:error', false);
       this.check();
-    }
-  },
+    },
 
-  render() {
-    const Placeholder = <div ref="placeholder" class={bem('placeholder')} />;
-
-    return (
-      <div class={bem()} role="feed" aria-busy={this.loading}>
-        {this.direction === 'down' ? this.slots() : Placeholder}
-        {this.loading && (
-          <div class={bem('loading')} key="loading">
+    genLoading() {
+      if (this.innerLoading && !this.finished) {
+        return (
+          <div class={bem('loading')}>
             {this.slots('loading') || (
               <Loading size="16">{this.loadingText || t('loading')}</Loading>
             )}
           </div>
-        )}
-        {this.finished && this.finishedText && (
-          <div class={bem('finished-text')}>{this.finishedText}</div>
-        )}
-        {this.error && this.errorText && (
-          <div onClick={this.clickErrorText} class={bem('error-text')}>
-            {this.errorText}
-          </div>
-        )}
+        );
+      }
+    },
+
+    genFinishedText() {
+      if (this.finished) {
+        const text = this.slots('finished') || this.finishedText;
+
+        if (text) {
+          return <div class={bem('finished-text')}>{text}</div>;
+        }
+      }
+    },
+
+    genErrorText() {
+      if (this.error) {
+        const text = this.slots('error') || this.errorText;
+
+        if (text) {
+          return (
+            <div onClick={this.clickErrorText} class={bem('error-text')}>
+              {text}
+            </div>
+          );
+        }
+      }
+    },
+  },
+
+  render() {
+    const Placeholder = (
+      <div ref="placeholder" key="placeholder" class={bem('placeholder')} />
+    );
+
+    return (
+      <div class={bem()} role="feed" aria-busy={this.innerLoading}>
+        {this.direction === 'down' ? this.slots() : Placeholder}
+        {this.genLoading()}
+        {this.genFinishedText()}
+        {this.genErrorText()}
         {this.direction === 'up' ? this.slots() : Placeholder}
       </div>
     );
-  }
+  },
 });

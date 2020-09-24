@@ -1,39 +1,50 @@
-import { createNamespace, isDef } from '../utils';
+import { isHidden } from '../utils/dom/style';
+import { unitToPx } from '../utils/format/unit';
+import { createNamespace, isDef, isServer } from '../utils';
+import { getScrollTop, getElementTop, getScroller } from '../utils/dom/scroll';
 import { BindEventMixin } from '../mixins/bind-event';
-import { getScrollTop, getElementTop, getScrollEventTarget } from '../utils/dom/scroll';
 
 const [createComponent, bem] = createNamespace('sticky');
 
 export default createComponent({
   mixins: [
-    BindEventMixin(function(bind) {
+    BindEventMixin(function (bind, isBind) {
       if (!this.scroller) {
-        this.scroller = getScrollEventTarget(this.$el);
+        this.scroller = getScroller(this.$el);
+      }
+
+      if (this.observer) {
+        const method = isBind ? 'observe' : 'unobserve';
+        this.observer[method](this.$el);
       }
 
       bind(this.scroller, 'scroll', this.onScroll, true);
       this.onScroll();
-    })
+    }),
   ],
 
   props: {
-    zIndex: Number,
+    zIndex: [Number, String],
     container: null,
     offsetTop: {
-      type: Number,
-      default: 0
-    }
+      type: [Number, String],
+      default: 0,
+    },
   },
 
   data() {
     return {
       fixed: false,
       height: 0,
-      transform: 0
+      transform: 0,
     };
   },
 
   computed: {
+    offsetTopPx() {
+      return unitToPx(this.offsetTop);
+    },
+
     style() {
       if (!this.fixed) {
         return;
@@ -45,8 +56,8 @@ export default createComponent({
         style.zIndex = this.zIndex;
       }
 
-      if (this.offsetTop && this.fixed) {
-        style.top = `${this.offsetTop}px`;
+      if (this.offsetTopPx && this.fixed) {
+        style.top = `${this.offsetTopPx}px`;
       }
 
       if (this.transform) {
@@ -54,21 +65,40 @@ export default createComponent({
       }
 
       return style;
+    },
+  },
+
+  created() {
+    // compatibility: https://caniuse.com/#feat=intersectionobserver
+    if (!isServer && window.IntersectionObserver) {
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          // trigger scroll when visibility changed
+          if (entries[0].intersectionRatio > 0) {
+            this.onScroll();
+          }
+        },
+        { root: document.body }
+      );
     }
   },
 
   methods: {
     onScroll() {
+      if (isHidden(this.$el)) {
+        return;
+      }
+
       this.height = this.$el.offsetHeight;
 
-      const { container, offsetTop } = this;
+      const { container, offsetTopPx } = this;
       const scrollTop = getScrollTop(window);
       const topToPageTop = getElementTop(this.$el);
 
       const emitScrollEvent = () => {
         this.$emit('scroll', {
           scrollTop,
-          isFixed: this.fixed
+          isFixed: this.fixed,
         });
       };
 
@@ -76,12 +106,12 @@ export default createComponent({
       if (container) {
         const bottomToPageTop = topToPageTop + container.offsetHeight;
 
-        if (scrollTop + offsetTop + this.height > bottomToPageTop) {
+        if (scrollTop + offsetTopPx + this.height > bottomToPageTop) {
           const distanceToBottom = this.height + scrollTop - bottomToPageTop;
 
           if (distanceToBottom < this.height) {
             this.fixed = true;
-            this.transform = -(distanceToBottom + offsetTop);
+            this.transform = -(distanceToBottom + offsetTopPx);
           } else {
             this.fixed = false;
           }
@@ -91,7 +121,7 @@ export default createComponent({
         }
       }
 
-      if (scrollTop + offsetTop > topToPageTop) {
+      if (scrollTop + offsetTopPx > topToPageTop) {
         this.fixed = true;
         this.transform = 0;
       } else {
@@ -99,13 +129,13 @@ export default createComponent({
       }
 
       emitScrollEvent();
-    }
+    },
   },
 
   render() {
     const { fixed } = this;
     const style = {
-      height: fixed ? `${this.height}px` : null
+      height: fixed ? `${this.height}px` : null,
     };
 
     return (
@@ -115,5 +145,5 @@ export default createComponent({
         </div>
       </div>
     );
-  }
+  },
 });

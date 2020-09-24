@@ -1,15 +1,10 @@
-import Vue from 'vue';
 import Checkbox from '..';
-import CheckboxGroup from '../../checkbox-group';
-import { mount, later } from '../../../test/utils';
-
-Vue.use(Checkbox);
-Vue.use(CheckboxGroup);
+import { mount, later } from '../../../test';
 
 test('switch checkbox', async () => {
   const wrapper = mount(Checkbox);
 
-  wrapper.vm.$on('input', value => {
+  wrapper.vm.$on('input', (value) => {
     wrapper.setData({ value });
   });
 
@@ -25,8 +20,8 @@ test('switch checkbox', async () => {
 test('disabled', () => {
   const wrapper = mount(Checkbox, {
     propsData: {
-      disabled: true
-    }
+      disabled: true,
+    },
   });
 
   wrapper.find('.van-checkbox__icon').trigger('click');
@@ -36,11 +31,11 @@ test('disabled', () => {
 test('label disabled', () => {
   const wrapper = mount(Checkbox, {
     scopedSlots: {
-      default: () => 'Label'
+      default: () => 'Label',
     },
     propsData: {
-      labelDisabled: true
-    }
+      labelDisabled: true,
+    },
   });
 
   wrapper.find('.van-checkbox__label').trigger('click');
@@ -59,9 +54,9 @@ test('checkbox group', async () => {
     `,
     data() {
       return {
-        result: []
+        result: [],
       };
-    }
+    },
   });
 
   const icons = wrapper.findAll('.van-checkbox__icon');
@@ -78,30 +73,32 @@ test('checkbox group', async () => {
   expect(wrapper.vm.result).toEqual(['b']);
 });
 
-test('click event', () => {
+test('click event', async () => {
   const onClick = jest.fn();
   const wrapper = mount(Checkbox, {
     listeners: {
-      click: onClick
-    }
+      click: onClick,
+    },
   });
 
   wrapper.trigger('click');
+  await later();
   expect(onClick).toHaveBeenCalledTimes(1);
 
   const icon = wrapper.find('.van-checkbox__icon');
   icon.trigger('click');
+  await later();
   expect(onClick).toHaveBeenCalledTimes(2);
 });
 
 test('label-position prop', () => {
   const wrapper = mount(Checkbox, {
     scopedSlots: {
-      default: () => 'Label'
+      default: () => 'Label',
     },
     propsData: {
-      labelPosition: 'left'
-    }
+      labelPosition: 'left',
+    },
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -114,7 +111,7 @@ test('icon-size prop', () => {
         <van-checkbox>label</van-checkbox>
         <van-checkbox icon-size="5rem">label</van-checkbox>
       </van-checkbox-group>
-    `
+    `,
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -127,7 +124,7 @@ test('checked-color prop', () => {
         <van-checkbox name="a" :value="true">label</van-checkbox>
         <van-checkbox name="b" :value="true" checked-color="white">label</van-checkbox>
       </van-checkbox-group>
-    `
+    `,
   });
 
   expect(wrapper).toMatchSnapshot();
@@ -145,9 +142,9 @@ test('bind-group prop', async () => {
       return {
         value: false,
         result: [],
-        list: ['a', 'b', 'c']
+        list: ['a', 'b', 'c'],
       };
-    }
+    },
   });
 
   const icons = wrapper.findAll('.van-checkbox__icon');
@@ -168,14 +165,14 @@ test('toggleAll method', async () => {
     `,
     data() {
       return {
-        result: ['a']
+        result: ['a'],
       };
     },
     methods: {
       toggleAll(checked) {
         this.$refs.group.toggleAll(checked);
-      }
-    }
+      },
+    },
   });
 
   wrapper.vm.toggleAll();

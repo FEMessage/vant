@@ -14,18 +14,18 @@ export default createComponent({
     ...sharedProps,
     type: {
       type: String,
-      default: 'datetime'
+      default: 'datetime',
     },
     minDate: {
       type: Date,
       default: () => new Date(currentYear - 10, 0, 1),
-      validator: isDate
+      validator: isDate,
     },
     maxDate: {
       type: Date,
       default: () => new Date(currentYear + 10, 11, 31),
-      validator: isDate
-    }
+      validator: isDate,
+    },
   },
 
   watch: {
@@ -39,48 +39,76 @@ export default createComponent({
       if (val.valueOf() !== this.innerValue.valueOf()) {
         this.innerValue = val;
       }
-    }
+    },
   },
 
   computed: {
     ranges() {
-      const { maxYear, maxDate, maxMonth, maxHour, maxMinute } = this.getBoundary(
-        'max',
-        this.innerValue
-      );
+      const {
+        maxYear,
+        maxDate,
+        maxMonth,
+        maxHour,
+        maxMinute,
+      } = this.getBoundary('max', this.innerValue);
 
-      const { minYear, minDate, minMonth, minHour, minMinute } = this.getBoundary(
-        'min',
-        this.innerValue
-      );
+      const {
+        minYear,
+        minDate,
+        minMonth,
+        minHour,
+        minMinute,
+      } = this.getBoundary('min', this.innerValue);
 
-      const result = [
+      let result = [
         {
           type: 'year',
-          range: [minYear, maxYear]
+          range: [minYear, maxYear],
         },
         {
           type: 'month',
-          range: [minMonth, maxMonth]
+          range: [minMonth, maxMonth],
         },
         {
           type: 'day',
-          range: [minDate, maxDate]
+          range: [minDate, maxDate],
         },
         {
           type: 'hour',
-          range: [minHour, maxHour]
+          range: [minHour, maxHour],
         },
         {
           type: 'minute',
-          range: [minMinute, maxMinute]
-        }
+          range: [minMinute, maxMinute],
+        },
       ];
 
-      if (this.type === 'date') result.splice(3, 2);
-      if (this.type === 'year-month') result.splice(2, 3);
+      switch (this.type) {
+        case 'date':
+          result = result.slice(0, 3);
+          break;
+        case 'year-month':
+          result = result.slice(0, 2);
+          break;
+        case 'month-day':
+          result = result.slice(1, 3);
+          break;
+        case 'datehour':
+          result = result.slice(0, 4);
+          break;
+      }
+
+      if (this.columnsOrder) {
+        const columnsOrder = this.columnsOrder.concat(
+          result.map((column) => column.type)
+        );
+        result.sort(
+          (a, b) => columnsOrder.indexOf(a.type) - columnsOrder.indexOf(b.type)
+        );
+      }
+
       return result;
-    }
+    },
   },
 
   methods: {
@@ -128,36 +156,53 @@ export default createComponent({
         [`${type}Month`]: month,
         [`${type}Date`]: date,
         [`${type}Hour`]: hour,
-        [`${type}Minute`]: minute
+        [`${type}Minute`]: minute,
       };
     },
 
     updateInnerValue() {
-      const indexes = this.$refs.picker.getIndexes();
-      const getValue = index => getTrueValue(this.originColumns[index].values[indexes[index]]);
+      const { type } = this;
+      const indexes = this.getPicker().getIndexes();
+      const getValue = (type) => {
+        let index = 0;
+        this.originColumns.forEach((column, columnIndex) => {
+          if (type === column.type) {
+            index = columnIndex;
+          }
+        });
+        const { values } = this.originColumns[index];
+        return getTrueValue(values[indexes[index]]);
+      };
 
-      const year = getValue(0);
-      const month = getValue(1);
-      const maxDate = getMonthEndDay(year, month);
-
-      let date;
-      if (this.type === 'year-month') {
-        date = 1;
+      let year;
+      let month;
+      let day;
+      if (type === 'month-day') {
+        year = this.innerValue.getFullYear();
+        month = getValue('month');
+        day = getValue('day');
       } else {
-        date = getValue(2);
+        year = getValue('year');
+        month = getValue('month');
+        day = type === 'year-month' ? 1 : getValue('day');
       }
 
-      date = date > maxDate ? maxDate : date;
+      const maxDay = getMonthEndDay(year, month);
+      day = day > maxDay ? maxDay : day;
 
       let hour = 0;
       let minute = 0;
 
-      if (this.type === 'datetime') {
-        hour = getValue(3);
-        minute = getValue(4);
+      if (type === 'datehour') {
+        hour = getValue('hour');
       }
 
-      const value = new Date(year, month - 1, date, hour, minute);
+      if (type === 'datetime') {
+        hour = getValue('hour');
+        minute = getValue('minute');
+      }
+
+      const value = new Date(year, month - 1, day, hour, minute);
 
       this.innerValue = this.formatValue(value);
     },
@@ -176,26 +221,27 @@ export default createComponent({
       const value = this.innerValue;
       const { formatter } = this;
 
-      let values = [
-        formatter('year', `${value.getFullYear()}`),
-        formatter('month', padZero(value.getMonth() + 1)),
-        formatter('day', padZero(value.getDate()))
-      ];
-
-      if (this.type === 'datetime') {
-        values.push(
-          formatter('hour', padZero(value.getHours())),
-          formatter('minute', padZero(value.getMinutes()))
-        );
-      }
-
-      if (this.type === 'year-month') {
-        values = values.slice(0, 2);
-      }
+      const values = this.originColumns.map((column) => {
+        switch (column.type) {
+          case 'year':
+            return formatter('year', `${value.getFullYear()}`);
+          case 'month':
+            return formatter('month', padZero(value.getMonth() + 1));
+          case 'day':
+            return formatter('day', padZero(value.getDate()));
+          case 'hour':
+            return formatter('hour', padZero(value.getHours()));
+          case 'minute':
+            return formatter('minute', padZero(value.getMinutes()));
+          default:
+            // no default
+            return null;
+        }
+      });
 
       this.$nextTick(() => {
-        this.$refs.picker.setValues(values);
+        this.getPicker().setValues(values);
       });
-    }
-  }
+    },
+  },
 });
